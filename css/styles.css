@@ -1,20 +1,64 @@
 @import url('https://fonts.googleapis.com/css?family=Exo:400,700');
 
-*{
-    margin: 0px;
-    padding: 0px;
-}
 
 body{
-    font-family: 'Exo', sans-serif;
+    font-family: 'Quicksand', sans-serif;
+    position: relative;
+    background: transparent;
+    padding-top: 50px;
+    margin-top: -50px;
 }
 
-.context {
-    width: 100%;
-    position: absolute;
-    top:50vh;   
+.accent {
+    color: #00d646;
 }
 
+.nav {
+ background: #0A1128;   
+}
+
+.navbar-custom {
+    background: green;
+}
+
+#landing {
+    display: grid;
+    height: 100vh;
+    margin: 0;
+    place-items: center center;
+}
+
+
+.navbar.transparent.navbar-inverse .navbar-inner {
+    border-width: 0px;
+    -webkit-box-shadow: 0px 0px;
+    box-shadow: 0px 0px;
+    background-color: rgba(0,0,0,0.0);
+    background-image: -webkit-gradient(linear, 50.00% 0.00%, 50.00% 100.00%, color-stop( 0% , rgba(0,0,0,0.00)),color-stop( 100% , rgba(0,0,0,0.00)));
+    background-image: -webkit-linear-gradient(270deg,rgba(0,0,0,0.00) 0%,rgba(0,0,0,0.00) 100%);
+    background-image: linear-gradient(180deg,rgba(0,0,0,0.00) 0%,rgba(0,0,0,0.00) 100%);
+}
+
+
+/*---------- NAVIGATION BAR----------- */
+.nav-link, .navbar a {
+    color: white !important;
+}
+.nav-link.active {
+color: #00d646 !important;
+}
+
+.navbar-brand {
+    font-family: 'Alfa Slab One', cursive;
+}
+
+
+
+
+
+/* -------------------------------------------- */
+/* -----------------BACKGROUND ---------------- */
+/* -------------------------------------------- */
 
 .area{
     background: #0A1128;  
@@ -122,6 +166,8 @@ body{
 
 
 
+/*-------------ANIMATION----------------- */
+
 @keyframes animate {
 
     0%{
@@ -137,3 +183,4 @@ body{
     }
 
 }
+
