@@ -6,68 +6,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="stylesheet" href="normalize.css">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
     <title>Gerlin Pierre-Louis</title>
 </head>
 
-<body id="home" class="bg-dark" data-spy="scroll" data-target=".navbar" data-offset="100" >
-    <!-- navigation bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Gerlin Pierre-Louis</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="col-auto">
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                        <a class="nav-link" href="#index.html">Home</a>
-                        </li>
-                        <li class="nav-item">
-                        <a class="nav-link" href="#about">About</a>
-                        </li>
-                        <li class="nav-item">
-                        <a class="nav-link" href="#portfolio">Portfolio</a>
-                        </li>
-                        <li class="nav-item">
-                        <a class="nav-link" href="#contact">Contact</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+<body>
+<!-------------- header -------------->
+<header>
+<!-------------- navigation ---------->
+<nav class="navbar navbar-expand-lg fixed-top transparent navbar-dark" id="nav">
+    <div class="container-fluid">
+        <a class="fs-1 navbar-brand order-1" href="#">G<span class="text-success">P</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="#">Portfolio</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Contact</a>
+            </li>
+        </ul>
         </div>
-</nav> <!-- /navigation bar --> 
-
-
-<!------------ header----------->
-<div class="jumbotron jumbotron-fluid bg-dark text-white py-5"> 
-    <div class="container text-sm-center pt-5">
-        <h1 class="display-1 ">Gerlin Pierre<span class="text-success">-</span>Louis</h1>
-        <p class="lead text-success">WEB DEVELOPER</p>
     </div>
-        <div class="d-grid gap-2 col-2 mx-auto">
-            <a class="btn btn-success" href="#portfolio">PROJECTS</a>
-            <a class="btn btn-success" href="#about">MORE ABOUT ME</a>
-        </div> 
-</div> <!------------ /header----------->
+</nav> <!-------------- /navigation----------->
+
+<!-- Title -->
+<div class="context">
+    <h1 class="display-2 text-white text-center">Gerlin Pierre-Louis</h1>
+    <p class="lead text-success text-center">WEB DEVELOPER</p>
+</div>
+    
+<!------------- background --------->
+<div class="area" >
+            <ul class="circles">
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+            </ul>
+</div > <!------------- /background --------->
+        
+</header> <!--------------/Header----------->
 
 <!------------ about ----------->
-<div id="about" class="container pt-5"> 
+<div id="about" class=" pt-5 "> 
     <div class="row">
         <h2 class="display-4 text-center mt-5 text-success">About</h2>
         <h4 class="text-center text-white">Personal Information</h4>
         <p class="text-center text-success">More about me</p>
-        <div class="col m-5 bg-dark text-center fs-4" >
-            <h4 class="text-white  ">Hello!</h4>
-            <p class="text-white">My name is Gerlin Pierre-Louis, and I'm a passionate web developer who uses web based technology to build amazing projects and focus on solving problems for different niches, and industries using the web development. </p>
+        <div class="col m-5  text-center fs-4" >
+            <h4 >Hello!</h4>
+            <p>My name is Gerlin Pierre-Louis, and I'm a passionate web developer who uses web based technology to build amazing projects and focus on solving problems for different niches, and industries using the web development. </p>
 
         </div>
 
-        <div class="col container m-5 bg-dark text-center" >
-            <h2 class="text-white text-center mt-5">SKILLS</h4>
+        <div class="col container m-5  text-center" >
+            <h2 class="text-center mt-5">SKILLS</h4>
             <h4 class=" ms-4 badge fs-3 bg-secondary">HTML</h4>
             <h4 class=" ms-4 badge fs-3 bg-success">CSS</h4>
             <h4 class=" ms-4 badge fs-3 bg-warning">SASS</h4>
@@ -75,83 +85,8 @@
             <h4 class=" ms-4 badge fs-3 bg-danger">JAVASCRIPT</h4>
         </div>
     </div>
+    
 </div> <!------------ /about ----------->
-
-<!------------ portfolio ----------->
-<div id="portfolio" class="py-5 container bg-dark"> 
-    <h1 class="display-4 text-center my-1 text-success">Portfolio</h1>
-    <div class="row">
-
-        <div class="col-md-6 col-lg-4 ">
-            <img src="images/portfolio-1.png" class="card-img-top" alt="project">
-            <div class="card-body bg-white">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4 ">
-            <img src="images/portfolio-2.png" class="card-img-top" alt="project">
-            <div class="card-body bg-white">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4 ">
-            <img src="images/portfolio-3.png" class="card-img-top" alt="project">
-            <div class="card-body bg-white">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4 ">
-            <img src="images/portfolio-4.png" class="card-img-top" alt="project">
-            <div class="card-body bg-white">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4 ">
-            <img src="images/portfolio-5.png" class="card-img-top" alt="project">
-            <div class="card-body bg-white">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4 ">
-            <img src="images/portfolio-6.png" class="card-img-top" alt="project">
-            <div class="card-body bg-white">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-        </div>
-    </div>
-</div> <!------------ portfolio ----------->
-
-<!------------ contact ----------->
-<div id="portfolio-container" class="py-5 container bg-dark"> 
-    <h1 class="display-4 text-center my-1 text-success">Contact</h1>
- 
-    <div class="bg-dark container text-white d-flex justify-content-center">
-        <div class="d-flex p-2 flex-column justify-content-evenly ">
-            <h4><span class="text-success">Phone:</span> (508)-521-9758</h4>
-            <h4><span class="text-success">Email:</span> gerlin.pierrelouis@gmail.com</h4>
-            <h4><span class="text-success">Github:</span><a href="https://github.com/gerlinp">github.com/gerlinp</a></h4>
-        </div>
-    </div>
-
-</div> <!------------ /contact ----------->
-
 
 
 
