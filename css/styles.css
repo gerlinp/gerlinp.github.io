@@ -2,6 +2,7 @@
 
 *{
     box-sizing: border-box;
+    text-decoration: none;
 }
 
 body{
@@ -9,9 +10,12 @@ body{
     color: #001f54;
 }
 
-#about {
+#about,
+#footer {
     background: #001f54;
 }
+
+
 .context {
     width: 100%;
     position: absolute;
