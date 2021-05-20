@@ -10,14 +10,11 @@
     <link rel="stylesheet" href="css/styles.css">
     <title>Gerlin Pierre-Louis</title>
 </head>
-
-<body>
-<!-------------- header -------------->
-<header>
-<!-------------- navigation ---------->
-<nav class="navbar navbar-expand-lg fixed-top transparent navbar-dark" id="nav">
+<body data-bs-spy="scroll" data-bs-target="#nav">
+<div>
+<nav id="nav"class="navbar navbar-expand-lg navbar-light bg-transparent fixed-top">
     <div class="container-fluid">
-        <a class="fs-1 navbar-brand order-1" href="#">G<span class="text-success">P</span></a>
+        <a class="navbar-brand order-1" href="#">GP</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
         </button>
@@ -27,76 +24,66 @@
             <a class="nav-link active" aria-current="page" href="index.html">Home</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="#about">About</a>
+            <a class="nav-link" href="#">About</a>
             </li>
             <li class="nav-item">
             <a class="nav-link" href="#">Portfolio</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Contact</a>
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Contact</a>
             </li>
         </ul>
         </div>
     </div>
-</nav> <!-------------- /navigation----------->
-
-<!-- Title -->
-<div class="context">
-    <h1 class="display-2 text-white text-center">Gerlin Pierre-Louis</h1>
-    <p class="lead text-success text-center">WEB DEVELOPER</p>
+</nav><!------------ /nav bar ------------>
+<div id="header" class="context">
+        <img id="avatar" class="img-fluid mx-auto d-block" src="images/avatars.png" alt="profile picture">
+        <h1 class="display-1 text-center fw-bolder"> Gerlin Pierre-Louis</h1>
+        <p class="lead text-center">Web Developer</p>
 </div>
-    
-<!------------- header background --------->
-<div class="area" >
-            <ul class="circles">
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-            </ul>
+
+<div class="area" ></div>
+    <ul class="circles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+    </ul>
 </div > <!------------- / header background --------->
-        
-</header> <!--------------/Header----------->
 
-<!-------------- footer ----------->
+<div id="about" class="pt-5">
 
+        <h2 class="display-4 text-center mt-5 text-success">About</h2>
+        <h4 class="text-center text-white">Personal Information</h4>
+        <p class="text-center text-success">More about me</p>
+        <div class="col m-5  text-center fs-4" >
+            <h4 >Hello!</h4>
+            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptas, natus quos ad eligendi tenetur qui. Assumenda rem, recusandae quos ex id amet corporis voluptatem aspernatur enim delectus nam suscipit provident.</p>
 
-<div class=" bg-success d-flex justify-content-evenly border-top border-white border-5">
-    <div class="my-4 text-white">
-        <h5 class="  mb-3 fw-bolder text-center">Phone</h5>
-        <p class=" fs-4 fw-bolder">508-685-3702</p>
-    </div>
+        </div>
 
-    <div class="my-4 text-white">
-        <h5 class="text-white mb-3 fw-bolder text-center">Email</h5>
-        <p class="fw-bolder">gerlin.pierrelouis@gmail.com</p>
-    </div>
-
-    <div class="my-4 text-white">
-        <h5 class=" text-white fw-bolder text-center">Follow me</h5>
-        <a href="#"><img src="images/iconfinder_twitter_2308045.png" alt="twitter icon"></a>
-        <a href="#"><img src="images/iconfinder_linkedin_2308061.png" alt="linkedin icon"></a>
-        <a href="#"><img src="images/iconfinder_github_2308116.png" alt="github icon"></a>
-        <a href="#"><img src="images/iconfinder_slack_2308129.png" alt="slack icon"></a>
-    </div>
-
-    <div class="my-5 text-white">
-        <p class="fw-bold">&#169; By Gerlin Pierre-Louis </p>
-    </div>
 </div>
 
-<!-------------- /footer ----------->
+<div class="col container m-5  text-center" >
+    <h2 class="text-center mt-5">SKILLS</h4>
+    <h4 class=" ms-4 badge fs-3 bg-secondary">HTML</h4>
+    <h4 class=" ms-4 badge fs-3 bg-success">CSS</h4>
+    <h4 class=" ms-4 badge fs-3 bg-warning">SASS</h4>
+    <h4 class=" ms-4 badge fs-3 bg-info">GIT</h4>
+    <h4 class=" ms-4 badge fs-3 bg-danger">JAVASCRIPT</h4>
+</div>
 
 
 
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
