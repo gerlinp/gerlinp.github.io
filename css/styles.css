@@ -22,6 +22,9 @@ body{
     border-radius: 20px;
 }
 
+#header {
+    min-height: 500px;
+}
 /* ------------Navigation-------------- */
 .navbar.transparent.navbar-inverse .navbar-inner {
     border-width: 0px;
