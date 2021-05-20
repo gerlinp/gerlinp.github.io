@@ -11,8 +11,8 @@
     <title>Gerlin Pierre-Louis</title>
 </head>
 <body data-bs-spy="scroll" data-bs-target="#nav">
-<div>
-<nav id="nav"class="navbar navbar-expand-lg navbar-light bg-transparent fixed-top">
+<div id="header">
+<nav id="nav"class="navbar navbar-expand-lg navbar-light fw-bolder bg-white fixed-top">
     <div class="container-fluid">
         <a class="navbar-brand order-1" href="#">GP</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,13 +21,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+            <a class="nav-link active" aria-current="page" href="#header">Home</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
+            <a class="nav-link" href="#about">About</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="#">Portfolio</a>
+            <a class="nav-link" href="#portfolio">Portfolio</a>
             </li>
             <li class="nav-item">
             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Contact</a>
@@ -61,19 +61,56 @@
         <div class="col m-5  text-center fs-4  p-5">
             <h2 class="text-center text-success fw-bolder">Hi, I'm Gerlin. Thanks for Visiting</h2>
             <p class="text-white">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptas, natus quos ad eligendi tenetur qui. Assumenda rem, recusandae quos ex id amet corporis voluptatem aspernatur enim delectus nam suscipit provident.</p>
-
         </div>
-
+    <div class="container rounded bg-white p-5">
+        <div id="skills" class="col container bg-white text-center border border-success border-5 p-5" >
+            <h2 class="text-center mt-5 fw-bolder pb-5">SKILLS</h4>
+            <h4 class=" ms-4 badge fs-3 bg-secondary">HTML</h4>
+            <h4 class=" ms-4 badge fs-3 bg-success">CSS</h4>
+            <h4 class=" ms-4 badge fs-3 bg-warning">SASS</h4>
+            <h4 class=" ms-4 badge fs-3 bg-info">GIT</h4>
+            <h4 class=" ms-4 badge fs-3 bg-danger">JAVASCRIPT</h4>
+        </div>
+    </div>
 </div><!------------- /about --------->
 
-<div class="col container m-5  text-center" >
-    <h2 class="text-center mt-5">SKILLS</h4>
-    <h4 class=" ms-4 badge fs-3 bg-secondary">HTML</h4>
-    <h4 class=" ms-4 badge fs-3 bg-success">CSS</h4>
-    <h4 class=" ms-4 badge fs-3 bg-warning">SASS</h4>
-    <h4 class=" ms-4 badge fs-3 bg-info">GIT</h4>
-    <h4 class=" ms-4 badge fs-3 bg-danger">JAVASCRIPT</h4>
-</div>
+<div id="portfolio">
+        <div class="col m-5  text-center fs-4  p-5">
+            <h2 class="text-center text-success fw-bolder">Portfolio</h2>
+            <h3 class="lead pb-5">Here are a few of my recent projects. Want to see more? <a class=" text-success fw-bolder fs-3 text-decoration-none">Email Me.</a></h3>
+            
+            <div class="container pt-5">
+                <div class="row pb-4">
+                    <div class="col-md-6 col-lg-4 pb-4">
+                        <img class="img-fluid" src="images/portfolio-1.png">
+                    </div>
+                    <div class="col-md-6 col-lg-4 pb-4">
+                        <img class="img-fluid" src="images/portfolio-2.png">
+                    </div>
+                    <div class="col-md-6 col-lg-4 pb-4">
+                        <img class="img-fluid" src="images/portfolio-3.png">
+                    </div>
+                    <div class="col-md-6 col-lg-4 pb-4">
+                        <img class="img-fluid" src="images/portfolio-4.png">
+                    </div>
+                    <div class="col-md-6 col-lg-4 pb-4">
+                        <img class="img-fluid" src="images/portfolio-5.png">
+                    </div>
+                    <div class="col-md-6 col-lg-4 pb-4">
+                        <img class="img-fluid" src="images/portfolio-6.png">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+</div><!------------- /portfolio --------->
+<hr>
+
+<div class="container bg-success"> <h2 class="text-white">Start a project</h2></div>
+
+
+
 
 
 

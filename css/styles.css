@@ -18,6 +18,9 @@ body{
     top:30vh;  
 }
 
+#portfolio img {
+    border-radius: 20px;
+}
 
 /* ------------Navigation-------------- */
 .navbar.transparent.navbar-inverse .navbar-inner {
@@ -50,6 +53,7 @@ body{
     height: 100%;
     overflow: hidden;
     z-index: 1;
+    min-height: 500px;
 }
 
 .circles li{
