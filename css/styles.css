@@ -18,6 +18,10 @@ body{
     top:20vh;  
 }
 
+.context img {
+    max-width: 400px;
+}
+
 #portfolio img {
     border-radius: 20px;
 }
