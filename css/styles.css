@@ -11,7 +11,8 @@ body{
 }
 
 #about,
-#footer {
+#footer,
+.bg-blue {
     background: #001f54;
 }
 
@@ -26,9 +27,10 @@ body{
     max-width: 300px;
 }
 
-#portfolio img {
-    border-radius: 20px;
-}
+
+
+
+
 
 #header {
     min-height: 500px;
@@ -195,3 +197,35 @@ body{
     }
 
 }
+
+
+/* mediaquery */
+
+@media only screen and (min-width: 768px){
+ 
+    .context img {
+        max-width: 700px;
+    }  
+}
+
+
+/* Card animation */
+
+
+.photo-overlay {
+	opacity: 0;
+	transition: opacity .5s;
+}
+.photo-overlay:hover {
+	opacity: 1;
+}
+
+button {
+    border: hidden;
+}
+
+
+body{margin-top:20px;}
+
+
+
