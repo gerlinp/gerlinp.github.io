@@ -59,8 +59,10 @@ setInterval(function () {
   
   show.removeAttribute('data-show')
   show.setAttribute('data-up', '')
-  
   next.setAttribute('data-show', '')
+  console.log(show)
+  console.log(next)
+  console.log(up)
 }, 2000)
 
 

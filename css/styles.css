@@ -235,15 +235,10 @@ svg {
 
 
 
-
-
-
-
 :root {
     --offset: 6px;
   }
   
-
   .mask {
     height: 106px;
     position: relative;
@@ -254,7 +249,7 @@ svg {
   .mask span {
     display: block;
     box-sizing: border-box;
-    position: absolute;
+    position: relative;
     top: 100px;
     padding-bottom: var(--offset);
     
