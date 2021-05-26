@@ -228,26 +228,36 @@ button {
 }
 
 
-body{margin-top:20px;}
+svg {
+    fill: white;
+    padding:5px;
+}
 
-/* ---------------Word Rotation-------------- */
+
+
+
+
+
+
 :root {
     --offset: 6px;
   }
+  
+
   .mask {
     height: 106px;
     position: relative;
     overflow: hidden;
     margin-top: var(--offset);
   }
-
-
   
   .mask span {
     display: block;
     box-sizing: border-box;
+    position: absolute;
     top: 100px;
     padding-bottom: var(--offset);
+    
     background-size: 100% 100%;
     -webkit-background-clip: text;
     background-clip: text;
@@ -280,6 +290,3 @@ body{margin-top:20px;}
   .mask span:nth-child(4) {
     background-image: linear-gradient(45deg, #fa7671 50%, #f45f7f);
   }
-
-
-

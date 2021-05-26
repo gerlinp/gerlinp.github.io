@@ -48,16 +48,28 @@ portfolio.insertAdjacentHTML('beforeend', html);
 
 
 /-------------------word rotation-----------------/ 
-const keywords = ["Web Developer", "Forever Learner", "Foodie", "Geek"];
-const colours = ["red", "green", "blue", "orange"];
-const keyword = document.querySelector('.keyword')
-let count = 1;
+setInterval(function () {
+  const show = document.querySelector('span[data-show]')
+  const next = show.nextElementSibling || document.querySelector('span:first-child')
+  const up = document.querySelector('span[data-up]')
+  
+  if (up) {
+    up.removeAttribute('data-up')
+  }
+  
+  show.removeAttribute('data-show')
+  show.setAttribute('data-up', '')
+  
+  next.setAttribute('data-show', '')
+}, 2000)
 
-every 2000s change what is displayed
-
-keyword.innerHTML = 
 
 
 
 
 
+
+
+
+
+  
