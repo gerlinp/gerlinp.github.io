@@ -46,7 +46,7 @@ let projects = [
 for ( let i = 0; i < projects.length; i++ ) {
   let project = projects[i];
   html += `
-  <div class=" col-md-6 pb-5">
+  <div class=" col-md-6 col-lg-4 pb-5">
     <div class="card bg-blue ">
         <img class="card-img-top" src="images/${project.image}" alt="${project.name}">
         <div class="card-img-overlay photo-overlay  bg-blue">
