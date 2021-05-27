@@ -1,6 +1,12 @@
+//------------------ Scroll Spy ------------------------//
+
 var scrollSpy = new bootstrap.ScrollSpy(document.body, {
-    target: '#navbar-example'
-  })
+    target: '#nav'
+  });
+
+
+// ----------------Portfolio cards------------------------//
+
 const portfolio = document.querySelector('#portfolioContainer');
 let html = '';
 let projects = [
@@ -23,8 +29,19 @@ let projects = [
     name:'Web App',
     image: 'portfolio-5.png',
     link: 'web_app_dashboard_v3.2/'
+  },
+  {
+    name:'Employee Directory',
+    image:'portfolio-4.png',
+    link:'employee_directory_v1/'
+
+  },
+  {
+    name:'Sign up Form',
+    image:'portfolio-6.png',
+    link:'online_registration_v4/'
   }
-]
+];
 
 for ( let i = 0; i < projects.length; i++ ) {
   let project = projects[i];
@@ -43,35 +60,81 @@ for ( let i = 0; i < projects.length; i++ ) {
   </div>
   `;
 }
-
 portfolio.insertAdjacentHTML('beforeend', html);
+// /-------------------word rotation-----------------/ 
+var words = (function(){
+  var words = [
+      'Web Developer',
+      'Forever Learner',
+      'Foodie',
+      'Problem Solver',
+      'Geek'
+      ],
+    el = document.querySelector('.verb'),
+    currentIndex,
+    currentWord,
+    prevWord,
+    duration = 4000;
 
+  var _getIndex = function(max, min){
+    currentIndex = Math.floor(Math.random() * (max - min + 1)) + min;
 
-/-------------------word rotation-----------------/ 
-setInterval(function () {
-  const show = document.querySelector('span[data-show]')
-  const next = show.nextElementSibling || document.querySelector('span:first-child')
-  const up = document.querySelector('span[data-up]')
-  
-  if (up) {
-    up.removeAttribute('data-up')
-  }
-  
-  show.removeAttribute('data-show')
-  show.setAttribute('data-up', '')
-  next.setAttribute('data-show', '')
-  console.log(show)
-  console.log(next)
-  console.log(up)
-}, 2000)
+    //Generates a random number between beginning and end of words array
+    return currentIndex;
+  };
 
+  var _getWord = function(index){
+    currentWord = words[index];
+    return currentWord;
+  };
 
+  var _clear = function() {
 
+    setTimeout(function(){
+      el.className = 'verb';
+    }, duration/4);
+  };
 
+  var _toggleWord = function(duration){
+    setInterval(function(){
+      //Stores value of previous word
+      prevWord = currentWord;
 
+      //Generate new current word
+      currentWord = words[_getIndex(words.length-1, 0)];
 
+      //Generate new word if prev matches current
+      if(prevWord === currentWord){
 
+        currentWord = words[_getIndex(words.length-1, 0)];
+      }
 
+      //Swap new value
+      el.innerHTML = currentWord;
 
+      //Clear class styles
+      _clear();
 
+      //Fade in word
+      el.classList.add(
+        'js-block',
+        'js-fade-in-verb'
+        );
+
+    }, duration);
+  };
+
+  var _init = function(){
+    _toggleWord(duration);
+  };
+
+  //Public API
+  return {
+    init : function(){
+      _init();
+    }
+  };
+})();
+
+words.init();
   

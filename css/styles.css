@@ -195,7 +195,6 @@ body{
 
 }
 
-
 /* mediaquery */
 
 @media only screen and (min-width: 768px){
@@ -235,53 +234,50 @@ svg {
 
 
 
-:root {
-    --offset: 6px;
-  }
-  
-  .mask {
-    height: 106px;
-    position: relative;
-    overflow: hidden;
-    margin-top: var(--offset);
-  }
-  
-  .mask span {
-    display: block;
-    box-sizing: border-box;
-    position: relative;
-    top: 100px;
-    padding-bottom: var(--offset);
-    
-    background-size: 100% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-repeat: no-repeat;
-  }
-  
-  .mask span[data-show] {
-    transform: translateY(-100%);
-    transition: .5s transform ease-in-out;
-  }
-  
-  .mask span[data-up] {
-    transform: translateY(-200%);
-    transition: .5s transform ease-in-out;
-  }
-  
-  .mask span:nth-child(1) {
-    background-image: linear-gradient(45deg, #0ecffe 50%, #07a6f1);
-  }
-  
-  .mask span:nth-child(2) {
-    background-image: linear-gradient(45deg, #18e198 50%, #0ec15d);
-  }
-  
-  .mask span:nth-child(3) {
-    background-image: linear-gradient(45deg, #8a7cfb 50%, #633e9c);
-  }
-  
-  .mask span:nth-child(4) {
-    background-image: linear-gradient(45deg, #fa7671 50%, #f45f7f);
-  }
+@-moz-keyframes 
+fade-it { 0% {
+opacity:0
+}
+100% {
+opacity:1
+}
+}
+
+@-webkit-keyframes 
+fade-it { 0% {
+opacity:0
+}
+100% {
+opacity:1
+}
+}
+
+@keyframes 
+fade-it { 0% {
+opacity:0
+}
+100% {
+opacity:1
+}
+}
+
+.js-fade-in-verb {
+  animation-name: fade-it;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  -webkit-animation-name: fade-it;
+  -webkit-animation-duration: 1s;
+  -webkit-animation-fill-mode: forwards
+}
+
+.verb.js-block { display: inline-block }
+
+.verb.js-hide {
+  display: none;
+  opacity: 0
+}
+
+.verb {
+  display: inline-block;
+  visibility: visible;
+}
