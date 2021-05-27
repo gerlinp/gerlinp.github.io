@@ -61,7 +61,7 @@ for ( let i = 0; i < projects.length; i++ ) {
   `;
 }
 portfolio.insertAdjacentHTML('beforeend', html);
-// /-------------------word rotation-----------------/ 
+// -------------------word rotation-----------------//
 var words = (function(){
   var words = [
       'Web Developer',
