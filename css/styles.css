@@ -8,8 +8,7 @@
 body{
     font-family: 'Quicksand', sans-serif;
     color: #001f54;
-    min-width: 320px;
-
+    min-width: 320px
 }
 
 #about,
@@ -17,7 +16,6 @@ body{
 .bg-blue {
     background: #001f54;
 }
-
 
 .context {
     width: 100%;
@@ -203,10 +201,9 @@ body{
         max-width: 700px;
         height: 55vh;
         padding-bottom: 20px;        
-    }  
-
+    }
     #about {
-        height: 60vh;
+        height: 100vh;
     }
 }
 
