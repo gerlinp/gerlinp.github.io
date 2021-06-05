@@ -13,7 +13,7 @@ let projects = [
   {
     name:'Random Quote Generator',
     image: 'portfolio-1.png',
-    link: 'a_random_quote_generator-v1'
+    link: 'random_quote_generator/'
   },
   {
     name:'Word Guess',
