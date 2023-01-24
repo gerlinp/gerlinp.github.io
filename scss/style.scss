@@ -1,0 +1,347 @@
+$color-primary: #020020;
+$color-secondary: #09f;
+$color-text: aliceblue;
+
+// background-image: ;
+body {
+    background: $color-primary;
+    color: $color-text;
+    font-size: 0.85rem;
+    border: solid hsla(244, 100%, 6%, 1);
+    border-width: 0px 20px;
+}
+
+p {
+    margin: 0px 0px 15px;
+  
+    a {
+      display: inline-block;
+      text-decoration: none;
+      text-decoration-skip-ink: auto;
+      position: relative;
+      color: $color-secondary;
+    }
+  }
+  section {
+    background: hsla(244, 100%, 6%, 1);
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    // border: solid hsla(244, 100%, 6%, 1);
+    border-width: 0px 20px;
+    padding: 40px 0;
+    h2 {
+      font-size: 2.5rem;
+    }
+  }
+
+//   #main {
+//     background: transparent;
+//     height: 97vh;
+//     width: 100vw;
+//     position: relative;
+//     border: solid #020020;
+//     border-width: 20px 20px 0px 20px;
+//     z-index: 2;
+//     --bs-gutter-x: 1.5rem;
+//   }
+
+  
+
+  .overline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    h2 {
+      margin-bottom: 20px;
+      color: rgba(255, 255, 255, 0.87);
+      font-size: 2rem;
+    //   font-family: $font-stack-secondary;
+    }
+    h3 {
+      display: flex;
+      color: $color-secondary;
+    }
+  
+  }
+  
+
+nav {
+    background: $color-primary;
+    box-shadow: 0px 1px 0px rgba($color: #fff, $alpha: 0.1);
+}
+
+#hero {
+    height: 97vh;
+}
+
+.bg {
+    animation:slide 3s ease-in-out infinite alternate;
+    background-image: linear-gradient(-60deg, #09f 50%, #020020 50%);
+    bottom:0px;
+    left:-50%;
+    opacity:.5;
+    position:fixed;
+    right:-50%;
+    top: 0px;
+    z-index:-2;
+  }
+  
+  .bg2 {
+    animation-direction:alternate-reverse;
+    animation-duration:4s;
+    z-index:-2;
+  }
+  
+  .bg3 {
+    animation-duration:5s;
+    z-index:-2;
+  }
+
+  @keyframes slide { 
+    0% {
+      transform:translateX(-25%);
+    }
+    100% {
+      transform:translateX(25%);
+    }
+  }
+  
+
+.numbered-heading {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    position: relative;
+    margin: 10px 0px 40px;
+    width: 100%;
+    font-size: 26px;
+    white-space: nowrap;
+    &::after {
+      content: "";
+      display: block;
+      position: relative;
+      top: -1px;
+      width: 300px;
+      height: 3px;
+      margin-left: 20px;
+      background-color: #09f;
+    }
+  }
+
+//  #ABOUT
+
+.skills-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(140px, 200px));
+    gap: 0px 10px;
+    padding: 0px;
+    margin: 20px 20px 40px;
+    overflow: hidden;
+    list-style: none;
+  
+    li {
+      position: relative;
+      margin-bottom: 10px;
+      padding-left: 20px;
+      font-size: 15px;
+  
+      &:before {
+        content: "▹";
+        position: absolute;
+        left: 0px;
+        color: $color-secondary;
+        font-size: var(--fz-sm);
+        line-height: 12px;
+      }
+    }
+}
+
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    img {
+      max-width: 300px;
+      border-radius: 50%;
+      width: 100%;
+      outline: 8px solid #09f;
+      outline-offset: 14px;
+      transition: 0.3s;
+    }
+}
+
+/* EXPERIENCE ------------------------------------ */
+
+.work-labels {
+    display:flex;
+    justify-content: center;
+    button {
+      display: flex;
+      -webkit-box-pack: center;
+      justify-content: space-evenly;
+      -webkit-box-align: center;
+      align-items: center;
+      min-width: 120px;
+      padding: 0px 15px;
+      // border-left: 0px;
+      border-bottom: 2px solid lightblue;
+      text-align: center;
+      height: 42px;
+      color: rgba(255, 255, 255, 0.87);
+      background-color: transparent;
+      &:focus {
+        background-color: rgba(0, 155, 255, 0.3);
+        color: #09f;
+      }
+    }
+  }
+  
+  .nav {
+    position: relative;
+    padding: 1em;
+  }
+  
+  .nav__pointer {
+    z-index: 1;
+    position: absolute;
+    top: 0.6em;
+    left: 1em;
+    background-color: #bada55;
+    height: 1.8em;
+    transition: transform 0.25s ease-in-out;
+    border-radius: 0.3em;
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+  
+  .nav__list {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  
+  /* Decoration styles */
+  
+  exp-tab {
+    text-align: center;
+    width: 420px;
+    margin: 0 auto;
+    background: #f5f5f5;
+    display: block;
+  }
+  
+  .scrolling-wrapper {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    input {
+      display: none;
+    }
+    .card {
+      display: inline-block;
+      width: 100px;
+      padding: 5px 0px;
+      margin: 0;
+      text-align: center;
+      border: 2px solid pink;
+      cursor: pointer;
+      h3 {
+        font-size: 1rem;
+      }
+    }
+  }
+  
+  
+  .nav {
+    flex-wrap: nowrap;
+  }
+  
+  .nav-tabs {
+    padding: 0;
+  }
+  
+  .nav-item button {
+    padding: 10px 0px;
+    width: 120px;
+    border-radius: 15px 15px 0px 0px;
+    border-top-left-radius: 0.75rem;
+    border-top-right-radius: 0.75rem;
+    font-size: 1rem;
+  }
+  
+  .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #09f;
+    border: 5px solid #09f;
+  }
+  
+  #myTabContent {
+    margin-top: 10px;
+  }
+  
+  .exp-content-list {
+    padding: 10px 40px;
+  }
+  .tab-content {
+    // height: 75vh;
+    h3 {
+      font-size: 1.25rem;
+    }
+    li {
+      padding: 0;
+      list-style-type: none;
+      font-size: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      &:before {
+        content: "▹";
+        position: absolute;
+        left: 20px;
+        color: $color-secondary;
+        font-size: 1.5rem;
+      }
+    }
+  }
+  
+  .exp-link {
+    color: #09f;
+  }
+  
+  
+  /* width */
+  ::-webkit-scrollbar {
+    width: 2px;
+    height: 0px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: 020020;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #09f;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #09f;
+  }
+  
+  
+  a {
+    text-decoration: none;
+    font-weight: 600;
+    user-select: none;
+  }
+  
+  a,
+  a:visited {
+    color: #09f;
+  }
