@@ -1,123 +1,194 @@
-f<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Gerlin Pierre-Louis</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link href="https://fonts.googleapis.com/css?family=Comfortaa:700" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body data-bs-spy="scroll" data-bs-target="#nav">
-    <div ></div>
-<div>
-<nav id="nav" class="navbar navbar-expand-lg navbar-light fw-bolder bg-white fixed-top fs-5">
-    <div class="container-fluid">
-        <a class="navbar-brand order-1 fs-3" href="#home">G<span class="text-success">P</span></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#home">Home</a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" href="#about">About</a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" href="#portfolio">Portfolio</a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" href="#footer" tabindex="-1" aria-disabled="true">Contact</a>
-            </li>
-        </ul>
-        </div>
+<body>
+    <div id="border">
+
+
+    <div class="bg"></div>
+    <div class="bg bg2"></div>
+    <div class="bg bg3"></div>
+
+    <div id="loading">
+        <div id="spinner"></div>
     </div>
-</nav>
-<!-- nav -->
-
-
-<div class="context" id="home">
-        <img id="avatar" class="img-fluid mx-auto d-block" src="images/avataaars.png" alt="profile picture">
-        <div class=" text display-1 text-center fw-bolder"> Gerlin Pierre-Louis
-            <p class="display-5 fw-bolder text-center text-success">
-                <span class="verb text-center">Web Developer</span>
-            </p>
-        </div>
-</div>
-<div class="area" ></div>
-    <ul class="circles">
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-    </ul>
-</div > <!--/header background -->
-
-<div id="about" class="pt-5 my-5 d-md-flex">
-        <div class="col text-center fs-4 m-auto container">
-            <h2 class="text-center text-success fw-bolder display-4 pt-5">Hi, I'm Gerlin. Thanks for Visiting</h2>
-            <p class="text-white py-auto text-center fs-3"> I'm a passionate Software Engineer using  web technologies to build amazing projects with a focus on solving problems for all kinds of niches and different industries. Feel free to reach out to me for projects, job opportunities, and even just to talk about web development.</p>
-        </div> 
-    <div class="rounded  py-auto m-auto col">
-        <div id="skills" class="col text-center pb-5">
-            <h2 class="text-center text-success fw-bolder display-3 pt-md-5">SKILLS</h2>
-            <h4 class=" badge fs-3 bg-secondary">HTML</h4>
-            <h4 class=" badge fs-3 bg-success">CSS</h4>
-            <h4 class=" badge fs-3 bg-warning">SASS</h4>
-            <h4 class=" badge fs-3 bg-info">GIT</h4>
-            <h4 class=" badge fs-3 bg-danger">JAVASCRIPT</h4>
-        </div>
+    <div id="particles-js"></div>
+    <div id="box">
+        <div class="box1 onlywide animated bounceOutLeft" style="animation-delay:1.7s;"></div>
+        <div class="box2 onlywide animated bounceOutLeft" style="animation-delay:1.8s;"></div>
+        <div class="box2 onlywide animated bounceOutLeft" style="animation-delay:1.9s;"></div>
+        <div class="box2 animated bounceOutRight" style="animation-delay:1.9s;"></div>
+        <div class="box2 onlywide animated bounceOutRight" style="animation-delay:1.8s;"></div>
+        <div class="box2 onlywide animated bounceOutRight" style="animation-delay:1.7s;"></div>
     </div>
-</div><!-- /about-->
-
-<div id="portfolio" class="pt-5">
-        <div class="col text-center ">
-            <h2 class="text-center text-success fw-bolder display-1 ">Portfolio</h2>
-            <h3 class="lead pb-5 fs-3 fw-bolder">Here are a few of my recent projects. Want to see more? <a  href="mailto:gerlin.pierrelouis@gmail.com" class=" text-success fw-bolder fs-1 text-decoration-none">Email Me.</a></h3>
-            <div class="container pt-5 fw-bolder">
-                <div id="portfolioContainer" class="row pb-4">
-
+    <a id="about" onclick="showabout()" class="animated fadeIn" style="animation-delay:2.2s;">about</a>
+    <a id="work" onclick="showwork()" class="animated fadeIn" style="animation-delay:2.2s;">work</a>
+    <a id="contact" onclick="showcontact()" class="animated fadeIn" style="animation-delay:2.2s;">contact</a>
+    <!-- <a id="project" onclick="showprojects()" class="animated fadeIn" style="animation-delay:2.2s;">projects</a> -->
+    <div id="middle" class="animated slideInDown" style="animation-delay:2.0s;">
+        <h1>GERLIN</h1>
+        <h2>PIERRE-LOUIS</h2>
+        <h3>Software Engineer</h3>
+        <div id="menu">
+            <a onclick="showabout()">ABOUT</a>
+            <a onclick="showwork()">WORK</a>
+            <!-- <a onclick="showprojects()">PROJECTS</a> -->
+            <a onclick="showcontact()">CONTACT</a>
+        </div>
+        <table>
+                <tr>
+                    <td class="animated zoomIn" style="animation-delay:2.2s;"><a href="https://github.com/gerlinp" class="social" target=”_blank”><i class="fa-brands fa-github"></i></a></td>
+                    <td class="animated zoomIn" style="animation-delay:2.6s;"><a href="https://www.linkedin.com/in/gerlin-pierre-louis/" target=”_blank” class="social"><i class="fa-brands fa-linkedin"></i></a></td>
+                    <td class="animated zoomIn" style="animation-delay:2.8s;"><a href="https://codepen.io/gerlinp" target=”_blank” class="social"><i class="fa-brands fa-codepen"></i></a></td>
+                    <td class="animated zoomIn" style="animation-delay:2.4s;"><a href="https://twitter.com/GerlinPL"  target=”_blank” class="social"><i class="fab fa-twitter"></i></a></td>
+                </tr>
+        </table>
+    </div>
+    <div id="work_container" class="container-pocket">
+        <div onclick="closework()"><i class="fas fa-angle-right"></i></div>
+        <h1 class="numbered-heading">Experience.</h1>
+        <section>
+            <div class="inner">
+                <div class="exp-tab">
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="work1" role="tabpanel" aria-labelledby="work1-tab">
+                            <h3>Software Engineer Co-op <a href="https://www.salsify.com" class="exp-link" >@ Salsify</a></h3>
+                            <p>June - December 2022</p>
+                            <ul class="exp-content-list">
+                                <li>
+                                    As a member of a multi-disciplinary SCRUM team, collaborated with a diverse group of individuals, including UX designers, product managers, front-end and back-end engineers. being mentored by each provided unique perspective and skill set to the table, making for a dynamic and efficient learning environment
+                                </li>
+                                <li>
+                                     Contributed to the administration of the core Salsify product by utilizing a variety of programming languages and in-house frameworks. Using TypeScript & Ember to create front-end features with a Ruby on Rails back-end. All while also Creating REST APIs to integrate with the use of both.
+                                </li>
+                                <li>
+                                    Utilized the MVC architecture to organize and structure the codebase, making it more maintainable and easy to work with. By adhering to this architecture, I have been able to ensure that the product is scalable, reliable and easy to understand for other team members to work with
+                                </li>
+                            </ul>                        
+                        </div>
+                        <div class="tab-pane fade" id="work2" role="tabpanel" aria-labelledby="work3-tab">
+                            <h3>Contributor <a href="https://www.codeforboston.org/" class="exp-link" >@ Code for Boston</a></h3>
+                            <p>Actively Participating</p>
+                            <ul class="exp-content-list">
+                                <li>
+                                    Part of the  <a href="https://github.com/codeforboston/maple">MAPLE</a>, a civic technology organization that aims to improve the lives of Boston residents through technology. Developed and deployed 
+                                </li>
+                                <li>
+                                    Actively participated in hackathons and coding events to further improve skills and knowledge, and contribute to the open source community by developing and deploying features to projects such as <a href="https://github.com/codeforboston/maple">MAPLE</a>  to produce a digital public space wherein Massachusetts constituents can share their knowledge, experiences and thoughts on the laws that affect our daily lives..
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-pane fade" id="work3" role="tabpanel" aria-labelledby="work2-tab">
+                            <h3>2022 Fellow <a href="https://www.salsify.com" class="exp-link" >@ Hack.Diversity</a></h3>
+                            <p>Alumni</p>
+                            <ul class="exp-content-list">
+                                <li>
+                                    Selected for the 2022 Hack.Diversity Fellowship, a career leadership and workforce development program that integrates Boston's innovation, corporate, civic, academic, and philanthropic pillars.
+                                </li>
+                                <li>
+                                    Researching and staying up-to-date with the latest technologies to refine skills as a developer and professional.
+                                </li>
+                                <li>
+                                    Participating in various projects and programs to gain hands-on experience and apply newly acquired knowledge
+                                </li>
+                                <li>
+                                    Developed a strong foundation for a successful career in technology through mentorship, training, and support from the Hack.Diversity Fellowship community.
+                                </li>
+                                <li>
+                                    Committed to making the most of this opportunity and leveraging it to advance my career in technology.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </section>
+    </div>
+    <div id="about_container" class="container-pocket">
+            <div onclick="closeabout()"><i class="fas fa-angle-left"></i></div>
+            <h1 class="numbered-heading" >About</h1>
+            <section>
+                <div>
+                    <p>
+                        Hello! My name is Gerlin and I enjoy creating things that live on the internet. I'm a self taught developer, who switched from a career in IT, and for as long as I can remember I've always had an interest in tech — While assisting clients in fixing and guiding them with programs got me more interested in buidling them to make better experiences. 
+                    </p>
+                    <p>
+                        Fast forward to today I've had the privelege of working for a <a href="https://www.salsify.com" rel="noopener noreferrer" target="_blank">Digital Management Platform</a> as a software engineer CO-OP — Contributing to <a href="https://github.com/codeforboston/maple" rel="noopener noreferrer" target="_blank">civic tech group</a> to be able help, and improve the way goverment and community organizations serve the public by using technology. And was selected for a <a href="https://www.hackdiversity.com/" rel="noopener noreferrer" target="_blank">fellowship</a> with a focus on being job ready using tools,resources, and mentors to grow my potential as a developer. While also helping to bridge the gap between the technology industry and under-represented individuals. 
+                    </p>
+            
+                </div>
+            </section>
+            <section>
+                <h2>Skills</h2>
+                <ul class="skills-list">
+                    <li>Javascript (ES6+)</li>
+                    <li>TypeScript</li>
+                    <li>Ruby/Rails</li>
+                    <li>React</li>
+                    <li>Ember.js</li>
+                    <li>GraphQl</li>
+                </ul>
+            </section>
         </div>
-</div><!-- /portfolio -->
+        <div id="contact_container" class="container-pocket">
+            <div onclick="closecontact()"><i class="fas fa-angle-down"></i></div>
+            <h1 class="numbered-heading">contact me.</h1>
+            <section>
+                <p>
+                    If you're looking for a dedicated  professional I am currently seeking new opportunities and would love to hear from you.
+                </p>
+                <p>
+                    The best way to reach me is through email or phone. Please feel free to call or text me, and if I'm unable to answer, please leave a voicemail and I will get back to you as soon as possible.
+                </p>
 
+                <div>
+                    <i class="fa-solid fa-phone"></i>
+                    <a href="tel:508-685-3702">508-685-3702</a>
+                </div>
 
-<div id="footer" class=" d-md-flex justify-content-evenly border-top border-white border-5 pb-5">
-    <div class="my-5 text-white">
-        <h5 class="fw-bolder text-center text-success">Phone</h5>
-        <a class="fs-4 fw-bolder text-center text-decoration-none text-white" href="tel:508-521-9758"><p>508-521-9758</p></a>
-    </div> 
-    <div class="my-5 text-white ">
-        <h5 class="text-success fw-bolder text-center">Email</h5>
+                <div>
+                    <i class="fa-solid fa-envelope"></i>                    
+                    <a href = "mailto: gerlin.pierrelouis@gmail.com">gerlin.pierrelouis@gmail.com</a>
+                </div>
+
+ 
+            </section>
+        </div>
+
+        <!-- <div id="project_container" class="container-pocket">
+            <div onclick="closeprojects()"><i class="fas fa-angle-up"></i></div>
+            <h1 class="numbered-heading">project.</h1>
+            <section>
+                <h2 class="numbered-heading">project</h2>
+                <p>
+                    <form>
+                        <input type="text" placeholder="name" required>
+                        <input type="email" placeholder="email" required><br>
+                        <textarea placeholder="your message" required rows="5"></textarea><br>
+                        <button class="btn_one">send</button>
+                    </form> 
+                </p>
+            </section>
+        </div> -->
         
-        <a href="mailto:gerlin.pierrelouis@gmail.com"><p class="fs-4 fw-bolder text-center text-decoration-none text-white">gerlin.pierrelouis@gmail.com</p></a>
-    </div>
-    <div class=" my-5 text-white">
-        <h5 class=" text-success fw-bolder text-center ">Follow me</h5>
-        <div class="d-flex justify-content-center">
-            <a href="https://twitter.com/GerlinPL" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6.066 9.645c.183 4.04-2.83 8.544-8.164 8.544-1.622 0-3.131-.476-4.402-1.291 1.524.18 3.045-.244 4.252-1.189-1.256-.023-2.317-.854-2.684-1.995.451.086.895.061 1.298-.049-1.381-.278-2.335-1.522-2.304-2.853.388.215.83.344 1.301.359-1.279-.855-1.641-2.544-.889-3.835 1.416 1.738 3.533 2.881 5.92 3.001-.419-1.796.944-3.527 2.799-3.527.825 0 1.572.349 2.096.907.654-.128 1.27-.368 1.824-.697-.215.671-.67 1.233-1.263 1.589.581-.07 1.135-.224 1.649-.453-.384.578-.87 1.084-1.433 1.489z"/></svg></a>
-            <a href="https://www.linkedin.com/in/gerlin-pierre-louis-4b4a5b24/" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
-            <a href="https://github.com/gerlinp" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+        <div id="footer">
+            Made by <br><span class="footer-name">Gerlin Pierre-Louis</span>
         </div>
     </div>
-
-    <div class="my-5 text-success">
-        <p class="fw-bold text-center mt-5"><span class="text-white">©</span> By Gerlin Pierre-Louis </p>
-    </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
-<script src="js/app.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="index.js" type="text/javascript"></script>
+    <script src="particles.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
