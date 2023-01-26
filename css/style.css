@@ -436,6 +436,15 @@ p {
     background: #009900; 
 }
 
+#work_container li {
+    font-size: 1rem;
+    margin: 30px 0px;
+}
+
+#about_container p {
+    font-size: 1.15rem;
+}
+
 @media (max-width: 800px){ 
     #about,
     #contact,
