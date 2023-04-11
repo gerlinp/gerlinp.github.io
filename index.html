@@ -1,181 +1,353 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Gerlin Pierre-Louis</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
-    <link href="https://fonts.googleapis.com/css?family=Comfortaa:700" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Comfortaa:700"
+      rel="stylesheet"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+      integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
     <div id="border">
+      <div class="bg"></div>
+      <div class="bg bg2"></div>
+      <div class="bg bg3"></div>
 
-
-    <div class="bg"></div>
-    <div class="bg bg2"></div>
-    <div class="bg bg3"></div>
-
-    <div id="loading">
+      <div id="loading">
         <div id="spinner"></div>
-    </div>
-    <div id="particles-js"></div>
-    <div id="box">
-        <div class="box1 onlywide animated bounceOutLeft" style="animation-delay:1.7s;"></div>
-        <div class="box2 onlywide animated bounceOutLeft" style="animation-delay:1.8s;"></div>
-        <div class="box2 onlywide animated bounceOutLeft" style="animation-delay:1.9s;"></div>
-        <div class="box2 animated bounceOutRight" style="animation-delay:1.9s;"></div>
-        <div class="box2 onlywide animated bounceOutRight" style="animation-delay:1.8s;"></div>
-        <div class="box2 onlywide animated bounceOutRight" style="animation-delay:1.7s;"></div>
-    </div>
-    <a id="about" onclick="showabout()" class="animated fadeIn" style="animation-delay:2.2s;">about</a>
-    <a id="work" onclick="showwork()" class="animated fadeIn" style="animation-delay:2.2s;">work</a>
-    <a id="contact" onclick="showcontact()" class="animated fadeIn" style="animation-delay:2.2s;">contact</a>
-    <!-- <a id="project" onclick="showprojects()" class="animated fadeIn" style="animation-delay:2.2s;">projects</a> -->
-    <div id="middle" class="animated slideInDown" style="animation-delay:2.0s;">
+      </div>
+      <div id="particles-js"></div>
+      <div id="box">
+        <div
+          class="box1 onlywide animated bounceOutLeft"
+          style="animation-delay: 1.7s"
+        ></div>
+        <div
+          class="box2 onlywide animated bounceOutLeft"
+          style="animation-delay: 1.8s"
+        ></div>
+        <div
+          class="box2 onlywide animated bounceOutLeft"
+          style="animation-delay: 1.9s"
+        ></div>
+        <div
+          class="box2 animated bounceOutRight"
+          style="animation-delay: 1.9s"
+        ></div>
+        <div
+          class="box2 onlywide animated bounceOutRight"
+          style="animation-delay: 1.8s"
+        ></div>
+        <div
+          class="box2 onlywide animated bounceOutRight"
+          style="animation-delay: 1.7s"
+        ></div>
+      </div>
+      <a
+        id="about"
+        onclick="showabout()"
+        class="animated fadeIn"
+        style="animation-delay: 2.2s"
+        >about</a
+      >
+      <a
+        id="work"
+        onclick="showwork()"
+        class="animated fadeIn"
+        style="animation-delay: 2.2s"
+        >work</a
+      >
+      <a
+        id="contact"
+        onclick="showcontact()"
+        class="animated fadeIn"
+        style="animation-delay: 2.2s"
+        >contact</a
+      >
+      <!-- <a id="project" onclick="showprojects()" class="animated fadeIn" style="animation-delay:2.2s;">projects</a> -->
+      <div id="middle" class="animated slideInDown" style="animation-delay: 2s">
         <h1>GERLIN</h1>
         <h2>PIERRE-LOUIS</h2>
         <h3>Software Engineer</h3>
         <div id="menu">
-            <a onclick="showabout()">ABOUT</a>
-            <a onclick="showwork()">WORK</a>
-            <!-- <a onclick="showprojects()">PROJECTS</a> -->
-            <a onclick="showcontact()">CONTACT</a>
+          <a onclick="showabout()">ABOUT</a>
+          <a onclick="showwork()">WORK</a>
+          <!-- <a onclick="showprojects()">PROJECTS</a> -->
+          <a onclick="showcontact()">CONTACT</a>
         </div>
         <table>
-                <tr>
-                    <td class="animated zoomIn" style="animation-delay:2.2s;"><a href="https://github.com/gerlinp" class="social" target=”_blank”><i class="fa-brands fa-github"></i></a></td>
-                    <td class="animated zoomIn" style="animation-delay:2.6s;"><a href="https://www.linkedin.com/in/gerlin-pierre-louis/" target=”_blank” class="social"><i class="fa-brands fa-linkedin"></i></a></td>
-                    <td class="animated zoomIn" style="animation-delay:2.8s;"><a href="https://codepen.io/gerlinp" target=”_blank” class="social"><i class="fa-brands fa-codepen"></i></a></td>
-                    <td class="animated zoomIn" style="animation-delay:2.4s;"><a href="https://twitter.com/GerlinPL"  target=”_blank” class="social"><i class="fab fa-twitter"></i></a></td>
-                </tr>
+          <tr>
+            <td class="animated zoomIn" style="animation-delay: 2.2s">
+              <a
+                href="https://github.com/gerlinp"
+                class="social"
+                target="”_blank”"
+                ><i class="fa-brands fa-github"></i
+              ></a>
+            </td>
+            <td class="animated zoomIn" style="animation-delay: 2.4s">
+              <a
+                href="https://www.linkedin.com/in/gerlin-pierre-louis/"
+                target="”_blank”"
+                class="social"
+                ><i class="fa-brands fa-linkedin"></i
+              ></a>
+            </td>
+            <td class="animated zoomIn" style="animation-delay: 2.6s">
+              <a
+                href="https://codepen.io/gerlinp"
+                target="”_blank”"
+                class="social"
+                ><i class="fa-brands fa-codepen"></i
+              ></a>
+            </td>
+            <td class="animated zoomIn" style="animation-delay: 2.8s">
+              <a
+                href="https://twitter.com/GerlinPL"
+                target="”_blank”"
+                class="social"
+                ><i class="fab fa-twitter"></i
+              ></a>
+            </td>
+          </tr>
         </table>
-    </div>
-    <div id="work_container" class="container-pocket">
+      </div>
+      <div id="work_container" class="container-pocket">
         <div onclick="closework()"><i class="fas fa-angle-right"></i></div>
         <h1 class="numbered-heading">Experience.</h1>
         <section>
-            <div class="inner">
-                <div class="exp-tab">
-                    <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="work1" role="tabpanel" aria-labelledby="work1-tab">
-                            <h3>Software Engineer Co-op <a href="https://www.salsify.com" class="exp-link" >@ Salsify</a></h3>
-                            <p>June - December 2022</p>
-                            <ul class="exp-content-list">
-                                <li>
-                                    Deployed features as part of the platform administration team for settings and tools utilizing a
-                                    combination of TypeScript, Ember.js, and a Ruby/Rails back-end, utilizing GraphQl APIs for seamless
-                                    data integration.
-                                </li>
-                                <li>
-                                    Designed a webhooks user interface for audits, catering to the needs of core internal teams.
-                                </li>
-                                <li>
-                                    Developed an email feature that allows clients to easily and efficiently assign permissions to their
-                                    users, improving overall user experience.
-                                </li>
-                                <li>
-                                    Implemented an API key expiration alert feature, and added the flexibility for users to easily generate new API keys as needed
-                                </li>
-                                <li>
-                                    Resolved and identified bugs by using problem solving and tools such as Relic & Paper Trail.
-                                </li>
-                            </ul>                        
-                        </div>
-                        <div class="tab-pane fade" id="work2" role="tabpanel" aria-labelledby="work3-tab">
-                            <h3>Contributor <a href="https://www.codeforboston.org/" class="exp-link" >@ Code for Boston</a></h3>
-                            <p>Actively Participating</p>
-                            <ul class="exp-content-list">
-                                <li>
-                                    Part of the  <a href="https://github.com/codeforboston/maple">MAPLE</a>, a civic technology organization that aims to improve the lives of Boston residents through technology. Developed and deployed 
-                                </li>
-                                <li>
-                                    Actively participated in hackathons and coding events to further improve skills and knowledge, and contribute to the open source community by developing and deploying features to projects such as <a href="https://github.com/codeforboston/maple">MAPLE</a>  to produce a digital public space wherein Massachusetts constituents can share their knowledge, experiences and thoughts on the laws that affect our daily lives..
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="tab-pane fade" id="work3" role="tabpanel" aria-labelledby="work2-tab">
-                            <h3>2022 Fellow <a href="https://www.salsify.com" class="exp-link" >@ Hack.Diversity</a></h3>
-                            <p>Alumni</p>
-                            <ul class="exp-content-list">
-                                <li>
-                                    Selected for the 2022 Hack.Diversity Fellowship, a career leadership and workforce development program that integrates Boston's innovation, corporate, civic, academic, and philanthropic pillars.
-                                </li>
-                                <li>
-                                    Researching and staying up-to-date with the latest technologies to refine skills as a developer and professional.
-                                </li>
-                                <li>
-                                    Participating in various projects and programs to gain hands-on experience and apply newly acquired knowledge
-                                </li>
-                                <li>
-                                    Developed a strong foundation for a successful career in technology through mentorship, training, and support from the Hack.Diversity Fellowship community.
-                                </li>
-                                <li>
-                                    Committed to making the most of this opportunity and leveraging it to advance my career in technology.
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+          <div class="inner">
+            <div class="exp-tab">
+              <div class="tab-content" id="myTabContent">
+                <div
+                  class="tab-pane fade show active"
+                  id="work1"
+                  role="tabpanel"
+                  aria-labelledby="work1-tab"
+                >
+                  <h3>
+                    Software Engineer Co-op
+                    <a href="https://www.salsify.com" class="exp-link"
+                      >@ Salsify</a
+                    >
+                  </h3>
+                  <p>June - December 2022</p>
+                  <ul class="exp-content-list">
+                    <li>
+                      Deployed features as part of the platform administration
+                      team for settings and tools utilizing a combination of
+                      TypeScript, Ember.js, and a Ruby/Rails back-end, utilizing
+                      GraphQl APIs for seamless data integration.
+                    </li>
+                    <li>
+                      Designed a webhooks user interface for audits, catering to
+                      the needs of core internal teams.
+                    </li>
+                    <li>
+                      Developed an email feature that allows clients to easily
+                      and efficiently assign permissions to their users,
+                      improving overall user experience.
+                    </li>
+                    <li>
+                      Implemented an API key expiration alert feature, and added
+                      the flexibility for users to easily generate new API keys
+                      as needed
+                    </li>
+                    <li>
+                      Resolved and identified bugs by using problem solving and
+                      tools such as Relic & Paper Trail.
+                    </li>
+                  </ul>
                 </div>
+                <div
+                  class="tab-pane fade"
+                  id="work2"
+                  role="tabpanel"
+                  aria-labelledby="work3-tab"
+                >
+                  <h3>
+                    Contributor
+                    <a href="https://www.codeforboston.org/" class="exp-link"
+                      >@ Code for Boston</a
+                    >
+                  </h3>
+                  <p>Actively Participating</p>
+                  <ul class="exp-content-list">
+                    <li>
+                      Part of the
+                      <a href="https://github.com/codeforboston/maple">MAPLE</a
+                      >, a civic technology organization that aims to improve
+                      the lives of Boston residents through technology.
+                      Developed and deployed
+                    </li>
+                    <li>
+                      Actively participated in hackathons and coding events to
+                      further improve skills and knowledge, and contribute to
+                      the open source community by developing and deploying
+                      features to projects such as
+                      <a href="https://github.com/codeforboston/maple">MAPLE</a>
+                      to produce a digital public space wherein Massachusetts
+                      constituents can share their knowledge, experiences and
+                      thoughts on the laws that affect our daily lives..
+                    </li>
+                  </ul>
+                </div>
+                <div
+                  class="tab-pane fade"
+                  id="work3"
+                  role="tabpanel"
+                  aria-labelledby="work2-tab"
+                >
+                  <h3>
+                    2022 Fellow
+                    <a href="https://www.salsify.com" class="exp-link"
+                      >@ Hack.Diversity</a
+                    >
+                  </h3>
+                  <p>Alumni</p>
+                  <ul class="exp-content-list">
+                    <li>
+                      Selected for the 2022 Hack.Diversity Fellowship, a career
+                      leadership and workforce development program that
+                      integrates Boston's innovation, corporate, civic,
+                      academic, and philanthropic pillars.
+                    </li>
+                    <li>
+                      Researching and staying up-to-date with the latest
+                      technologies to refine skills as a developer and
+                      professional.
+                    </li>
+                    <li>
+                      Participating in various projects and programs to gain
+                      hands-on experience and apply newly acquired knowledge
+                    </li>
+                    <li>
+                      Developed a strong foundation for a successful career in
+                      technology through mentorship, training, and support from
+                      the Hack.Diversity Fellowship community.
+                    </li>
+                    <li>
+                      Committed to making the most of this opportunity and
+                      leveraging it to advance my career in technology.
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
+          </div>
         </section>
-    </div>
-    <div id="about_container" class="container-pocket">
-            <div onclick="closeabout()"><i class="fas fa-angle-left"></i></div>
-            <h1 class="numbered-heading" >About</h1>
-            <section>
-                <div>
-                    <p>
-                        Hello! My name is Gerlin and I enjoy creating things that live on the internet. I'm a self taught developer, who switched from a career in IT, and for as long as I can remember I've always had an interest in tech — While assisting clients in fixing and guiding them with programs got me more interested in buidling them to make better experiences. 
-                    </p>
-                    <p>
-                        Fast forward to today I've had the privelege of working for a <a href="https://www.salsify.com" rel="noopener noreferrer" target="_blank">Digital Management Platform</a> as a software engineer CO-OP — Contributing to <a href="https://github.com/codeforboston/maple" rel="noopener noreferrer" target="_blank">civic tech group</a> to be able help, and improve the way goverment and community organizations serve the public by using technology. And was selected for a <a href="https://www.hackdiversity.com/" rel="noopener noreferrer" target="_blank">fellowship</a> with a focus on being job ready using tools,resources, and mentors to grow my potential as a developer. While also helping to bridge the gap between the technology industry and under-represented individuals. 
-                    </p>
-            
-                </div>
-            </section>
-            <section>
-                <h2>Skills</h2>
-                <ul class="skills-list">
-                    <li>Javascript (ES6+)</li>
-                    <li>TypeScript</li>
-                    <li>Ruby/Rails</li>
-                    <li>React</li>
-                    <li>Ember.js</li>
-                    <li>GraphQl</li>
-                </ul>
-            </section>
-        </div>
-        <div id="contact_container" class="container-pocket">
-            <div onclick="closecontact()"><i class="fas fa-angle-down"></i></div>
-            <h1 class="numbered-heading">contact me.</h1>
-            <section>
-                <p>
-                    If you're looking for a dedicated  professional I am currently seeking new opportunities and would love to hear from you.
-                </p>
-                <p>
-                    The best way to reach me is through email or phone. Please feel free to call or text me, and if I'm unable to answer, please leave a voicemail and I will get back to you as soon as possible.
-                </p>
+      </div>
+      <div id="about_container" class="container-pocket">
+        <div onclick="closeabout()"><i class="fas fa-angle-left"></i></div>
+        <h1 class="numbered-heading">About</h1>
+        <section>
+          <div>
+            <p>
+              Hello! My name is Gerlin and I enjoy creating things that live on
+              the internet. I'm a self taught developer, who switched from a
+              career in IT, and for as long as I can remember I've always had an
+              interest in tech — While assisting clients in fixing and guiding
+              them with programs got me more interested in buidling them to make
+              better experiences.
+            </p>
+            <p>
+              Fast forward to today I've had the privelege of working for a
+              <a
+                href="https://www.salsify.com"
+                rel="noopener noreferrer"
+                target="_blank"
+                >Digital Management Platform</a
+              >
+              as a software engineer CO-OP — Contributing to
+              <a
+                href="https://github.com/codeforboston/maple"
+                rel="noopener noreferrer"
+                target="_blank"
+                >civic tech group</a
+              >
+              to be able help, and improve the way goverment and community
+              organizations serve the public by using technology. And was
+              selected for a
+              <a
+                href="https://www.hackdiversity.com/"
+                rel="noopener noreferrer"
+                target="_blank"
+                >fellowship</a
+              >
+              with a focus on being job ready using tools,resources, and mentors
+              to grow my potential as a developer. While also helping to bridge
+              the gap between the technology industry and under-represented
+              individuals.
+            </p>
+          </div>
+        </section>
+        <section>
+          <h2>Skills</h2>
+          <ul class="skills-list">
+            <li>Javascript (ES6+)</li>
+            <li>TypeScript</li>
+            <li>Ruby/Rails</li>
+            <li>React</li>
+            <li>Ember.js</li>
+            <li>GraphQl</li>
+          </ul>
+        </section>
+      </div>
+      <div id="contact_container" class="container-pocket">
+        <div onclick="closecontact()"><i class="fas fa-angle-down"></i></div>
+        <h1 class="numbered-heading">contact me.</h1>
+        <section>
+          <p>
+            If you're looking for a dedicated professional I am currently
+            seeking new opportunities and would love to hear from you.
+          </p>
+          <p>
+            The best way to reach me is through email or phone. Please feel free
+            to call or text me, and if I'm unable to answer, please leave a
+            voicemail and I will get back to you as soon as possible.
+          </p>
 
-                <div>
-                    <i class="fa-solid fa-phone"></i>
-                    <a href="tel:508-685-3702">508-685-3702</a>
-                </div>
+          <div>
+            <i class="fa-solid fa-phone"></i>
+            <a href="tel:508-685-3702">508-685-3702</a>
+          </div>
 
-                <div>
-                    <i class="fa-solid fa-envelope"></i>                    
-                    <a href = "mailto: gerlin.pierrelouis@gmail.com">gerlin.pierrelouis@gmail.com</a>
-                </div>
+          <div>
+            <i class="fa-solid fa-envelope"></i>
+            <a href="mailto: gerlin.pierrelouis@gmail.com"
+              >gerlin.pierrelouis@gmail.com</a
+            >
+          </div>
+        </section>
+      </div>
 
- 
-            </section>
-        </div>
-
-        <!-- <div id="project_container" class="container-pocket">
+      <!-- <div id="project_container" class="container-pocket">
             <div onclick="closeprojects()"><i class="fas fa-angle-up"></i></div>
             <h1 class="numbered-heading">project.</h1>
             <section>
@@ -190,14 +362,18 @@
                 </p>
             </section>
         </div> -->
-        
-        <div id="footer">
-            Made by <br><span class="footer-name">Gerlin Pierre-Louis</span>
-        </div>
+
+      <div id="footer">
+        Made by <br /><span class="footer-name">Gerlin Pierre-Louis</span>
+      </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"
+    ></script>
     <script src="index.js" type="text/javascript"></script>
     <script src="particles.js"></script>
     <script src="app.js"></script>
-</body>
+  </body>
 </html>
