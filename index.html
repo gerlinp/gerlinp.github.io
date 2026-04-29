@@ -1,85 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Gerlin Pierre-Louis</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
-      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
-<div class="transition">
-  <div class="transition-row row-1">
-    <div class="block homeBlock"></div>
-    <div class="block homeBlock"></div>
-    <div class="block homeBlock"></div>
-    <div class="block homeBlock"></div>
-    <div class="block homeBlock"></div>
-  </div>
-  <div class="transition-row row-2">
-    <div class="block homeBlock"></div>
-    <div class="block homeBlock"></div>
-    <div class="block homeBlock"></div>
-    <div class="block homeBlock"></div>
-    <div class="block homeBlock"></div>
-  </div>
-</div>
-<div class="app">
-  <div class="container">
-    <section>
-      <header></header>
-      <div class="col-left">
-        <div class="heroText">
-          <h4>GERLIN PIERRE-LOUIS</h4>
-          <p>Software Engineer at ezCater, building digital products and freelancing as a web designer and developer.</p>
-      </div>
-      </div>
-      <div class="col-right">
-        <div class="heroContainer heroNav">
-          <h3 class="heroNav-title">
-            <a href="./work.html"><span>Work</span></a>
-          </h3>
-          <h3 class="heroNav-title">
-            <a href="./about.html"><span>About</span></a>
-          </h3>
-          <h3 class="heroNav-title">
-            <a href="./projects.html"><span>Projects</span></a>
-          </h3>
-          <h3 class="heroNav-title">
-            <a href="./contact.html"><span>Contact</span></a>
-          </h3>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <div class="hero">
-    <div class="heroContainer">
-
-
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GERLIN</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="nav">
+    <div class="nav-logo">
+      <a href="#"><h1>Gerlin</h1></a>
     </div>
 
+    <div class="nav-toggle">
+      <p class="nav-toggle-menu">Menu</p>
+      <p class="nav-toggle-close">Close</p>
+    </div>
+
+    <div class="menu">
+      <svg
+        class="menu-bg-svg"
+        viewBox="0 0 1131 861"
+        preserveAspectRatio="none"
+        xmlns="http://www.w3.org/2000/svg"
+        >
+
+        <path
+          id="menu-path"
+          fill="#FAF9F6"
+          d="M1131,0 Q565.5,0 0,0 L0,0 L1131,0 Z"
+        />
+      </svg>
+
+      <div class="menu-logo">
+        <a href="#"><h1>Gerlin</h1></a>
+      </div>
+
+      <div class="menu-col menu-col-info">
+        <p>Get in touch</p>
+        <h3>gerlin.pierrelouis@gmail.com</h3>
+        <br/>
+        <h6>Greater Boston Area</h3>
+        <h6>Massachusetts, USA</h3>
+      </div>
+
+      <div class="menu-col menu-col-links">
+        <a href="/work">work</a>
+        <a href="/services">services</a>
+        <a href="/about">about</a>
+        <a href="fun">fun</a>
+        <a href="/projects">projects</a>
+        <a href="/contact">contact</a>
+      </div>
+    </div>
   </div>
-</div>
 
-
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js"
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script src="app.js"></script>
-  </body>
+  <section class="hero"></section>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/SplitText.min.js"></script>
+  <script src="js/script.js"></script>
+  
+</body>
 </html>

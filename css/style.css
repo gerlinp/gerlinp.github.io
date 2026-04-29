@@ -1,12 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Boldonse&family=Gajraj+One&family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap');
 
-@font-face {
-    font-family: "Awesome";
-    src: url("./awesome.regular.woff2") format("woff2");
+.gajraj-one-regular {
+    font-family: "Gajraj One", sans-serif;
     font-weight: 400;
     font-style: normal;
-    font-display: swap;
 }
+
+:root {
+    --base-100: #36835c;
+    --base-200: #28b33f;
+    --base-300: #222225;
+}
+
 
 * {
     margin: 0;
@@ -14,227 +19,204 @@
     box-sizing: border-box;
 }
 
-
-
-html,
 body {
-    width: 100vw;
-    max-width: 100%;
-    min-height: 100;
-    background: #0f1b2d;
-    color: #faf7f2;
-    font-family: "Playfair Display", serif;
+    font-family: 'Google Sans Flex', sans-serif;
 }
 
-
-
-a {
-    text-decoration: none;
-    color: #faf7f2;
-    font-size: 16px;
+img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    gap: 1em;
-    margin: 2em 5em
+h1 {
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    line-height: 1.35;
 }
 
-.app {
+h3, 
+h6 {
+    font-family: "Google Sans Flex", sans-serif;
+    font-weight: 450;
+    line-height: 1.35;
+    letter-spacing: -2%;
+}
+
+h3 {
+    font-size: clamp(1.5rem, 3vw, 3rem);
+}
+
+h6 {
+    font-size: clamp(1rem, 1.25vw, 1.5rem);
+}
+
+p {
+    text-transform: uppercase;
+    font-family: "Google Sans Flex", sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.25rem;
+}
+
+.hero {
     position: relative;
-    z-index: 0;
-    min-height: 100vh;
-    min-width: 100%;
-    margin: 0 auto;
-    box-sizing: border-box;
+    width: 100%;
+    height: 100svh;
+    /* background: #001540; */
+    background: url(/bg.jpg) no-repeat  50% 50%;
+    background-size: cover;
 }
 
-.heroNav {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.125rem;
+.nav-logo,
+.nav-toggle {
+    padding: 0.5rem;
+    pointer-events: all;
 }
 
-/* Hero nav: up to 9rem from vw; script metrics — flex + line-height 0 on wrappers trims phantom leading */
-.heroNav-title {
-    margin: 0;
-    display: flex;
-    align-items: center;
-    letter-spacing: clamp(0.03em, 0.35vw, 0.09em);
-    max-width: 100%;
+.nav-toggle-menu {
+    color: var(--base-100);
 }
 
-.heroNav-title a {
-
-    align-items: center;
-    line-height: 0;
-    font-family: "Awesome", "Playfair Display", serif;
-    font-size: clamp(2.75rem, 11vw, 8rem);
-    font-weight: 400;
-    text-decoration: none;
+.nav-toggle-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    color: var(--base-100);
+    opacity: 0;
 }
 
-.heroNav-title span {
-    display: inline-block;
-    max-width: 100%;
-    line-height: 1;
-    font-size: inherit;
-    font-family: inherit;
-    padding: 0.14em 0 0.18em;
-    overflow: visible;
-    transform: translateY(0.07em);
-}
-
-@supports (text-box-trim: trim-both) {
-    .heroNav-title span {
-        text-box-trim: trim-both;
-        text-box-edge: cap alphabetic;
-    }
-}
-
-
-
-
-
-@supports (text-box-trim: trim-both) {
-    .heroNav-title span {
-        text-box-trim: trim-both;
-        text-box-edge: cap alphabetic;
-    }
-}
-
-
-
-
-
-@supports (text-box-trim: trim-both) {
-    .heroNav-title span {
-        text-box-trim: trim-both;
-        text-box-edge: cap alphabetic;
-    }
-}
-
-
-
-
-
-.transition {
+.nav {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    max-width: 100%;
-    height: 100vh;
-    height: 100dvh;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.menu-logo h1 {
+    color: #00316E;
+    font-family: "Gajraj One", sans-serif;
+}
+.nav-logo, 
+.menu-logo {
+    position: absolute;;
+    top: 2rem;
+    left: 2rem;
+    width: 6rem;
+}
+
+.nav-toggle {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    color: var(--base-100);
+    cursor: pointer;
+    z-index: 100;
+    padding: 0.5rem;
+}
+
+.nav-logo,
+.nav-toggle {
+    padding: 0.5rem;
+    pointer-events: all;
+}
+
+.nav-toggle-menu {
+ color: var(--base-100);
+} 
+
+.nav-toggle-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    color: var(--base-300);
+    opacity: 0;
+}
+
+.menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100svh;
+    padding: 2.5rem;
+    display: flex;
+    gap: 2rem;
+    color: var(--base-300);
+    pointer-events: none;
+    z-index: 10;
+}
+
+.menu.is-open {
+    pointer-events: all;
+}
+
+.menu-bg-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.menu-logo {
+    opacity: 0;
+    padding: 0.5rem;
+}
+
+
+.menu-col {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    z-index: 2;
-    pointer-events: none;
+    justify-content: flex-end;
 }
 
-.transition-row {
-    flex: 1;
-    display: flex;
+.menu-col a {
+    text-decoration: none;
+    color: var(--base-100);
+    font-family: "Boldonse";
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    line-height: 1.35;
+    width: max-content;
+    overflow: visible;
 }
 
-.transition-row.row-1 .block {
-    transform-origin: top;
+.menu-col p {
+    color: var(--base-200);
+    margin-bottom: 1rem;
 }
 
-.transition-row.row-2 .block {
-    transform-origin: bottom;
+.menu a .char,
+.menu-col h3, 
+.menucol h6,
+.menu-col p {
+    will-change: transform, opacity;
 }
 
-.block {
-    background: #2c7da0;
-    flex: 1;
-    transform: scaleY(1);
-    will-change: transform;
-}
-
-@media (max-width: 768px) {
-    .hero:has(.heroNav) {
-        position: fixed;
-        inset: 0;
-        flex-direction: column;
-        align-items: stretch;
-        align-content: stretch;
-        justify-content: flex-end;
-        width: 100%;
-        max-width: 100%;
-        min-height: 100dvh;
-        padding: clamp(4.5rem, 14vw, 6rem) clamp(1.25rem, 8vw, 2rem)
-            clamp(1.5rem, 6vw, 2.5rem);
-        gap: clamp(1.25rem, 5vw, 2rem);
+@media (max-width: 1000px) {
+    .menu {
+        flex-direction: column-reverse;
     }
 
- 
-
- 
-
-    .heroText {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-        font-size: 14px;
-    }
-
-    .heroNav {
-        align-items: center;
-        gap: clamp(0.1rem, 1.5dvh, 0.5rem);
-
-    }
-
-    .heroNav-title {
-        text-align: center;
-    }
-
-    .heroNav-title span {
-        line-height: 1.1;
-        padding: 0.16em 0 0.2em;
-        transform: translateY(0.05em);
-    }
-
-    .hero:not(:has(.heroNav)) {
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: clamp(5rem, 12vw, 7rem) clamp(1.25rem, 6vw, 2rem)
-            clamp(2rem, 8vw, 3rem);
-    }
-
-    .hero:not(:has(.heroNav)) h1 {
-        text-align: center;
-        max-width: 100%;
-    }
-
-    nav {
-        max-width: 100%;
+    .menu-col-links {
+        flex: 1.5;
     }
 }
 
 
-header {
-    background: yellow;
-    flex: 1;
-    height: 5vh;
-}
-section {
-    background: green;
-    flex: 4;
-    display: flex;
-}
-.col-left {
-    background: orange;
-    display: flex;
-    flex: 1;
-}
 
-.col-right {
-    background: red;
-    flex: 1;
-}
+
+.nav-logo h1{
+    font-family: Gajraj One;
+    color: #FAF9F6  ;
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+  }
+
+  a {
+    text-decoration: none;
+    
+  }
