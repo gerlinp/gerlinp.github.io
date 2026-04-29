@@ -71,8 +71,8 @@ class TextScramble {
   if (!left || !right) return;
 
   /**
-   * Each row = [ left word , right word ] — scrambled together per row.
-   * Use '' for one column if that side should empty out (still two entries).
+   * Each row = [ left word , right word ] — scramble cycles through these pairs.
+   * Hero typography lives in css/style.css (single font family).
    */
   const phrasePairs = [
     ['Software', 'Engineer'],
@@ -81,14 +81,50 @@ class TextScramble {
     ['Problem', 'Solver'],
     ['Freelance', 'Coder'],
     ['AI-Powered', 'Builder'],
-    ['Software', 'Technician'],
+    ['IT', 'Technician'],
   ];
+
+  /** Longest pair (by total chars, tie → longer line) — used only for hero fluid sizing, not rotation order. */
+  function indexOfLongestPair(pairs) {
+    let bestIdx = 0;
+    let bestTotal = -1;
+    let bestMaxLine = -1;
+    pairs.forEach(([a, b], idx) => {
+      const total = a.length + b.length;
+      const maxLine = Math.max(a.length, b.length);
+      if (
+        total > bestTotal ||
+        (total === bestTotal && maxLine > bestMaxLine)
+      ) {
+        bestTotal = total;
+        bestMaxLine = maxLine;
+        bestIdx = idx;
+      }
+    });
+    return bestIdx;
+  }
+
+  /** Hero font = calc(vw * coeff + rem); coeff from baseline (longest) line — no clamp min/max */
+  function applyHeroSizingFromBaseline([lw, lr]) {
+    const m = Math.max(lw.length, lr.length);
+    const n = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+
+    const vwCoeff = n(10.5 - m * 0.42, 3.95, 6.65);
+    const addRem = n(1.48 - m * 0.055, 0.54, 1.02);
+
+    const root = document.documentElement;
+    root.style.setProperty('--hero-fs-vw', vwCoeff.toFixed(3));
+    root.style.setProperty('--hero-fs-add', `${addRem.toFixed(3)}rem`);
+  }
+
+  const baselineIdx = indexOfLongestPair(phrasePairs);
+  applyHeroSizingFromBaseline(phrasePairs[baselineIdx]);
 
   const fxL = new TextScramble(left);
   const fxR = new TextScramble(right);
   let i = 0;
 
-  /** Readable time before switching to next pair — same delay after every phrase. */
+  /** Readable delay after each phrase settles before switching to the next pair. */
   const PAUSE_BETWEEN_MS = 1850;
 
   const next = () => {

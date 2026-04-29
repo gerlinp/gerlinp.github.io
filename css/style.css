@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Boldonse&family=Gajraj+One&family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap');
-
 .gajraj-one-regular {
     font-family: "Gajraj One", sans-serif;
     font-weight: 400;
@@ -12,6 +10,9 @@
     --base-300: #222225;
     /* Softer than #FAF9F6 — easier on eyes, still reads as warm light UI */
     --base-paper: #E3DFDB;
+    /* software-scramble.js overwrites vw + rem offset from longest phrase — no clamp on size */
+    --hero-fs-vw: 5.5;
+    --hero-fs-add: 0.75rem;
 }
 
 
@@ -21,8 +22,16 @@
     box-sizing: border-box;
 }
 
+html {
+    overflow-x: hidden;
+    /* Avoid iOS text inflation on orientation change */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
 body {
     font-family: 'Google Sans Flex', sans-serif;
+    overflow-x: hidden;
 }
 
 img {
@@ -63,14 +72,22 @@ p {
 .hero {
     position: relative;
     font-size: 2rem;
+    box-sizing: border-box;
     width: 100%;
-    height: 100svh;
+    max-width: 100%;
+    height: auto;
+    min-height: 100vh;
+    min-height: 100svh;
+    min-height: 100dvh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    background: #001540;
+    padding-top: clamp(4rem, 13vmin, 7rem);
+    padding-bottom: clamp(2rem, 7vmin, 5rem);
+    padding-inline: clamp(0.75rem, 4vw, 2.5rem);
+    background: #010f29;
     /* background: url(/bg.jpg) no-repeat 50% 50%;
     background-size: cover; */
 }
@@ -80,16 +97,26 @@ p {
     font-weight: 400;
     display: flex;
     flex-direction: column;
+    flex: 1 1 auto;
     align-items: center;
+    justify-content: center;
     text-align: center;
-    gap: 0.2em;
+    gap: clamp(0.08em, 0.06em + 0.75vw, 0.35em);
+    width: 100%;
+    min-height: 0;
+    box-sizing: border-box;
     color: var(--base-paper);
+    overflow-wrap: anywhere;
 }
 
 .hero-headline .software-word,
 .hero-headline .engineer-word {
-    font-family: Boldonse;
-    font-size: clamp(2.5rem, 5vw, 5rem);
+    font-family: Boldonse, sans-serif;
+    font-weight: 400;
+    /* Blends vmin + vw so type scales with both dimensions; coeffs from baseline phrase in JS */
+    font-size: calc(
+        var(--hero-fs-vw, 5.5) * (0.58vmin + 0.42vw) + var(--hero-fs-add)
+    );
     line-height: 1.35;
 }
 
@@ -100,15 +127,6 @@ p {
     line-height: inherit;
     vertical-align: baseline;
 }
-
-.hero-headline .software-word {
-    margin-right: clamp(3.5rem, 22vw, 16rem);
-}
-
-.hero-headline .engineer-word {
-    margin-left: clamp(3.5rem, 22vw, 16rem);
-}
-
 
 .nav-logo,
 .nav-toggle {
@@ -141,9 +159,10 @@ p {
     color: #00316E;
     font-family: "Gajraj One", sans-serif;
 }
-.nav-logo, 
+
+.nav-logo,
 .menu-logo {
-    position: absolute;;
+    position: absolute;
     top: 2rem;
     left: 2rem;
     width: 6rem;
@@ -158,16 +177,6 @@ p {
     z-index: 100;
     padding: 0.5rem;
 }
-
-.nav-logo,
-.nav-toggle {
-    padding: 0.5rem;
-    pointer-events: all;
-}
-
-.nav-toggle-menu {
- color: var(--base-100);
-} 
 
 .nav-toggle-close {
     position: absolute;
@@ -214,7 +223,6 @@ p {
     padding: 0.5rem;
 }
 
-
 .menu-col {
     flex: 1;
     display: flex;
@@ -238,7 +246,7 @@ p {
 }
 
 .menu a .char,
-.menu-col h3, 
+.menu-col h3,
 .menucol h6,
 .menu-col p {
     will-change: transform, opacity;
@@ -251,6 +259,30 @@ p {
 
     .menu-col-links {
         flex: 1.5;
+    }
+}
+
+/* Hero only — keep separate from fullscreen menu styling */
+@media (max-width: 520px) {
+    .hero-headline .software-word,
+    .hero-headline .engineer-word {
+        line-height: 1.2;
+    }
+}
+
+@media (max-height: 540px) and (orientation: landscape) {
+    .hero {
+        padding-top: clamp(3.25rem, 16vmin, 5rem);
+        padding-bottom: clamp(1.25rem, 6vmin, 2rem);
+    }
+
+    .hero-headline {
+        gap: 0.04em;
+    }
+
+    .hero-headline .software-word,
+    .hero-headline .engineer-word {
+        line-height: 1.05;
     }
 }
 
