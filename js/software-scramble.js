@@ -74,15 +74,43 @@ class TextScramble {
    * Each row = [ left word , right word ] — scramble cycles through these pairs.
    * Hero typography lives in css/style.css (single font family).
    */
-  const phrasePairs = [
-    ['Software', 'Engineer'],
-    ['Full Stack', 'Developer'],
-    ['Frontend', 'Designer'],
+  const SOFTWARE_ENGINEER = ['Software', 'Engineer'];
+  const otherPhrasePairs = [
     ['Problem', 'Solver'],
-    ['Freelance', 'Coder'],
     ['AI-Powered', 'Builder'],
-    ['IT', 'Technician'],
+    ['Code', 'Alchemist'],
+    ['Bug', 'Whisperer'],
+    ['Pixel', 'Architect'],
+    ['Logic', 'Wizard'],
+    ['Keyboard', 'Sorcerer'],
+    ['Stack', 'Summoner'],
+    ['API', 'Artisan'],
+    ['Script', 'Sculptor'],
+    ['Data', 'Druid'],
+    ['Cloud', 'Crafter'],
+    ['DevOps', 'Nomad'],
+    ['Build', 'Smith'],
+    ['Release', 'Ranger'],
+    ['Refactor', 'Ninja'],
+    ['Framework', 'Tamer'],
+    ['Compiler', 'Conjurer'],
+    ['Automation', 'Adept'],
+    ['Terminal', 'Tactician'],
+    ['System', 'Shaper'],
+    ['Runtime', 'Riddler'],
+    ['Solution', 'Forge'],
+    ['Feature', 'Shipwright'],
+    ['UI', 'Illusionist'],
+    ['Backend', 'Blacksmith'],
+    ['Frontend', 'Fox'],
+    ['Code', 'Cartographer'],
+    ['Digital', 'Mechanic'],
+    ['Binary', 'Bard'],
+    ['Patch', 'Paladin'],
+    ['Chaos', 'Engineer'],
   ];
+
+  const allPhrasePairs = [SOFTWARE_ENGINEER, ...otherPhrasePairs];
 
   /** Longest pair (by total chars, tie → longer line) — used only for hero fluid sizing, not rotation order. */
   function indexOfLongestPair(pairs) {
@@ -117,18 +145,40 @@ class TextScramble {
     root.style.setProperty('--hero-fs-add', `${addRem.toFixed(3)}rem`);
   }
 
-  const baselineIdx = indexOfLongestPair(phrasePairs);
-  applyHeroSizingFromBaseline(phrasePairs[baselineIdx]);
+  const baselineIdx = indexOfLongestPair(allPhrasePairs);
+  applyHeroSizingFromBaseline(allPhrasePairs[baselineIdx]);
 
   const fxL = new TextScramble(left);
   const fxR = new TextScramble(right);
-  let i = 0;
 
   /** Readable delay after each phrase settles before switching to the next pair. */
   const PAUSE_BETWEEN_MS = 1850;
+  const SOFTWARE_ENGINEER_PAUSE_MS = 2000;
+
+  function shuffledCopy(arr) {
+    const copy = arr.slice();
+    for (let j = copy.length - 1; j > 0; j--) {
+      const k = Math.floor(Math.random() * (j + 1));
+      [copy[j], copy[k]] = [copy[k], copy[j]];
+    }
+    return copy;
+  }
+
+  // Shuffle-bag so phrases don't repeat until all have been seen.
+  let bag = shuffledCopy(otherPhrasePairs);
+  let step = 0; // 1-based display count
+
+  function nextPair() {
+    step += 1;
+    const isSoftwareEngineerSlot = (step - 1) % 2 === 0; // 1st, 3rd, 5th, ...
+    if (isSoftwareEngineerSlot) return SOFTWARE_ENGINEER;
+
+    if (bag.length === 0) bag = shuffledCopy(otherPhrasePairs);
+    return bag.pop();
+  }
 
   const next = () => {
-    const [w1, w2] = phrasePairs[i];
+    const [w1, w2] = nextPair();
     if (headline) {
       headline.setAttribute(
         'aria-label',
@@ -141,10 +191,14 @@ class TextScramble {
     }
 
     Promise.all([fxL.setText(w1), fxR.setText(w2)]).then(() => {
-      if (phrasePairs.length <= 1) return;
+      if (allPhrasePairs.length <= 1) return;
 
-      i = (i + 1) % phrasePairs.length;
-      setTimeout(next, PAUSE_BETWEEN_MS);
+      const isSoftwareEngineer =
+        w1 === SOFTWARE_ENGINEER[0] && w2 === SOFTWARE_ENGINEER[1];
+      setTimeout(
+        next,
+        isSoftwareEngineer ? SOFTWARE_ENGINEER_PAUSE_MS : PAUSE_BETWEEN_MS,
+      );
     });
   };
 

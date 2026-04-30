@@ -11,17 +11,53 @@
 </head>
 <body>
 
+  <ul class="bg-bubbles" aria-hidden="true">
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+  </ul>
+
   <div class="nav">
     <div class="nav-logo">
-      <a href="#"><h1>Gerlin</h1></a>
+      <a href="#hero"><h1>Gerlin</h1></a>
     </div>
 
-    <div class="nav-toggle">
-      <p class="nav-toggle-menu">Menu</p>
-      <p class="nav-toggle-close">Close</p>
-    </div>
+    <button
+      type="button"
+      class="nav-toggle"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="site-menu-overlay"
+    >
+      <span class="nav-toggle-menu" aria-hidden="true">
+        <img src="css/menu.svg" width="36" height="36" alt="" decoding="async" />
+      </span>
+      <span class="nav-toggle-close" aria-hidden="true">
+        <img src="css/close.svg" width="36" height="36" alt="" decoding="async" />
+      </span>
+    </button>
 
-    <div class="menu">
+    <div class="menu" id="site-menu-overlay">
+      <ul class="bg-bubbles bg-bubbles--menu" aria-hidden="true">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+
       <svg
         class="menu-bg-svg"
         viewBox="0 0 1131 861"
@@ -36,7 +72,7 @@
       </svg>
 
       <div class="menu-logo">
-        <a href="#"><h1>Gerlin</h1></a>
+        <a href="#hero"><h1>Gerlin</h1></a>
       </div>
 
       <div class="menu-col menu-col-info">
@@ -48,23 +84,192 @@
       </div>
 
       <div class="menu-col menu-col-links">
-        <a href="/work">work</a>
-        <a href="/services">services</a>
-        <a href="/about">about</a>
-        <a href="/fun">fun</a>
-        <a href="/projects">projects</a>
-        <a href="/contact">contact</a>
+        <a href="#work">work</a>
+        <a href="#services">services</a>
+        <a href="#about">about</a>
+        <a href="#fun">fun</a>
+        <a href="#projects">projects</a>
+        <a href="#contact">contact</a>
       </div>
     </div>
   </div>
 
   
 
-  <section class="hero">
-    <h2 class="hero-headline" aria-label="">
-      <span class="software-word"></span>
-      <span class="engineer-word"></span>
-    </h2>
+  <section id="hero" class="hero">
+    <div class="hero-title">
+      <h2 class="hero-headline" aria-label="">
+        <span class="software-word"></span>
+        <span class="engineer-word"></span>
+      </h2>
+    </div>
+    <!-- <div class="hero-mark" aria-hidden="true">
+      <svg
+        width="72px"
+        height="72px"
+        viewBox="-160 -160 360 320"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+      >
+        <path id="f" d="m123,0a123,123 0,0 1-246,0a123,123 0,0 1 246,0" />
+        <g fill="#057">
+          <circle r="160" />
+          <circle r="150" fill="#fff" />
+          <text font-size="28" font-stretch="condensed" font-family="Impact">
+            <animateTransform
+              type="rotate"
+              from="360 0 0"
+              to="0 0 0"
+              dur="10s"
+              attributeName="transform"
+              repeatCount="indefinite"
+            />
+            <textPath xlink:href="#f">Scroll Down * Scroll Down</textPath>
+          </text>
+          <circle r="115" />
+          <circle r="95" fill="#fff" />
+          <path d="m-8-119h16 l2,5h-20z" />
+          <circle cx="160" cy="0" r="40" />
+          <path d="m-95-20v-20h255a40,40 0,0 1 0,80h-55v-20z" />
+          <path d="m-85 0a85,85 0,0 0 170,0h-20a65,65 0,0 1-130,0z" />
+          <path d="m-65 20v20h140v-20z" />
+          <path d="m-115-20v10h25v30h250a20,20 0,0 0 0,-40z" fill="#fff" />
+          <path d="m-20 10c-17-14-27-14-44 0 6-25 37-25 44 0z" />
+          <path d="m60 10c-17-14-27-14-44 0 6-25 37-25 44 0z" />
+        </g>
+      </svg>
+    </div> -->
+  </section>
+  
+  <section id="about" class="about" aria-labelledby="about-heading">
+    <header class="about-header">
+      <h2 id="about-heading" class="about-title">
+        About
+        <span class="about-title-note">Gerlin Pierre-Louis</span>
+      </h2>
+    </header>
+    <div class="about-body">
+      <p>
+        Hi, I&rsquo;m Gerlin &mdash; a software engineer who builds things for the web.
+      </p>
+      <p>
+        My path here wasn&rsquo;t traditional. I started in IT, helping clients troubleshoot and navigate software &mdash; and somewhere along the way, helping people use tools turned into wanting to build better ones. I taught myself to code, made the switch, and haven&rsquo;t looked back.
+      </p>
+      <p>
+        Today I work as a software engineer at ezCater, where I focus on frontend development with React and TypeScript. I&rsquo;ve worked on design system migrations, large-scale codebase restructuring, and improving real user experiences &mdash; from checkout flows to SEO to code quality and observability.
+      </p>
+      <p>
+        I still care about what got me here: the idea that good technology should bridge gaps &mdash; between industries, between communities, and between what&rsquo;s possible and what&rsquo;s actually been built.
+      </p>
+    </div>
+    <blockquote class="about-quote">
+      <p>
+        Every great developer you know got there by solving problems they were unqualified to solve until they actually did it.
+      </p>
+    </blockquote>
+    <hr class="about-rule" aria-hidden="true" />
+  </section>
+
+  <section id="work" class="work" aria-labelledby="work-heading">
+    <header class="work-header">
+      <h2 id="work-heading" class="work-title">
+        Experience
+        <span class="work-title-note">Personal Website Version</span>
+      </h2>
+      <p class="work-byline"><strong>Gerlin Pierre-Louis</strong></p>
+    </header>
+
+    <article class="work-entry">
+      <h3 class="work-role">Software Engineer</h3>
+      <p class="work-meta">
+        <span class="work-org">ezCater</span>
+        <span class="work-sep" aria-hidden="true">|</span>
+        <span class="work-dates">2025–2026</span>
+      </p>
+      <p class="work-summary">
+        Working on the frontend of a food ordering platform used by thousands of companies. Focused on building reliable, well-crafted software that makes the experience better for both users and engineers.
+      </p>
+      <ul class="work-list">
+        <li>Restructured 16 frontend modules into a layered architecture, making it easier for the team to navigate and own the codebase</li>
+        <li>Refactored 9 legacy modal groups into a single unified component, bringing consistency to the product&rsquo;s most user-facing interactions</li>
+        <li>Built and migrated UI components into a shared design system using shadcn and Tailwind CSS</li>
+        <li>Added observability to the GraphQL client layer so the team can respond faster when things break</li>
+        <li>Improved checkout UX, SEO, type safety, and CI reliability across the platform</li>
+      </ul>
+    </article>
+
+    <article class="work-entry">
+      <h3 class="work-role">Software Engineer Co-op</h3>
+      <p class="work-meta">
+        <span class="work-org">Salsify</span>
+        <span class="work-sep" aria-hidden="true">|</span>
+        <span class="work-dates">June 2022–December 2022</span>
+      </p>
+      <p class="work-summary">
+        My first engineering role at a product company. Worked on the platform administration team building settings and tools for internal teams and enterprise clients.
+      </p>
+      <ul class="work-list">
+        <li>Shipped features using TypeScript, Ember.js, Ruby on Rails, and GraphQL</li>
+        <li>Built an email permissions feature that reduced admin overhead by 25%</li>
+        <li>Designed a webhooks audit UI and implemented API key management for enterprise users</li>
+        <li>Fixed production bugs using New Relic and PaperTrail, clearing 15% of the backlog</li>
+      </ul>
+    </article>
+
+    <article class="work-entry">
+      <h3 class="work-role">Open Source Contributor</h3>
+      <p class="work-meta">
+        <span class="work-org">Code for Boston</span>
+        <span class="work-sep" aria-hidden="true">|</span>
+        <span class="work-dates">2022–Present</span>
+      </p>
+      <p class="work-summary">
+        Contributing to MAPLE — a civic tech platform where Massachusetts residents can share their perspectives on legislation that affects their daily lives.
+      </p>
+      <ul class="work-list">
+        <li>Building and shipping features on a real public-facing product</li>
+        <li>Part of a community of developers using tech to make government more accessible</li>
+      </ul>
+    </article>
+
+    <article class="work-entry work-entry--last">
+      <h3 class="work-role">Fellow</h3>
+      <p class="work-meta">
+        <span class="work-org">Hack.Diversity</span>
+        <span class="work-sep" aria-hidden="true">|</span>
+        <span class="work-dates">2022</span>
+      </p>
+      <p class="work-summary">
+        Selected for a fellowship that bridges Boston&rsquo;s tech industry with under-represented communities. The program that helped me get my first engineering role.
+      </p>
+      <ul class="work-list">
+        <li>Developed technical and leadership skills through mentorship and hands-on projects</li>
+        <li>Connected with Boston&rsquo;s technology and civic ecosystem through the fellowship community</li>
+      </ul>
+    </article>
+  </section>
+
+  <section id="services" class="section-shell" aria-labelledby="services-heading">
+    <h2 id="services-heading" class="section-shell__title">Services</h2>
+    <p class="section-shell__lede">Details coming soon.</p>
+  </section>
+
+  <section id="fun" class="section-shell" aria-labelledby="fun-heading">
+    <h2 id="fun-heading" class="section-shell__title">Fun</h2>
+    <p class="section-shell__lede">Side projects and experiments — more soon.</p>
+  </section>
+
+  <section id="projects" class="section-shell" aria-labelledby="projects-heading">
+    <h2 id="projects-heading" class="section-shell__title">Projects</h2>
+    <p class="section-shell__lede">Highlighted work — more soon.</p>
+  </section>
+
+  <section id="contact" class="section-shell" aria-labelledby="contact-heading">
+    <h2 id="contact-heading" class="section-shell__title">Contact</h2>
+    <p class="section-shell__lede">
+      Email <a class="section-shell__link" href="mailto:gerlin.pierrelouis@gmail.com">gerlin.pierrelouis@gmail.com</a>
+      · Greater Boston
+    </p>
   </section>
   
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
