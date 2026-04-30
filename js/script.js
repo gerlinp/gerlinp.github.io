@@ -311,12 +311,12 @@ const closeMenu = (afterClose) => {
 
   const SECTION_LABELS = {
     hero: 'Gerlin',
-    about: 'About',
-    work: 'Work',
+    'about-me': 'About',
+    experience: 'Work',
     services: 'Services',
     fun: 'Fun',
     projects: 'Projects',
-    contact: 'Contact',
+    'contact-me': 'Contact',
   };
 
   const sections = [
@@ -331,12 +331,12 @@ const closeMenu = (afterClose) => {
    */
   const SECTION_SENTINEL_SELECTOR = {
     hero: '#hero .hero-headline',
-    about: '#about-heading',
-    work: '#work-heading',
+    'about-me': '#about-heading',
+    experience: '#work-heading',
     services: '#services-heading',
     fun: '#fun-heading',
     projects: '#projects-heading',
-    contact: '#contact-heading',
+    'contact-me': '#contact-heading',
   };
 
   function sentinelFor(sectionEl) {
