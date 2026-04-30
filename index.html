@@ -1,374 +1,325 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Gerlin Pierre-Louis</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
-      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link
-      href="https://fonts.googleapis.com/css?family=Comfortaa:700"
-      rel="stylesheet"
-    />
-    <script
-      src="https://code.jquery.com/jquery-3.3.1.min.js"
-      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-      crossorigin="anonymous"
-    ></script>
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
-      integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
-      crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
-    <div id="border">
-      <div class="bg"></div>
-      <div class="bg bg2"></div>
-      <div class="bg bg3"></div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GERLIN</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Boldonse&family=Gajraj+One&family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
 
-      <div id="loading">
-        <div id="spinner"></div>
+  <ul class="bg-bubbles" aria-hidden="true">
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+  </ul>
+
+  <div class="nav">
+    <div class="nav-shell">
+      <div class="nav-logo">
+        <a class="nav-logo-link" href="#hero">
+          <h1 class="nav-logo-title" aria-live="polite">Gerlin</h1>
+        </a>
       </div>
-      <div id="particles-js"></div>
-      <div id="box">
-        <div
-          class="box1 onlywide animated bounceOutLeft"
-          style="animation-delay: 1.7s"
-        ></div>
-        <div
-          class="box2 onlywide animated bounceOutLeft"
-          style="animation-delay: 1.8s"
-        ></div>
-        <div
-          class="box2 onlywide animated bounceOutLeft"
-          style="animation-delay: 1.9s"
-        ></div>
-        <div
-          class="box2 animated bounceOutRight"
-          style="animation-delay: 1.9s"
-        ></div>
-        <div
-          class="box2 onlywide animated bounceOutRight"
-          style="animation-delay: 1.8s"
-        ></div>
-        <div
-          class="box2 onlywide animated bounceOutRight"
-          style="animation-delay: 1.7s"
-        ></div>
-      </div>
-      <a
-        id="about"
-        onclick="showabout()"
-        class="animated fadeIn"
-        style="animation-delay: 2.2s"
-        >about</a
+
+      <button
+        type="button"
+        class="nav-toggle"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="site-menu-overlay"
       >
-      <a
-        id="work"
-        onclick="showwork()"
-        class="animated fadeIn"
-        style="animation-delay: 2.2s"
-        >work</a
-      >
-      <a
-        id="contact"
-        onclick="showcontact()"
-        class="animated fadeIn"
-        style="animation-delay: 2.2s"
-        >contact</a
-      >
-      <!-- <a id="project" onclick="showprojects()" class="animated fadeIn" style="animation-delay:2.2s;">projects</a> -->
-      <div id="middle" class="animated slideInDown" style="animation-delay: 2s">
-        <h1>GERLIN</h1>
-        <h2>PIERRE-LOUIS</h2>
-        <h3>Software Engineer</h3>
-        <div id="menu">
-          <a onclick="showabout()">ABOUT</a>
-          <a onclick="showwork()">WORK</a>
-          <!-- <a onclick="showprojects()">PROJECTS</a> -->
-          <a onclick="showcontact()">CONTACT</a>
+        <span class="nav-toggle-menu" aria-hidden="true">
+          <img src="css/menu.svg" width="36" height="36" alt="" decoding="async" />
+        </span>
+        <span class="nav-toggle-close" aria-hidden="true">
+          <img src="css/close.svg" width="36" height="36" alt="" decoding="async" />
+        </span>
+      </button>
+    </div>
+
+    <div class="menu" id="site-menu-overlay">
+      <ul class="bg-bubbles bg-bubbles--menu" aria-hidden="true">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+
+      <svg
+        class="menu-bg-svg"
+        viewBox="0 0 1131 861"
+        preserveAspectRatio="none"
+        xmlns="http://www.w3.org/2000/svg"
+        >
+
+        <path
+          id="menu-path"
+          d="M1131,0 Q565.5,0 0,0 L0,0 L1131,0 Z"
+        />
+      </svg>
+
+      <div class="menu-shell">
+        <div class="menu-shell__top">
+          <div class="menu-logo">
+            <a href="#hero"><h1>Gerlin</h1></a>
+          </div>
+          <div class="menu-shell__toggle-slot" aria-hidden="true"></div>
         </div>
-        <table>
-          <tr>
-            <td class="animated zoomIn" style="animation-delay: 2.2s">
-              <a
-                href="https://github.com/gerlinp"
-                class="social"
-                target="”_blank”"
-                ><i class="fa-brands fa-github"></i
-              ></a>
-            </td>
-            <td class="animated zoomIn" style="animation-delay: 2.4s">
-              <a
-                href="https://www.linkedin.com/in/gerlin-pierre-louis/"
-                target="”_blank”"
-                class="social"
-                ><i class="fa-brands fa-linkedin"></i
-              ></a>
-            </td>
-            <td class="animated zoomIn" style="animation-delay: 2.6s">
-              <a
-                href="https://codepen.io/gerlinp"
-                target="”_blank”"
-                class="social"
-                ><i class="fa-brands fa-codepen"></i
-              ></a>
-            </td>
-            <td class="animated zoomIn" style="animation-delay: 2.8s">
-              <a
-                href="https://twitter.com/GerlinPL"
-                target="”_blank”"
-                class="social"
-                ><i class="fab fa-twitter"></i
-              ></a>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div id="work_container" class="container-pocket">
-        <div onclick="closework()"><i class="fas fa-angle-right"></i></div>
-        <h1 class="numbered-heading">Experience.</h1>
-        <section>
-          <div class="inner">
-            <div class="exp-tab">
-              <div class="tab-content" id="myTabContent">
-                <div
-                  class="tab-pane fade show active"
-                  id="work1"
-                  role="tabpanel"
-                  aria-labelledby="work1-tab"
-                >
-                  <h3>
-                    Software Engineer Co-op
-                    <a href="https://www.salsify.com" class="exp-link"
-                      >@ Salsify</a
-                    >
-                  </h3>
-                  <p>June - December 2022</p>
-                  <ul class="exp-content-list">
-                    <li>
-                      Deployed features as part of the platform administration
-                      team for settings and tools utilizing a combination of
-                      TypeScript, Ember.js, and a Ruby/Rails back-end, utilizing
-                      GraphQl APIs for seamless data integration.
-                    </li>
-                    <li>
-                      Designed a webhooks user interface for audits, catering to
-                      the needs of core internal teams.
-                    </li>
-                    <li>
-                      Developed an email feature that allows clients to easily
-                      and efficiently assign permissions to their users,
-                      improving overall user experience.
-                    </li>
-                    <li>
-                      Implemented an API key expiration alert feature, and added
-                      the flexibility for users to easily generate new API keys
-                      as needed
-                    </li>
-                    <li>
-                      Resolved and identified bugs by using problem solving and
-                      tools such as Relic & Paper Trail.
-                    </li>
-                  </ul>
-                </div>
-                <div
-                  class="tab-pane fade"
-                  id="work2"
-                  role="tabpanel"
-                  aria-labelledby="work3-tab"
-                >
-                  <h3>
-                    Contributor
-                    <a href="https://www.codeforboston.org/" class="exp-link"
-                      >@ Code for Boston</a
-                    >
-                  </h3>
-                  <p>Actively Participating</p>
-                  <ul class="exp-content-list">
-                    <li>
-                      Part of the
-                      <a href="https://github.com/codeforboston/maple">MAPLE</a
-                      >, a civic technology organization that aims to improve
-                      the lives of Boston residents through technology.
-                      Developed and deployed
-                    </li>
-                    <li>
-                      Actively participated in hackathons and coding events to
-                      further improve skills and knowledge, and contribute to
-                      the open source community by developing and deploying
-                      features to projects such as
-                      <a href="https://github.com/codeforboston/maple">MAPLE</a>
-                      to produce a digital public space wherein Massachusetts
-                      constituents can share their knowledge, experiences and
-                      thoughts on the laws that affect our daily lives..
-                    </li>
-                  </ul>
-                </div>
-                <div
-                  class="tab-pane fade"
-                  id="work3"
-                  role="tabpanel"
-                  aria-labelledby="work2-tab"
-                >
-                  <h3>
-                    2022 Fellow
-                    <a href="https://www.salsify.com" class="exp-link"
-                      >@ Hack.Diversity</a
-                    >
-                  </h3>
-                  <p>Alumni</p>
-                  <ul class="exp-content-list">
-                    <li>
-                      Selected for the 2022 Hack.Diversity Fellowship, a career
-                      leadership and workforce development program that
-                      integrates Boston's innovation, corporate, civic,
-                      academic, and philanthropic pillars.
-                    </li>
-                    <li>
-                      Researching and staying up-to-date with the latest
-                      technologies to refine skills as a developer and
-                      professional.
-                    </li>
-                    <li>
-                      Participating in various projects and programs to gain
-                      hands-on experience and apply newly acquired knowledge
-                    </li>
-                    <li>
-                      Developed a strong foundation for a successful career in
-                      technology through mentorship, training, and support from
-                      the Hack.Diversity Fellowship community.
-                    </li>
-                    <li>
-                      Committed to making the most of this opportunity and
-                      leveraging it to advance my career in technology.
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-      <div id="about_container" class="container-pocket">
-        <div onclick="closeabout()"><i class="fas fa-angle-left"></i></div>
-        <h1 class="numbered-heading">About</h1>
-        <section>
-          <div>
-            <p>
-              Hello! My name is Gerlin and I enjoy creating things that live on
-              the internet. I'm a self taught developer, who switched from a
-              career in IT, and for as long as I can remember I've always had an
-              interest in tech — While assisting clients in fixing and guiding
-              them with programs got me more interested in buidling them to make
-              better experiences.
-            </p>
-            <p>
-              Fast forward to today I've had the privelege of working for a
-              <a
-                href="https://www.salsify.com"
-                rel="noopener noreferrer"
-                target="_blank"
-                >Digital Management Platform</a
-              >
-              as a software engineer CO-OP — Contributing to
-              <a
-                href="https://github.com/codeforboston/maple"
-                rel="noopener noreferrer"
-                target="_blank"
-                >civic tech group</a
-              >
-              to be able help, and improve the way goverment and community
-              organizations serve the public by using technology. And was
-              selected for a
-              <a
-                href="https://www.hackdiversity.com/"
-                rel="noopener noreferrer"
-                target="_blank"
-                >fellowship</a
-              >
-              with a focus on being job ready using tools,resources, and mentors
-              to grow my potential as a developer. While also helping to bridge
-              the gap between the technology industry and under-represented
-              individuals.
-            </p>
-          </div>
-        </section>
-        <section>
-          <h2>Skills</h2>
-          <ul class="skills-list">
-            <li>Javascript (ES6+)</li>
-            <li>TypeScript</li>
-            <li>Ruby/Rails</li>
-            <li>React</li>
-            <li>Ember.js</li>
-            <li>GraphQl</li>
-          </ul>
-        </section>
-      </div>
-      <div id="contact_container" class="container-pocket">
-        <div onclick="closecontact()"><i class="fas fa-angle-down"></i></div>
-        <h1 class="numbered-heading">contact me.</h1>
-        <section>
-          <p>
-            If you're looking for a dedicated professional I am currently
-            seeking new opportunities and would love to hear from you.
-          </p>
-          <p>
-            The best way to reach me is through email or phone. Please feel free
-            to call or text me, and if I'm unable to answer, please leave a
-            voicemail and I will get back to you as soon as possible.
-          </p>
 
-          <div>
-            <i class="fa-solid fa-envelope"></i>
-            <a href="mailto: gerlin.pierrelouis@gmail.com"
-              >gerlin.pierrelouis@gmail.com</a
-            >
+        <div class="menu-shell__cols">
+          <div class="menu-col menu-col-info">
+            <p>Get in touch</p>
+            <h3>gerlin.pierrelouis@gmail.com</h3>
+            <br/>
+            <h6>Greater Boston Area</h6>
+            <h6>Massachusetts, USA</h6>
           </div>
-        </section>
-      </div>
 
-      <!-- <div id="project_container" class="container-pocket">
-            <div onclick="closeprojects()"><i class="fas fa-angle-up"></i></div>
-            <h1 class="numbered-heading">project.</h1>
-            <section>
-                <h2 class="numbered-heading">project</h2>
-                <p>
-                    <form>
-                        <input type="text" placeholder="name" required>
-                        <input type="email" placeholder="email" required><br>
-                        <textarea placeholder="your message" required rows="5"></textarea><br>
-                        <button class="btn_one">send</button>
-                    </form> 
-                </p>
-            </section>
-        </div> -->
-
-      <div id="footer">
-        Made by <br /><span class="footer-name">Gerlin Pierre-Louis</span>
+          <div class="menu-col menu-col-links">
+            <a href="#work">work</a>
+            <a href="#services">services</a>
+            <a href="#about">about</a>
+            <a href="#fun">fun</a>
+            <a href="#projects">projects</a>
+            <a href="#contact">contact</a>
+          </div>
+        </div>
       </div>
     </div>
-    <script
-      src="https://code.jquery.com/jquery-3.3.1.min.js"
-      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-      crossorigin="anonymous"
-    ></script>
-    <script src="index.js" type="text/javascript"></script>
-    <script src="particles.js"></script>
-    <script src="app.js"></script>
-  </body>
+  </div>
+
+  
+
+  <section id="hero" class="hero">
+    <div class="hero-title">
+      <h2 class="hero-headline" aria-label="">
+        <span class="software-word"></span>
+        <span class="engineer-word"></span>
+      </h2>
+    </div>
+    <!-- <div class="hero-mark" aria-hidden="true">
+      <svg
+        width="72px"
+        height="72px"
+        viewBox="-160 -160 360 320"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+      >
+        <path id="f" d="m123,0a123,123 0,0 1-246,0a123,123 0,0 1 246,0" />
+        <g fill="#057">
+          <circle r="160" />
+          <circle r="150" fill="#fff" />
+          <text font-size="28" font-stretch="condensed" font-family="Impact">
+            <animateTransform
+              type="rotate"
+              from="360 0 0"
+              to="0 0 0"
+              dur="10s"
+              attributeName="transform"
+              repeatCount="indefinite"
+            />
+            <textPath xlink:href="#f">Scroll Down * Scroll Down</textPath>
+          </text>
+          <circle r="115" />
+          <circle r="95" fill="#fff" />
+          <path d="m-8-119h16 l2,5h-20z" />
+          <circle cx="160" cy="0" r="40" />
+          <path d="m-95-20v-20h255a40,40 0,0 1 0,80h-55v-20z" />
+          <path d="m-85 0a85,85 0,0 0 170,0h-20a65,65 0,0 1-130,0z" />
+          <path d="m-65 20v20h140v-20z" />
+          <path d="m-115-20v10h25v30h250a20,20 0,0 0 0,-40z" fill="#fff" />
+          <path d="m-20 10c-17-14-27-14-44 0 6-25 37-25 44 0z" />
+          <path d="m60 10c-17-14-27-14-44 0 6-25 37-25 44 0z" />
+        </g>
+      </svg>
+    </div> -->
+  </section>
+  
+  <section id="about" class="about" aria-labelledby="about-heading">
+    <header class="about-header">
+      <h2 id="about-heading" class="about-title">
+        About
+        <span class="about-title-note">Gerlin Pierre-Louis</span>
+      </h2>
+    </header>
+    <div class="about-body">
+      <p>
+        Hi, I&rsquo;m Gerlin &mdash; a software engineer who builds things for the web.
+      </p>
+      <p>
+        My path here wasn&rsquo;t traditional. I started in IT, helping clients troubleshoot and navigate software &mdash; and somewhere along the way, helping people use tools turned into wanting to build better ones. I taught myself to code, made the switch, and haven&rsquo;t looked back.
+      </p>
+      <p>
+        Today I work as a software engineer at ezCater, where I focus on frontend development with React and TypeScript. I&rsquo;ve worked on design system migrations, large-scale codebase restructuring, and improving real user experiences &mdash; from checkout flows to SEO to code quality and observability.
+      </p>
+      <p>
+        I still care about what got me here: the idea that good technology should bridge gaps &mdash; between industries, between communities, and between what&rsquo;s possible and what&rsquo;s actually been built.
+      </p>
+    </div>
+    <blockquote class="about-quote">
+      <p>
+        Every great developer you know got there by solving problems they were unqualified to solve until they actually did it.
+      </p>
+    </blockquote>
+    <hr class="about-rule" aria-hidden="true" />
+  </section>
+
+  <section id="work" class="work" aria-labelledby="work-heading">
+    <header class="work-header">
+      <h2 id="work-heading" class="work-title">
+        Where I&rsquo;ve worked
+        <span class="work-title-note">Companies, co-ops &amp; civic tech</span>
+      </h2>
+    </header>
+
+    <article class="work-entry">
+      <h3 class="work-role">Software Engineer</h3>
+      <p class="work-meta">
+        <span class="work-org">ezCater</span>
+        <span class="work-sep" aria-hidden="true">|</span>
+        <span class="work-dates">2025–2026</span>
+      </p>
+      <p class="work-summary">
+        Working on the frontend of a food ordering platform used by thousands of companies. Focused on building reliable, well-crafted software that makes the experience better for both users and engineers.
+      </p>
+      <ul class="work-list">
+        <li>Restructured 16 frontend modules into a layered architecture, making it easier for the team to navigate and own the codebase</li>
+        <li>Refactored 9 legacy modal groups into a single unified component, bringing consistency to the product&rsquo;s most user-facing interactions</li>
+        <li>Built and migrated UI components into a shared design system using shadcn and Tailwind CSS</li>
+        <li>Added observability to the GraphQL client layer so the team can respond faster when things break</li>
+        <li>Improved checkout UX, SEO, type safety, and CI reliability across the platform</li>
+      </ul>
+    </article>
+
+    <article class="work-entry">
+      <h3 class="work-role">Software Engineer Co-op</h3>
+      <p class="work-meta">
+        <span class="work-org">Salsify</span>
+        <span class="work-sep" aria-hidden="true">|</span>
+        <span class="work-dates">June 2022–December 2022</span>
+      </p>
+      <p class="work-summary">
+        My first engineering role at a product company. Worked on the platform administration team building settings and tools for internal teams and enterprise clients.
+      </p>
+      <ul class="work-list">
+        <li>Shipped features using TypeScript, Ember.js, Ruby on Rails, and GraphQL</li>
+        <li>Built an email permissions feature that reduced admin overhead by 25%</li>
+        <li>Designed a webhooks audit UI and implemented API key management for enterprise users</li>
+        <li>Fixed production bugs using New Relic and PaperTrail, clearing 15% of the backlog</li>
+      </ul>
+    </article>
+
+    <article class="work-entry">
+      <h3 class="work-role">Open Source Contributor</h3>
+      <p class="work-meta">
+        <span class="work-org">Code for Boston</span>
+        <span class="work-sep" aria-hidden="true">|</span>
+        <span class="work-dates">2022–Present</span>
+      </p>
+      <p class="work-summary">
+        Contributing to MAPLE — a civic tech platform where Massachusetts residents can share their perspectives on legislation that affects their daily lives.
+      </p>
+      <ul class="work-list">
+        <li>Building and shipping features on a real public-facing product</li>
+        <li>Part of a community of developers using tech to make government more accessible</li>
+      </ul>
+    </article>
+
+    <article class="work-entry work-entry--last">
+      <h3 class="work-role">Fellow</h3>
+      <p class="work-meta">
+        <span class="work-org">Hack.Diversity</span>
+        <span class="work-sep" aria-hidden="true">|</span>
+        <span class="work-dates">2022</span>
+      </p>
+      <p class="work-summary">
+        Selected for a fellowship that bridges Boston&rsquo;s tech industry with under-represented communities. The program that helped me get my first engineering role.
+      </p>
+      <ul class="work-list">
+        <li>Developed technical and leadership skills through mentorship and hands-on projects</li>
+        <li>Connected with Boston&rsquo;s technology and civic ecosystem through the fellowship community</li>
+      </ul>
+    </article>
+  </section>
+
+  <section id="services" class="section-shell" aria-labelledby="services-heading">
+    <h2 id="services-heading" class="section-shell__title">Services</h2>
+    <div class="section-shell__prose">
+      <p>
+        From time to time I take on freelance work. If you have a project in mind &mdash;
+        whether it&rsquo;s an online store, a personal blog, or a portfolio site &mdash;
+        I&rsquo;d be happy to help bring it to life.
+      </p>
+      <figure class="section-shell__figure">
+        <a
+          href="https://trailblazingmom.com/"
+          class="section-shell__shot-link"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="trailblazingmom.com (opens in a new tab)"
+          aria-label="Visit Trail Blazing Mom at trailblazingmom.com — opens in a new tab"
+        >
+          <img
+            class="section-shell__shot"
+            src="css/trails.JPG"
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
+      </figure>
+      <p>
+        Feel free to reach out at
+        <a class="section-shell__link" href="mailto:gerlin.pierrelouis@gmail.com">gerlin.pierrelouis@gmail.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <section id="fun" class="section-shell" aria-labelledby="fun-heading">
+    <h2 id="fun-heading" class="section-shell__title">Fun</h2>
+    <p class="section-shell__lede">Side projects and experiments — more soon.</p>
+  </section>
+
+  <section id="projects" class="section-shell" aria-labelledby="projects-heading">
+    <h2 id="projects-heading" class="section-shell__title">Projects</h2>
+    <p class="section-shell__lede">Highlighted work — more soon.</p>
+  </section>
+
+  <section id="contact" class="section-shell" aria-labelledby="contact-heading">
+    <h2 id="contact-heading" class="section-shell__title">Get in touch</h2>
+    <div class="section-shell__prose">
+      <p>
+        I&rsquo;m currently open to new opportunities. If you&rsquo;d like to connect, the
+        best way to reach me is by email.
+      </p>
+      <p>
+        <a class="section-shell__link" href="mailto:gerlin.pierrelouis@gmail.com">gerlin.pierrelouis@gmail.com</a>
+      </p>
+    </div>
+  </section>
+  
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/SplitText.min.js"></script>
+  <script src="js/script.js"></script>
+  <script src="js/software-scramble.js"></script>
+
+</body>
 </html>
