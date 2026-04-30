@@ -25,24 +25,28 @@
   </ul>
 
   <div class="nav">
-    <div class="nav-logo">
-      <a href="#hero"><h1>Gerlin</h1></a>
-    </div>
+    <div class="nav-shell">
+      <div class="nav-logo">
+        <a class="nav-logo-link" href="#hero">
+          <h1 class="nav-logo-title" aria-live="polite">Gerlin</h1>
+        </a>
+      </div>
 
-    <button
-      type="button"
-      class="nav-toggle"
-      aria-label="Open menu"
-      aria-expanded="false"
-      aria-controls="site-menu-overlay"
-    >
-      <span class="nav-toggle-menu" aria-hidden="true">
-        <img src="css/menu.svg" width="36" height="36" alt="" decoding="async" />
-      </span>
-      <span class="nav-toggle-close" aria-hidden="true">
-        <img src="css/close.svg" width="36" height="36" alt="" decoding="async" />
-      </span>
-    </button>
+      <button
+        type="button"
+        class="nav-toggle"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="site-menu-overlay"
+      >
+        <span class="nav-toggle-menu" aria-hidden="true">
+          <img src="css/menu.svg" width="36" height="36" alt="" decoding="async" />
+        </span>
+        <span class="nav-toggle-close" aria-hidden="true">
+          <img src="css/close.svg" width="36" height="36" alt="" decoding="async" />
+        </span>
+      </button>
+    </div>
 
     <div class="menu" id="site-menu-overlay">
       <ul class="bg-bubbles bg-bubbles--menu" aria-hidden="true">
@@ -71,25 +75,32 @@
         />
       </svg>
 
-      <div class="menu-logo">
-        <a href="#hero"><h1>Gerlin</h1></a>
-      </div>
+      <div class="menu-shell">
+        <div class="menu-shell__top">
+          <div class="menu-logo">
+            <a href="#hero"><h1>Gerlin</h1></a>
+          </div>
+          <div class="menu-shell__toggle-slot" aria-hidden="true"></div>
+        </div>
 
-      <div class="menu-col menu-col-info">
-        <p>Get in touch</p>
-        <h3>gerlin.pierrelouis@gmail.com</h3>
-        <br/>
-        <h6>Greater Boston Area</h6>
-        <h6>Massachusetts, USA</h6>
-      </div>
+        <div class="menu-shell__cols">
+          <div class="menu-col menu-col-info">
+            <p>Get in touch</p>
+            <h3>gerlin.pierrelouis@gmail.com</h3>
+            <br/>
+            <h6>Greater Boston Area</h6>
+            <h6>Massachusetts, USA</h6>
+          </div>
 
-      <div class="menu-col menu-col-links">
-        <a href="#work">work</a>
-        <a href="#services">services</a>
-        <a href="#about">about</a>
-        <a href="#fun">fun</a>
-        <a href="#projects">projects</a>
-        <a href="#contact">contact</a>
+          <div class="menu-col menu-col-links">
+            <a href="#work">work</a>
+            <a href="#services">services</a>
+            <a href="#about">about</a>
+            <a href="#fun">fun</a>
+            <a href="#projects">projects</a>
+            <a href="#contact">contact</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -173,10 +184,9 @@
   <section id="work" class="work" aria-labelledby="work-heading">
     <header class="work-header">
       <h2 id="work-heading" class="work-title">
-        Experience
-        <span class="work-title-note">Personal Website Version</span>
+        Where I&rsquo;ve worked
+        <span class="work-title-note">Companies, co-ops &amp; civic tech</span>
       </h2>
-      <p class="work-byline"><strong>Gerlin Pierre-Louis</strong></p>
     </header>
 
     <article class="work-entry">
@@ -251,7 +261,36 @@
 
   <section id="services" class="section-shell" aria-labelledby="services-heading">
     <h2 id="services-heading" class="section-shell__title">Services</h2>
-    <p class="section-shell__lede">Details coming soon.</p>
+    <div class="section-shell__prose">
+      <p>
+        From time to time I take on freelance work. If you have a project in mind &mdash;
+        whether it&rsquo;s an online store, a personal blog, or a portfolio site &mdash;
+        I&rsquo;d be happy to help bring it to life.
+      </p>
+      <figure class="section-shell__figure">
+        <a
+          href="https://trailblazingmom.com/"
+          class="section-shell__shot-link"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="trailblazingmom.com (opens in a new tab)"
+          aria-label="Visit Trail Blazing Mom at trailblazingmom.com — opens in a new tab"
+        >
+          <img
+            class="section-shell__shot"
+            src="css/trails.JPG"
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
+      </figure>
+      <p>
+        Feel free to reach out at
+        <a class="section-shell__link" href="mailto:gerlin.pierrelouis@gmail.com">gerlin.pierrelouis@gmail.com</a>.
+      </p>
+    </div>
   </section>
 
   <section id="fun" class="section-shell" aria-labelledby="fun-heading">
@@ -265,11 +304,16 @@
   </section>
 
   <section id="contact" class="section-shell" aria-labelledby="contact-heading">
-    <h2 id="contact-heading" class="section-shell__title">Contact</h2>
-    <p class="section-shell__lede">
-      Email <a class="section-shell__link" href="mailto:gerlin.pierrelouis@gmail.com">gerlin.pierrelouis@gmail.com</a>
-      · Greater Boston
-    </p>
+    <h2 id="contact-heading" class="section-shell__title">Get in touch</h2>
+    <div class="section-shell__prose">
+      <p>
+        I&rsquo;m currently open to new opportunities. If you&rsquo;d like to connect, the
+        best way to reach me is by email.
+      </p>
+      <p>
+        <a class="section-shell__link" href="mailto:gerlin.pierrelouis@gmail.com">gerlin.pierrelouis@gmail.com</a>
+      </p>
+    </div>
   </section>
   
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
