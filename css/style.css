@@ -169,7 +169,7 @@ h6 {
     font-family: "Google Sans Flex", sans-serif;
     font-weight: 450;
     line-height: 1.35;
-    letter-spacing: -2%;
+    letter-spacing: -0.02em;
 }
 
 h3 {
@@ -217,12 +217,12 @@ section {
 }
 
 #hero,
-#about,
-#work,
+#about-me,
+#experience,
 #services,
 #fun,
 #projects,
-#contact {
+#contact-me {
     scroll-margin-top: clamp(4.5rem, 9vh, 6.75rem);
 }
 
@@ -541,7 +541,11 @@ img.section-shell__shot {
     min-height: 0;
     box-sizing: border-box;
     color: var(--base-paper);
-    overflow-wrap: anywhere;
+    /* Prefer whole words; avoid “UI-” style mid-token breaks */
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: none;
+    -webkit-hyphens: none;
 }
 
 .hero-headline .software-word,
@@ -553,6 +557,10 @@ img.section-shell__shot {
         var(--hero-fs-vw, 5.5) * (0.58vmin + 0.42vw) + var(--hero-fs-add)
     );
     line-height: 1.35;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: none;
 }
 
 /* Scramble wraps each glyph in <span> — give glyphs room so lines don’t crash */
@@ -817,7 +825,7 @@ img.section-shell__shot {
 
 .menu a .char,
 .menu-col h3,
-.menucol h6,
+.menu-col h6,
 .menu-col p {
     will-change: transform, opacity;
 }
