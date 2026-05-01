@@ -1698,12 +1698,6 @@ body.menu-open .nav-toggle:focus-visible {
     color: rgba(227, 223, 219, 0.65);
 }
 
-/* Smaller scale when mirroring Services / Fun / Projects / Contact */
-.nav.nav-shell-title .nav-logo h1 {
-    font-size: var(--section-title-shell-fs);
-    line-height: var(--section-title-shell-lh);
-}
-
 a {
     text-decoration: none;
 }
