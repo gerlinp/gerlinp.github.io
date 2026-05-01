@@ -1654,6 +1654,12 @@ body.menu-open .nav-toggle:focus-visible {
     z-index: 1;
 }
 
+/* When the menu is closed, hide the menu bubbles so they don't stack as unclickable ghost
+   boxes on top of the ambient layer at <1024px viewports. */
+.menu:not(.is-open) .bg-bubbles--menu {
+    display: none;
+}
+
 /* Laptop+ list (hidden <1024): own motion + timing in the 1024 media block. */
 .bg-bubbles--drawer {
     display: none;
