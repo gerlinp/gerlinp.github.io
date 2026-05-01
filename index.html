@@ -11,21 +11,22 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Boldonse&family=Gajraj+One&family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Orbitron:wght@600;700&display=swap" rel="stylesheet">
   <!-- Bump asset-v after CSS/JS changes so browsers/GitHub CDN fetch fresh files -->
-  <link rel="stylesheet" href="css/style.css?asset-v=20260430">
+  <link rel="stylesheet" href="css/style.css?asset-v=20260564">
 </head>
 <body>
 
+  <!-- Page floats: search `data-ambient-float`; ?inspectBubbles=1 pause+outline; ?bubbleNums=1 unique # on every bubble -->
   <ul class="bg-bubbles" aria-label="Floating background bubbles. Click for a quick highlight.">
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
+    <li data-ambient-float="1"></li>
+    <li data-ambient-float="2"></li>
+    <li data-ambient-float="3"></li>
+    <li data-ambient-float="4"></li>
+    <li data-ambient-float="5"></li>
+    <li data-ambient-float="6"></li>
+    <li data-ambient-float="7"></li>
+    <li data-ambient-float="8"></li>
+    <li data-ambient-float="9"></li>
+    <li data-ambient-float="10"></li>
   </ul>
 
   <div class="nav">
@@ -88,6 +89,18 @@
       </svg>
 
       <div class="menu-shell">
+        <ul class="bg-bubbles bg-bubbles--drawer" aria-hidden="true">
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
         <div class="menu-shell__top">
           <div class="menu-logo">
             <a class="menu-logo-link" href="#hero"><h1 class="nav-logo-title">Gerlin</h1></a>
@@ -308,7 +321,7 @@
     <header class="section-shell-head sticky-section-head">
       <h2 id="fun-heading" class="section-shell__title">
         Fun!
-        <span class="section-shell__title-note">Pop the bubbles</span>
+        <span class="section-shell__title-note">One minute. Smaller boxes score more.</span>
       </h2>
     </header>
     <div class="sticky-section-body fun-shell-body">
@@ -318,17 +331,50 @@
         aria-live="polite"
         aria-labelledby="fun-heading"
       >
-        <span class="fun-bubble-counter__digits" id="fun-bubble-counter-digits" aria-label="0"><span class="fun-bubble-counter__digit fun-bubble-counter__digit--inactive">0</span></span>
+        <span class="fun-bubble-counter__digits" id="fun-bubble-counter-digits" aria-label="0 points"><span class="fun-bubble-counter__digit fun-bubble-counter__digit--inactive">0</span></span>
+        <div class="fun-bubble-counter__timer-row" id="fun-bubble-countdown-row" hidden>
+          <span class="fun-bubble-counter__timer-caption">On the clock</span>
+          <span
+            class="fun-bubble-counter__timer-digits"
+            id="fun-bubble-countdown"
+            role="timer"
+            aria-live="off"
+          >1:00</span>
+        </div>
+        <button
+          type="button"
+          class="fun-bubble-counter__reset"
+          id="fun-bubble-counter-reset"
+          aria-label="New round—reset score, timer, bubble speed"
+        >
+          Reset
+        </button>
         <div class="fun-bubble-counter__gags" id="fun-bubble-counter-gags" aria-hidden="true">
-          <p class="fun-bubble-counter__gag-line" data-pop-min="3" data-pop-max="5">No prize for popping—sorry about that.</p>
-          <p class="fun-bubble-counter__gag-line" data-pop-min="10" data-pop-max="12">
-            Still nothing if you keep popping—there really isn&rsquo;t a reward down here.
+          <!-- Running: seconds left windows; done: buzzer (see script syncTimerGags) -->
+          <p
+            class="fun-bubble-counter__gag-line"
+            data-gag-running-only
+            data-gag-remain-min="31"
+            data-gag-remain-max="60"
+          >
+            The boxes get faster every click.
           </p>
-          <p class="fun-bubble-counter__gag-line fun-bubble-counter__gag-line--smh" data-pop-min="15" data-pop-max="19">
-            SMH
+          <p
+            class="fun-bubble-counter__gag-line"
+            data-gag-running-only
+            data-gag-remain-min="1"
+            data-gag-remain-max="30"
+          >
+            It&rsquo;s getting hard, ain&rsquo;t it?
           </p>
-          <p class="fun-bubble-counter__gag-line" data-pop-min="20" data-pop-max="999">
-            Maybe I&rsquo;ll turn this into a game.
+          <p
+            class="fun-bubble-counter__gag-line fun-bubble-counter__gag-line--orbitron-done"
+            data-gag-done-only
+          >
+            You got the highscore!
+          </p>
+          <p id="fun-bubble-counter-gag-reset-flash" class="fun-bubble-counter__gag-line fun-bubble-counter__gag-line--reset-note">
+            Score will not be saved
           </p>
         </div>
       </div>
@@ -363,8 +409,8 @@
   
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/SplitText.min.js"></script>
-  <script src="js/script.js?asset-v=20260430"></script>
-  <script src="js/software-scramble.js?asset-v=20260430"></script>
+  <script src="js/script.js?asset-v=20260565"></script>
+  <script src="js/software-scramble.js?asset-v=20260533"></script>
 
 </body>
 </html>

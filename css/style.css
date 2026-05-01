@@ -6,7 +6,7 @@
 
 :root {
     /* Main text column — nav + open menu shells track this + extra gutter */
-    --page-column-max: 46rem;
+    --page-column-max: 50rem;
     --nav-shell-extra: 3.5rem;
     --nav-shell-max: calc(var(--page-column-max) + var(--nav-shell-extra));
     --nav-shell-pad-x: clamp(0.75rem, 4vw, 2.5rem);
@@ -24,7 +24,7 @@
     --base-paper: #E3DFDB;
     /* software-scramble.js overwrites vw + rem offset from longest phrase — no clamp on size */
     --hero-fs-vw: 5.5;
-    --hero-fs-add: 0.75rem;
+    --hero-fs-add: 1.75rem;
     /* ~Mobile ref feel: slightly shorter band than old 4.5rem min, still scales with vh/svh */
     /* Min height clears the enlarged menu / close control */
     --nav-h: clamp(4.5rem, 6vmin + 2.4rem, 6.9rem);
@@ -119,11 +119,30 @@ body::after {
 }
 
 body.menu-open {
-    /* Switch bubble color when menu is open */
+    /*
+     * Faint blue on the gradient tint for accents that still read `--bubble-rgb`; actual floats use
+     * explicit greens via `body.menu-open .bg-bubbles li` (ambient, fullscreen `--menu`, drawer `--drawer`).
+     */
     --bubble-rgb: 0, 49, 110; /* #00316E */
     --bubble-a: 0.07;
     --bubble-a-2: 0.10;
     --bubble-a-3: 0.14;
+}
+
+body.menu-open .bg-bubbles li {
+    background-color: rgba(54, 131, 96, 0.36);
+    background-color: color-mix(in srgb, var(--base-100) 42%, transparent);
+}
+
+body.menu-open .bg-bubbles li:nth-child(4),
+body.menu-open .bg-bubbles li:nth-child(6) {
+    background-color: rgba(54, 131, 96, 0.48);
+    background-color: color-mix(in srgb, var(--base-100) 54%, transparent);
+}
+
+body.menu-open .bg-bubbles li:nth-child(9) {
+    background-color: rgba(40, 179, 63, 0.52);
+    background-color: color-mix(in srgb, var(--base-200) 58%, transparent);
 }
 
 /* Overlay has its own .menu-logo h1 — hide bar title so only one shows */
@@ -148,24 +167,70 @@ body.menu-open::after {
     pointer-events: none;
 }
 
-/* Behind menu overlay (nav z-index 10); above hero/sections (#hero z-index 2) */
-.bg-bubbles:not(.bg-bubbles--menu) {
-    z-index: 3;
+/*
+ * Decorative hero floats stay under page sections (sections z-index 7) so links/buttons
+ * aren’t swallowed; below `.nav` (z-index 10). Hero gaps still hit bubbles via `pointer-events`
+ * passthrough — see `.hero`.
+ */
+.bg-bubbles:not(.bg-bubbles--menu):not(.bg-bubbles--drawer) {
+    z-index: 6;
 }
 
-.bg-bubbles--menu li {
+.bg-bubbles--menu li,
+.bg-bubbles--drawer li {
     pointer-events: none;
 }
 
-.bg-bubbles:not(.bg-bubbles--menu) li {
+.bg-bubbles:not(.bg-bubbles--menu):not(.bg-bubbles--drawer) li {
     pointer-events: auto;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
 }
 
+/*
+ * Debug / DevTools: add ?inspectBubbles=1 to the URL — pauses ambient motion and draws a dashed
+ * ring so the inspect picker can latch onto `[data-ambient-float]` tiles.
+ */
+html.inspect-bubbles-active .bg-bubbles:not(.bg-bubbles--menu):not(.bg-bubbles--drawer) li {
+    animation-play-state: paused !important;
+    outline: 1px dashed rgba(180, 100, 255, 0.65);
+    outline-offset: 2px;
+}
+
+/* ?bubbleNums=1 — global indices 1…N in document order: ambient ul, menu ul, drawer ul */
+html.bubble-nums-debug-active .bg-bubbles > li .bubble-debug-num {
+    pointer-events: none;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    z-index: 4;
+    box-sizing: border-box;
+    min-width: 1.1em;
+    padding: 0 0.1em;
+    border-radius: 2px;
+    font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        monospace;
+    font-size: clamp(7px, 1.55vmin, 12px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    text-align: center;
+    color: #0a0f18;
+    background: rgba(255, 236, 120, 0.94);
+    box-shadow:
+        0 0 0 1px rgba(10, 15, 24, 0.35),
+        0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
 /* Phones: nav used to soak touches; bubbles can be tiny (10px) — widen tap targets, drop double‑tap‑zoom stall. */
 @media (pointer: coarse) {
-    .bg-bubbles:not(.bg-bubbles--menu) li:not(.bg-bubble--vanished) {
+    .bg-bubbles:not(.bg-bubbles--menu):not(.bg-bubbles--drawer) li {
         touch-action: manipulation;
         min-width: 44px;
         min-height: 44px;
@@ -186,6 +251,7 @@ body.menu-open::after {
     will-change: transform, opacity;
 }
 
+/* Box sizes → scoring tiers in js/script.js (`AMBIENT_SLOT_SIDE_PX`, same child order). */
 .bg-bubbles li:nth-child(1) { left: 10%; }
 .bg-bubbles li:nth-child(2) {
     left: 20%;
@@ -239,7 +305,7 @@ body.menu-open::after {
 }
 
 /* Click feedback on ::after only — never replaces li’s bubble-float / bubble-fade */
-.bg-bubbles:not(.bg-bubbles--menu) li::after {
+.bg-bubbles:not(.bg-bubbles--menu):not(.bg-bubbles--drawer) li::after {
     content: "";
     position: absolute;
     left: 50%;
@@ -253,7 +319,7 @@ body.menu-open::after {
     z-index: 1;
 }
 
-.bg-bubbles:not(.bg-bubbles--menu) li.bg-bubble--click-flash::after {
+.bg-bubbles:not(.bg-bubbles--menu):not(.bg-bubbles--drawer) li.bg-bubble--click-flash::after {
     animation: bubble-click-flash 0.48s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
@@ -277,7 +343,7 @@ body.menu-open::after {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .bg-bubbles:not(.bg-bubbles--menu) li.bg-bubble--click-flash::after {
+    .bg-bubbles:not(.bg-bubbles--menu):not(.bg-bubbles--drawer) li.bg-bubble--click-flash::after {
         animation: bubble-click-flash-reduce 0.12s ease forwards;
     }
 }
@@ -297,14 +363,6 @@ body.menu-open::after {
     }
 }
 
-/*
- * While popped: invisible + no clicks. bubble-float keeps running; JS respawns `<li>`
- * clone on bubble-float iteration so fade + floats restart from CSS on the next lap.
- */
-.bg-bubbles:not(.bg-bubbles--menu) li.bg-bubble--vanished {
-    pointer-events: none;
-}
-
 @keyframes bubble-float {
     0% { transform: translateY(0) rotate(0deg); }
     100% { transform: translateY(var(--bubble-travel)) rotate(var(--bubble-spin-end)); }
@@ -317,6 +375,22 @@ body.menu-open::after {
     /* Ease the fade instead of dropping off */
     94% { opacity: 0.45; }
     100% { opacity: 0; }
+}
+
+/* Off-canvas rail only: drift in from the viewport-right, exit left/up (vars on `.bg-bubbles--drawer`). */
+@keyframes bubble-float-drawer {
+    0% {
+        transform: translate3d(var(--bubble-drawer-x-in), 0, 0) rotate(0deg);
+    }
+
+    100% {
+        transform: translate3d(
+                var(--bubble-drawer-x-out),
+                var(--bubble-drawer-y-travel),
+                0
+            )
+            rotate(var(--bubble-spin-end));
+    }
 }
 
 img {
@@ -360,7 +434,9 @@ section {
 
 .hero {
     position: relative;
-    z-index: 2;
+    /* Above ambient floats (z-index 6); `#hero` is pass‑through except `.hero-title` + scroll chip (`pointer-events` on descendants). */
+    z-index: 7;
+    pointer-events: none;
     /* Same idea as .bg-bubbles: clip animated overflow so the scroll chip rise
        isn’t painted over the sections below during fast scroll */
     overflow: hidden;
@@ -398,7 +474,9 @@ section {
 
 .about {
     position: relative;
-    z-index: 2;
+    /* Above floats (z-index 6): pass-through prose so tiled hits reach bubbles — restore `auto` only on `:is(a,button)` */
+    z-index: 7;
+    pointer-events: none;
     width: 100%;
     max-width: var(--page-column-max);
     margin: 0 auto;
@@ -501,7 +579,8 @@ section {
 
 .work {
     position: relative;
-    z-index: 2;
+    z-index: 7;
+    pointer-events: none;
     width: 100%;
     max-width: var(--page-column-max);
     margin: 0 auto;
@@ -512,13 +591,20 @@ section {
 
 .section-shell {
     position: relative;
-    z-index: 2;
+    z-index: 7;
+    pointer-events: none;
     width: 100%;
     max-width: var(--page-column-max);
     margin: 0 auto;
     padding: clamp(3rem, 8vmin, 6rem) clamp(0.75rem, 4vw, 2.5rem);
     color: var(--base-paper);
     text-align: left;
+}
+
+.about :is(a, button),
+.work :is(a, button),
+.section-shell :is(a, button) {
+    pointer-events: auto;
 }
 
 .section-shell__title {
@@ -584,24 +670,38 @@ section {
     max-width: max-content;
 }
 
-/* Fun — oversized “odometer” for hero bubble pops */
+/* Fun — one full viewport tall; body column grows under sticky title */
+.section-shell.section-shell--fun {
+    min-height: 100vh;
+    min-height: 100svh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
+
 .section-shell--fun .fun-shell-body {
     display: flex;
     flex-direction: column;
-    gap: clamp(1rem, 3vmin, 1.75rem);
-    min-height: min(78vh, 44rem);
+    flex: 1 1 auto;
+    min-height: 0;
+    justify-content: center;
 }
 
 .fun-bubble-counter {
-    flex: 1;
+    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
     justify-content: center;
-    min-height: clamp(16rem, 58vmin, 34rem);
+    gap: clamp(0.55rem, 2.2vmin, 1rem);
+    min-height: 0;
     width: 100%;
-    padding-block: clamp(0.35rem, 1.25vmin, 0.85rem);
+    /* Nudge HUD slightly below geometric center under the sticky title */
+    padding-top: clamp(1.75rem, 8vmin, 4.5rem);
+    /* Room for gag lines docked bottom — avoids pulling the HUD off true vertical center */
+    padding-bottom: clamp(5rem, 16vmin, 7.25rem);
     box-sizing: border-box;
+    position: relative;
 }
 
 .fun-bubble-counter__label {
@@ -620,9 +720,11 @@ section {
 .fun-bubble-counter__digits {
     display: flex;
     flex-wrap: nowrap;
-    align-items: baseline;
+    align-items: center;
     justify-content: center;
-    gap: clamp(0.06em, 1.2vmin, 0.14em);
+    /* Gap between glyphs only — avoids `letter-spacing` trailing phantom width on one-char spans */
+    gap: clamp(0.1em, 1.85vmin, 0.22em);
+    align-self: stretch;
     margin-inline: auto;
     width: 100%;
     max-width: 100%;
@@ -631,17 +733,87 @@ section {
     font-family: Orbitron, system-ui, sans-serif;
     font-weight: 600;
     font-variant-numeric: tabular-nums;
-    letter-spacing: 0.08em;
-    line-height: 0.92;
+    letter-spacing: 0;
+    line-height: 1;
     text-align: center;
+    box-sizing: border-box;
     /* Fits two digits (~99 max) inside the column without overflowing narrow viewports */
     font-size: clamp(4.5rem, min(36vw, 32vh), 12rem);
 }
 
+.fun-bubble-counter__timer-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.28rem;
+    margin-top: 0;
+}
+
+.fun-bubble-counter__timer-caption {
+    font-family: "Google Sans Flex", sans-serif;
+    font-size: clamp(0.6rem, 1.5vw, 0.72rem);
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-align: center;
+    color: rgba(227, 223, 219, 0.48);
+}
+
+.fun-bubble-counter__timer-digits {
+    font-family: Orbitron, system-ui, sans-serif;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0;
+    line-height: 1;
+    text-align: center;
+    font-size: clamp(1.65rem, min(8vw, 6vh), 3.1rem);
+    color: var(--base-200);
+    text-shadow:
+        0 0 clamp(10px, 2vmin, 20px) color-mix(in srgb, var(--base-200) 36%, transparent),
+        0 0 1px rgba(1, 15, 41, 0.85);
+}
+
+.fun-bubble-counter__timer-digits--done {
+    opacity: 0.52;
+}
+
+.fun-bubble-counter__reset {
+    display: block;
+    margin-inline: auto;
+    margin-top: 0;
+    padding: clamp(0.38rem, 1.25vmin, 0.55rem) clamp(1rem, 3.5vmin, 1.35rem);
+    border: 1px solid rgba(227, 223, 219, 0.28);
+    border-radius: 999px;
+    background: transparent;
+    font-family: "Google Sans Flex", sans-serif;
+    font-size: clamp(0.68rem, 1.85vw, 0.82rem);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(227, 223, 219, 0.72);
+    cursor: pointer;
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.fun-bubble-counter__reset:hover {
+    color: rgba(227, 223, 219, 0.95);
+    border-color: rgba(var(--bubble-rgb), 0.45);
+    background: rgba(var(--bubble-rgb), 0.08);
+}
+
+.fun-bubble-counter__reset:focus-visible {
+    outline: 2px solid rgba(var(--bubble-rgb), 0.65);
+    outline-offset: 3px;
+}
+
 .fun-bubble-counter__digit {
-    display: inline-block;
+    display: block;
     flex: 0 0 auto;
-    min-width: 0.58em;
+    min-width: 0;
+    letter-spacing: 0;
     text-align: center;
 }
 
@@ -661,15 +833,16 @@ section {
         0 0 1px rgba(1, 15, 41, 0.85);
 }
 
-/* Staged gag lines — ease in/out at pop milestones (hooked up in script.js). */
+/* Timed gag lines — countdown windows + brief Reset note (script.js) */
 .fun-bubble-counter__gags {
-    position: relative;
-    margin: clamp(0.35rem, 2vmin, 0.95rem) auto 0;
-    /* Room for taller “SMH” line without clipping */
-    min-height: clamp(3em, 11vmin, 4.75rem);
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: clamp(0.75rem, 4vmin, 1.75rem);
+    margin: 0 auto;
+    min-height: clamp(4rem, 14vmin, 7rem);
     width: 100%;
     max-width: 22rem;
-    margin-inline: auto;
     pointer-events: none;
 }
 
@@ -705,14 +878,25 @@ section {
         visibility 0s linear 0s;
 }
 
-.fun-bubble-counter__gag-line--smh {
-    font-family: Boldonse, sans-serif;
+/* Post-buzzer line — same digital face as pop counter + clock */
+.fun-bubble-counter__gag-line--orbitron-done {
+    font-family: Orbitron, system-ui, sans-serif;
     font-style: normal;
-    font-size: clamp(1.85rem, 6.5vmin, 2.85rem);
-    font-weight: 400;
-    letter-spacing: clamp(0.22em, 2.5vmin, 0.4em);
-    text-transform: uppercase;
-    line-height: 1.05;
+    font-size: clamp(1.25rem, 5.25vmin, 2.15rem);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.1em;
+    text-transform: none;
+    line-height: 1.15;
+    color: var(--base-200);
+    text-shadow:
+        0 0 clamp(10px, 2.2vmin, 20px) color-mix(in srgb, var(--base-200) 36%, transparent),
+        0 0 1px rgba(1, 15, 41, 0.85);
+}
+
+.fun-bubble-counter__gag-line--reset-note {
+    font-style: italic;
+    font-size: clamp(0.7rem, 2vw, 0.9rem);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -898,6 +1082,8 @@ img.section-shell__shot {
 
 .hero-shell {
     position: relative;
+    /* Let pointer events reach ambient bubbles underneath; headline + chip opt back in below */
+    pointer-events: none;
     width: 100%;
     max-width: var(--nav-shell-max);
     margin-inline: auto;
@@ -1057,7 +1243,7 @@ img.section-shell__shot {
     align-self: center;
     font-family: Orbitron, "Google Sans Flex", sans-serif;
     color: green;
-    /* Shrink vs wrap: cap by column width (~uppercase phrase + tracking) */
+    /* Orbitron subline under Boldonse h2 — not the main scramble phrase size tokens */
     font-size: clamp(0.62rem, 2.4vw + 0.42rem, 1.5rem);
     font-size: min(
         clamp(0.62rem, 2.4vw + 0.42rem, 1.5rem),
@@ -1109,18 +1295,19 @@ img.section-shell__shot {
     -webkit-hyphens: none;
 }
 
+/* Boldonse h2 pair — size from `--hero-fs-*` (+ `software-scramble.js`) and container cap below */
 .hero-headline .software-word,
 .hero-headline .engineer-word {
     font-family: Boldonse, sans-serif;
     font-weight: 400;
-    /* JS-driven scale capped by hero column (.hero-title container) → shrink instead of wrap */
+    /* JS sets `--hero-fs-vw/add` on `<html>`; `#hero { … }` overrides add on narrow widths */
     --hero-word-fs-unclamped: calc(
         var(--hero-fs-vw, 5.5) * (0.58vmin + 0.42vw) + var(--hero-fs-add)
     );
     font-size: var(--hero-word-fs-unclamped);
     font-size: min(
         var(--hero-word-fs-unclamped),
-        calc((100cqw - clamp(2rem, 9vw, 4.5rem)) / 11.25)
+        calc((100cqw - clamp(2rem, 9vw, 4.5rem)) / 9.75)
     );
     line-height: 1.12;
     max-width: 100%;
@@ -1303,7 +1490,8 @@ body.menu-open .nav-toggle:focus-visible {
 /* Same horizontal band + max width as .nav-shell; columns live below */
 .menu-shell {
     position: relative;
-    z-index: 1;
+    /* Above fullscreen / drawer deco (z-index 1); dim is `.menu::before` z0 */
+    z-index: 2;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -1345,7 +1533,7 @@ body.menu-open .nav-toggle:focus-visible {
 
 /*
  * In-overlay close — hidden on mobile (bar toggle stays primary).
- * Visible tablet+ inside the drawer top row (nav bar toggle hides while open).
+ * Visible laptop+ (off-canvas) inside the drawer top row (bar toggle hides while open).
  */
 .menu-close {
     display: none;
@@ -1394,11 +1582,16 @@ body.menu-open .nav-toggle:focus-visible {
     fill: var(--base-paper);
 }
 
-/* Menu overlay bubbles (above curtain, below menu content) */
+/* Fullscreen SVG curtain floats — hidden once off-canvas activates (≥1024px, matches script). */
 .bg-bubbles--menu {
     position: absolute;
     inset: 0;
-    z-index: -1;
+    z-index: 1;
+}
+
+/* Laptop+ list (hidden <1024): own motion + timing in the 1024 media block. */
+.bg-bubbles--drawer {
+    display: none;
 }
 
 .menu-logo {
@@ -1447,10 +1640,10 @@ body.menu-open .nav-toggle:focus-visible {
 }
 
 /*
- * Tablet+: off-canvas side slide (cf. offcanvas.md) — fixed panel from the right (~375),
- * dimmed backdrop on .menu; fullscreen SVG curtain is disabled here.
+ * Laptop+ (1024px): off-canvas rail from the right — min 425px sheet, dimmed backdrop; fullscreen
+ * SVG curtain + `.bg-bubbles--menu` disabled (see script `matchesOffcanvasDrawerLayout`).
  */
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
     body.menu-open {
         overflow: hidden;
     }
@@ -1488,14 +1681,100 @@ body.menu-open .nav-toggle:focus-visible {
         display: none;
     }
 
+    /*
+     * Drawer floats sit inside `.menu-shell` (absolute inset) so they paint under the opaque
+     * paper panel; sibling `fixed` + z-index kept them permanently behind `.menu-shell` (z 2).
+     */
+    .menu.is-open .bg-bubbles--drawer {
+        display: block;
+        position: absolute;
+        inset: 0;
+        width: auto;
+        max-width: none;
+        height: 100%;
+        min-height: 100%;
+        z-index: 0;
+        /* Faster laps than fullscreen 25–40s floats; ingress from viewport-right (+X), sweep left/up */
+        --bubble-drawer-dur: 12s;
+        --bubble-drawer-dur-fast: 8s;
+        --bubble-drawer-dur-slow: 17.5s;
+        --bubble-drawer-x-in: clamp(72px, 34%, 240px);
+        --bubble-drawer-x-out: calc(-152% - 36px);
+        --bubble-drawer-y-travel: calc(-92vh - 72px);
+    }
+
+    /*
+     * Dedicated drawer `<li>` motion (same 10 markup as fullscreen menu floats, unrelated lane math).
+     * Replaces default `bubble-float` (rise from bottom) with `bubble-float-drawer`; keeps `bubble-fade`.
+     */
+    .bg-bubbles--drawer li {
+        bottom: -120px;
+        animation:
+            bubble-float-drawer var(--bubble-drawer-dur) linear infinite,
+            bubble-fade var(--bubble-drawer-dur) cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+    }
+
+    .bg-bubbles--drawer li:nth-child(2) {
+        animation-duration:
+            var(--bubble-drawer-dur-fast),
+            var(--bubble-drawer-dur-fast);
+        animation-delay: 0.45s, 0.45s;
+    }
+
+    .bg-bubbles--drawer li:nth-child(3) {
+        animation-delay: 1s, 1s;
+    }
+
+    .bg-bubbles--drawer li:nth-child(4) {
+        animation-duration:
+            calc(var(--bubble-drawer-dur) * 0.72),
+            calc(var(--bubble-drawer-dur) * 0.72);
+        animation-delay: 0.2s, 0.2s;
+    }
+
+    .bg-bubbles--drawer li:nth-child(5) {
+        animation-delay: 1.4s, 1.4s;
+    }
+
+    .bg-bubbles--drawer li:nth-child(6) {
+        animation-duration:
+            var(--bubble-drawer-dur-fast),
+            var(--bubble-drawer-dur-fast);
+        animation-delay: 0.75s, 0.75s;
+    }
+
+    .bg-bubbles--drawer li:nth-child(7) {
+        animation-delay: 1.85s, 1.85s;
+    }
+
+    .bg-bubbles--drawer li:nth-child(8) {
+        animation-duration:
+            var(--bubble-drawer-dur-slow),
+            var(--bubble-drawer-dur-slow);
+        animation-delay: 0.3s, 0.3s;
+    }
+
+    .bg-bubbles--drawer li:nth-child(9) {
+        animation-duration:
+            var(--bubble-drawer-dur-slow),
+            var(--bubble-drawer-dur-slow);
+        animation-delay: 0.6s, 0.6s;
+    }
+
+    .bg-bubbles--drawer li:nth-child(10) {
+        animation-delay: 1.1s, 1.1s;
+    }
+
     .menu-shell {
         position: fixed;
         top: 0;
         right: 0;
         bottom: 0;
         left: auto;
-        z-index: 1;
-        width: min(375px, 92vw);
+        z-index: 2;
+        isolation: isolate;
+        width: max(425px, min(92vw, 560px));
+        min-width: 425px;
         max-width: none;
         height: 100%;
         min-height: 100svh;
@@ -1507,7 +1786,7 @@ body.menu-open .nav-toggle:focus-visible {
         background: var(--base-paper);
         box-shadow: -12px 0 40px rgba(1, 15, 41, 0.2);
         box-sizing: border-box;
-        /* Closed: peel off-screen — without this the panel stays a permanent beige rail at ≥768px */
+        /* Closed: peel off-screen — permanent rail glitch if omitted */
         transform: translateX(100%);
         transition: transform 0.38s cubic-bezier(0.22, 0.94, 0.32, 1);
     }
@@ -1515,6 +1794,12 @@ body.menu-open .nav-toggle:focus-visible {
     .menu.is-open .menu-shell {
         transform: translateX(0);
         will-change: transform;
+    }
+
+    .menu-shell__top,
+    .menu-shell__cols {
+        position: relative;
+        z-index: 1;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -1525,11 +1810,18 @@ body.menu-open .nav-toggle:focus-visible {
         .menu.is-open .menu-shell {
             will-change: auto;
         }
+
+        .bg-bubbles--drawer li {
+            animation: none;
+            opacity: 0.5;
+            transform: none;
+        }
     }
 
+    /* Drawer had `line-height: 1.12`, which tightened link rows vs fullscreen `1.35`. */
     .menu-col a {
         font-size: clamp(1.65rem, 4.25vmin, 2.5rem);
-        line-height: 1.12;
+        line-height: 1.35;
         letter-spacing: -0.015em;
         width: auto;
         max-width: 100%;
@@ -1619,14 +1911,14 @@ body.menu-open .nav-toggle:focus-visible {
 @media (max-width: 768px) {
     #hero {
         --hero-fs-vw: 6.85;
-        --hero-fs-add: 1rem;
+        --hero-fs-add: 2rem;
     }
 }
 
 @media (max-width: 520px) {
     #hero {
         --hero-fs-vw: 7.1;
-        --hero-fs-add: 1.05rem;
+        --hero-fs-add: 2.05rem;
     }
 
     .hero-headline .software-word,
