@@ -30,9 +30,23 @@ class TextScramble {
       opts.startWindow ?? SCRAMBLE_START_WINDOW_DEFAULT;
     this.scrambleSpan = opts.scrambleSpan ?? SCRAMBLE_SPAN_DEFAULT;
     this.scatterProb = opts.scatterProb ?? 0.28;
+    this.aborted = false;
+    this.frameRequest = 0;
+  }
+
+  cancel() {
+    this.aborted = true;
+    cancelAnimationFrame(this.frameRequest);
+    this.frameRequest = 0;
+    if (typeof this.resolve === 'function') {
+      const r = this.resolve;
+      this.resolve = undefined;
+      r();
+    }
   }
 
   setText(newText) {
+    this.aborted = false;
     const oldText = this.el.innerText;
     const length = Math.max(oldText.length, newText.length);
     const promise = new Promise((resolve) => {
@@ -54,6 +68,7 @@ class TextScramble {
   }
 
   update() {
+    if (this.aborted) return;
     let output = '';
     let complete = 0;
     for (let i = 0, n = this.queue.length; i < n; i++) {
@@ -73,8 +88,12 @@ class TextScramble {
     }
     this.el.innerHTML = output;
     if (complete === this.queue.length) {
-      this.resolve();
-    } else {
+      if (!this.aborted && typeof this.resolve === 'function') {
+        const r = this.resolve;
+        this.resolve = undefined;
+        r();
+      }
+    } else if (!this.aborted) {
       this.frameRequest = requestAnimationFrame(this.update);
       this.frame++;
     }

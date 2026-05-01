@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Boldonse&family=Gajraj+One&family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Orbitron:wght@600;700&display=swap" rel="stylesheet">
   <!-- Bump asset-v after CSS/JS changes so browsers/GitHub CDN fetch fresh files -->
-  <link rel="stylesheet" href="css/style.css?asset-v=20260570">
+  <link rel="stylesheet" href="css/style.css?asset-v=20260578">
 </head>
 <body>
 
@@ -321,7 +321,7 @@
     <header class="section-shell-head sticky-section-head">
       <h2 id="fun-heading" class="section-shell__title">
         Fun!
-        <span class="section-shell__title-note">One minute. Smaller boxes score more.</span>
+        <span class="section-shell__title-note">Start the clock. Smaller boxes score more.</span>
       </h2>
     </header>
     <div class="sticky-section-body fun-shell-body">
@@ -331,20 +331,34 @@
         aria-live="polite"
         aria-labelledby="fun-heading"
       >
-        <span class="fun-bubble-counter__digits" id="fun-bubble-counter-digits" aria-label="0 points"><span class="fun-bubble-counter__digit fun-bubble-counter__digit--inactive">0</span></span>
-        <div class="fun-bubble-counter__timer-row" id="fun-bubble-countdown-row" hidden>
-          <span class="fun-bubble-counter__timer-caption">On the clock</span>
-          <span
-            class="fun-bubble-counter__timer-digits"
-            id="fun-bubble-countdown"
-            role="timer"
-            aria-live="off"
-          >1:00</span>
+        <div class="fun-bubble-counter__lobby" id="fun-bubble-counter-lobby">
+          <button
+            type="button"
+            class="fun-bubble-counter__start"
+            id="fun-bubble-counter-start"
+            aria-label="Start one-minute round"
+          >
+            Start
+          </button>
+        </div>
+        <div class="fun-bubble-counter__hud" id="fun-bubble-counter-hud" hidden>
+          <span class="fun-bubble-counter__digits" id="fun-bubble-counter-digits" aria-label="0 points"><span class="fun-bubble-counter__digit fun-bubble-counter__digit--inactive">0</span></span>
+          <div class="fun-bubble-counter__timer-row" id="fun-bubble-countdown-row">
+            <span class="fun-bubble-counter__timer-caption">On the clock</span>
+            <span
+              class="fun-bubble-counter__timer-digits"
+              id="fun-bubble-countdown"
+              role="timer"
+              aria-live="off"
+            >1:00</span>
+          </div>
         </div>
         <button
           type="button"
-          class="fun-bubble-counter__reset"
+          class="fun-bubble-counter__reset fun-bubble-counter__reset--concealed-until-done"
           id="fun-bubble-counter-reset"
+          aria-hidden="true"
+          tabindex="-1"
           aria-label="New round—reset score, timer, bubble speed"
         >
           Reset
@@ -409,8 +423,8 @@
   
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/SplitText.min.js"></script>
-  <script src="js/script.js?asset-v=20260570"></script>
-  <script src="js/software-scramble.js?asset-v=20260533"></script>
+  <script src="js/script.js?asset-v=20260584"></script>
+  <script src="js/software-scramble.js?asset-v=20260534"></script>
 
 </body>
 </html>

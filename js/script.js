@@ -691,23 +691,26 @@ const closeMenu = (afterClose) => {
   const FLASH_CLASS = 'bg-bubble--click-flash';
   const FLASH_NAMES = new Set(['bubble-click-flash', 'bubble-click-flash-reduce']);
 
-  /** Each pop appends here with `{ indexWithinList, t, points }` — HUD shows summed `points`; pace uses `.length`. */
+  /** Each pop appends `{ indexWithinList, t, points }` — HUD + pace both use summed `points`. */
   const ambientBubblePopLog = [];
   window.ambientBubblePopLog = ambientBubblePopLog;
-  /** When the Fun countdown hits 0, pops are ignored until `resetAmbientBubbleFun()`. */
-  let ambientBubbleFunPopsFrozen = false;
+
+  function ambientLoggedScoreSum() {
+    return ambientBubblePopLog.reduce(
+      (acc, entry) =>
+        acc + (typeof entry?.points === 'number' && entry.points > 0 ? entry.points : 1),
+      0,
+    );
+  }
+  /** Score + pace + HUD pace inlines — on during the timed round; cleared on buzzer so pops stay cosmetic-only. */
+  let ambientFunRoundScoringEnabled = false;
   Object.defineProperty(window, 'ambientBubblePopCount', {
     enumerable: false,
     get: () => ambientBubblePopLog.length,
   });
   Object.defineProperty(window, 'ambientBubbleFunScore', {
     enumerable: false,
-    get: () =>
-      ambientBubblePopLog.reduce(
-        (acc, entry) =>
-          acc + (typeof entry?.points === 'number' && entry.points > 0 ? entry.points : 1),
-        0,
-      ),
+    get: ambientLoggedScoreSum,
   });
 
   /** Nominal CSS side length per `li:nth-child(1)…(10)` (.bg-bubbles in style.css). */
@@ -723,12 +726,18 @@ const closeMenu = (afterClose) => {
   /** Expand pointer slop so tiny tiles match ~44px comfort (esp. mouse / fine pointer). */
   const AMBIENT_MIN_COMFORT_HIT_PX = 44;
 
-  const AMBIENT_PACE_MAX_POPS = 99;
-  const AMBIENT_PACE_MIN_MULT = 0.14;
-  /** Each respawn (~one pop logged): duration × this factor (~12% faster vs previous spawn each click). */
-  const AMBIENT_PACE_FACTOR_PER_POP = 0.88;
+  /**
+   * Duration multiplier = factor ^ (runningScore ÷ SCORE_PER_STEP). Tuned so ~75 cumulative pts
+   * stays clickable (softer factor, larger step than 0.82 / 3).
+   */
+  const AMBIENT_PACE_FACTOR = 0.92;
+  const AMBIENT_PACE_SCORE_PER_STEP = 8;
+  /** Narrow viewports bump exponent a bit (~14%) so taps feel suitably snappy on thumb targets. */
+  const AMBIENT_PACE_SCORE_PER_STEP_MOBILE = 7;
   /** Matches `.bg-bubbles li:nth-child(1)…(10)` base float seconds (bubble-float + bubble-fade). */
   const AMBIENT_FLOAT_BASE_SEC = [25, 17, 25, 22, 25, 25, 25, 40, 40, 25];
+  const AMBIENT_PICKUP_OGG_SRC = 'css/pickup.ogg';
+  const AMBIENT_PICKUP_POOL_SIZE = 6;
 
   function ambientBubblePaceRespectsReducedMotion() {
     return (
@@ -737,11 +746,43 @@ const closeMenu = (afterClose) => {
     );
   }
 
-  /**
-   * Duration multiplier for the next spawned ambient `<li>` only (inline `animation-duration`).
-   * Uses pop count **after** the current pop; factor 0.88^n — steeper accel per tap toward the floor at 99 pops.
-   * floored — so repeated clicks escalate pace in clear steps toward the cap at 99 pops.
-   */
+  function ambientPaceViewportLikelyMobile() {
+    return (
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(max-width: 640px)').matches
+    );
+  }
+
+  function ambientPaceScorePerStepNow() {
+    if (ambientBubblePaceRespectsReducedMotion()) return AMBIENT_PACE_SCORE_PER_STEP;
+    return ambientPaceViewportLikelyMobile()
+      ? AMBIENT_PACE_SCORE_PER_STEP_MOBILE
+      : AMBIENT_PACE_SCORE_PER_STEP;
+  }
+
+  /** @type {HTMLAudioElement[] | null} */
+  let ambientPickupAudioPool = null;
+  let ambientPickupAudioPoolIx = 0;
+
+  function playAmbientBubblePickupSfx() {
+    if (typeof Audio === 'undefined' || ambientBubblePaceRespectsReducedMotion()) return;
+    try {
+      if (!ambientPickupAudioPool) {
+        ambientPickupAudioPool = Array.from({ length: AMBIENT_PICKUP_POOL_SIZE }, () => {
+          const a = new Audio(AMBIENT_PICKUP_OGG_SRC);
+          a.preload = 'auto';
+          return a;
+        });
+      }
+      const clip = ambientPickupAudioPool[ambientPickupAudioPoolIx];
+      ambientPickupAudioPoolIx = (ambientPickupAudioPoolIx + 1) % AMBIENT_PICKUP_POOL_SIZE;
+      clip.currentTime = 0;
+      void clip.play().catch(() => {});
+    } catch {
+      /* ignore */
+    }
+  }
+
   function ambientPointsForSlotIndex(indexWithinList) {
     const nSlots = AMBIENT_SLOT_SIDE_PX.length;
     if (
@@ -753,13 +794,15 @@ const closeMenu = (afterClose) => {
     return typeof pts === 'number' && pts > 0 ? pts : 1;
   }
 
+  /**
+   * Next-tile animation duration multiplier (inline `animation-duration` on spawned `<li>`).
+   * Uses cumulative Fun score — big tiles accelerate you less per tap than many small/high-point pops.
+   */
   function ambientPaceMultForCurrentLog() {
     if (ambientBubblePaceRespectsReducedMotion()) return 1;
-    const n = Math.min(Math.max(ambientBubblePopLog.length, 0), AMBIENT_PACE_MAX_POPS);
-    return Math.max(
-      AMBIENT_PACE_MIN_MULT,
-      Math.pow(AMBIENT_PACE_FACTOR_PER_POP, n),
-    );
+    const score = ambientLoggedScoreSum();
+    const expo = score / ambientPaceScorePerStepNow();
+    return Math.pow(AMBIENT_PACE_FACTOR, expo);
   }
 
   function cancelAmbientLiAnimations(li) {
@@ -814,46 +857,8 @@ const closeMenu = (afterClose) => {
     }
   }
 
-  function ambientGhostAfterPopRespectsReduce() {
-    return (
-      typeof window.matchMedia === 'function' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    );
-  }
-
-  /** Red “ghost” silhouette where the tile was — embraces leftover mobile layers as a deliberate bleed */
-  function spawnAmbientBubblePopGhost(rect) {
-    if (!(rect && rect.width >= 3 && rect.height >= 3)) return;
-    const el = document.createElement('div');
-    el.className = 'ambient-bubble-pop-ghost';
-    el.setAttribute('aria-hidden', 'true');
-    if (ambientGhostAfterPopRespectsReduce()) el.classList.add('ambient-bubble-pop-ghost--reduce');
-    el.style.left = `${Math.round(rect.left)}px`;
-    el.style.top = `${Math.round(rect.top)}px`;
-    el.style.width = `${Math.round(rect.width)}px`;
-    el.style.height = `${Math.round(rect.height)}px`;
-    document.body.appendChild(el);
-
-    const dismiss = () => {
-      try {
-        el.remove();
-      } catch {
-        /* ignore */
-      }
-    };
-    el.addEventListener('animationend', dismiss, { once: true });
-    window.setTimeout(dismiss, ambientGhostAfterPopRespectsReduce() ? 260 : 1100);
-  }
-
   /** Insert a fresh `<li>` (never clone tapped nodes — avoids inheriting brittle animation state). */
   function replacePoppedAmbientLi(li, indexWithinList) {
-    let ghostRect = null;
-    try {
-      if (li instanceof HTMLElement) ghostRect = li.getBoundingClientRect();
-    } catch {
-      ghostRect = null;
-    }
-
     teardownAmbientBubbleForRemoval(li);
     const parent = li.parentElement;
     if (!(parent instanceof HTMLUListElement)) return;
@@ -863,6 +868,7 @@ const closeMenu = (afterClose) => {
     if (amb !== null && amb !== '') fresh.setAttribute('data-ambient-float', amb);
 
     if (
+      ambientFunRoundScoringEnabled &&
       typeof indexWithinList === 'number' &&
       indexWithinList >= 0 &&
       indexWithinList < AMBIENT_FLOAT_BASE_SEC.length &&
@@ -878,7 +884,6 @@ const closeMenu = (afterClose) => {
 
     const swap = () => {
       li.replaceWith(fresh);
-      spawnAmbientBubblePopGhost(ghostRect);
     };
     /* One frame defer: lets Chrome recycle the old layer before the new <li> is composited */
     if (typeof window.requestAnimationFrame === 'function') {
@@ -896,13 +901,15 @@ const closeMenu = (afterClose) => {
         ? [...parent.children].indexOf(li)
         : -1;
 
-    ambientBubblePopLog.push({
-      indexWithinList,
-      t: typeof performance?.now === 'function' ? performance.now() : Date.now(),
-      points: ambientPointsForSlotIndex(indexWithinList),
-    });
-
-    window.dispatchEvent(new CustomEvent('ambient-bubble-pop'));
+    playAmbientBubblePickupSfx();
+    if (ambientFunRoundScoringEnabled) {
+      ambientBubblePopLog.push({
+        indexWithinList,
+        t: typeof performance?.now === 'function' ? performance.now() : Date.now(),
+        points: ambientPointsForSlotIndex(indexWithinList),
+      });
+      window.dispatchEvent(new CustomEvent('ambient-bubble-pop'));
+    }
     replacePoppedAmbientLi(li, indexWithinList);
   }
 
@@ -918,7 +925,6 @@ const closeMenu = (afterClose) => {
 
   function tryPopAmbientBubble(li) {
     if (!(li instanceof HTMLLIElement) || li.classList.contains(FLASH_CLASS)) return false;
-    if (ambientBubbleFunPopsFrozen) return false;
 
     let failSafeId = 0;
     let done = false;
@@ -1016,11 +1022,6 @@ const closeMenu = (afterClose) => {
   /** @returns {boolean} true if this gesture should consume the follow-up synthetic `click` */
   function ambientActivateHits(ul, lis, ev) {
     if (!(ul instanceof HTMLUListElement) || lis.length === 0) return false;
-    if (ambientBubbleFunPopsFrozen) {
-      ev.preventDefault();
-      ev.stopPropagation();
-      return true;
-    }
     ev.preventDefault();
     ev.stopPropagation();
     for (const li of lis) tryPopAmbientBubble(li);
@@ -1084,20 +1085,29 @@ const closeMenu = (afterClose) => {
       });
     });
 
-  /** Called when the Fun-section minute timer reaches 0 (no pops scored until reset). */
-  window.reportAmbientBubbleFunTimeUp = function reportAmbientBubbleFunTimeUp() {
-    ambientBubbleFunPopsFrozen = true;
-  };
-
-  /** Clears Fun counter pace state; removes inline durations so hero floats return to CSS timings. */
-  window.resetAmbientBubbleFun = function resetAmbientBubbleFun() {
-    ambientBubbleFunPopsFrozen = false;
-    ambientBubblePopLog.length = 0;
+  function stripAmbientFunBubbleInlineDuration() {
     document
       .querySelectorAll('.bg-bubbles:not(.bg-bubbles--menu):not(.bg-bubbles--drawer) > li')
       .forEach((node) => {
         if (node instanceof HTMLElement) node.style.removeProperty('animation-duration');
       });
+  }
+
+  /** Called when the Fun-section minute timer reaches 0 — scoring/pace ramp off; pops stay playable. */
+  window.reportAmbientBubbleFunTimeUp = function reportAmbientBubbleFunTimeUp() {
+    ambientFunRoundScoringEnabled = false;
+    stripAmbientFunBubbleInlineDuration();
+  };
+
+  /** Enables score + escalating pace — call when Fun Start finishes. */
+  window.enableAmbientFunRoundScoring = function enableAmbientFunRoundScoring() {
+    ambientFunRoundScoringEnabled = true;
+  };
+
+  window.resetAmbientBubbleFun = function resetAmbientBubbleFun() {
+    ambientFunRoundScoringEnabled = false;
+    ambientBubblePopLog.length = 0;
+    stripAmbientFunBubbleInlineDuration();
     window.dispatchEvent(new CustomEvent('ambient-bubble-pop', { detail: { fromReset: true } }));
   };
 })();
@@ -1106,6 +1116,11 @@ const closeMenu = (afterClose) => {
   /** First-pop countdown: exactly 1 minute wall time (M:SS display). */
   const FUN_POP_COUNTDOWN_SEC = 1 * 60;
   const FUN_SCORE_DISPLAY_MAX = 999;
+  const FUN_POST_ROUND_BTN_LABEL = 'Play again';
+  const FUN_POST_ROUND_BTN_ARIA = 'Play again—return to lobby for another round';
+  const FUN_LOBBY_RESET_BTN_LABEL = 'Reset';
+  const FUN_LOBBY_RESET_BTN_ARIA =
+    'New round—reset score, timer, bubble speed';
 
   const el = document.getElementById('fun-bubble-counter-digits');
   const gagsWrap = document.getElementById('fun-bubble-counter-gags');
@@ -1117,10 +1132,74 @@ const closeMenu = (afterClose) => {
   /** @type {ReturnType<typeof window.setTimeout> | null} */
   let gagResetFlashId = null;
 
+  const lobby = document.getElementById('fun-bubble-counter-lobby');
+  const hud = document.getElementById('fun-bubble-counter-hud');
+  const startBtn = document.getElementById('fun-bubble-counter-start');
+  const resetBtn = document.getElementById('fun-bubble-counter-reset');
+
   const countdownRow = document.getElementById('fun-bubble-countdown-row');
   const countdownEl = document.getElementById('fun-bubble-countdown');
 
-  if (!el) return;
+  if (
+    !el ||
+    !(lobby instanceof HTMLElement) ||
+    !(hud instanceof HTMLElement) ||
+    !(startBtn instanceof HTMLButtonElement)
+  )
+    return;
+
+  for (const node of gagTimerLines) {
+    if (node instanceof HTMLElement && !node.dataset.gagFinalText)
+      node.dataset.gagFinalText = node.textContent.trim();
+  }
+  if (gagResetFlash instanceof HTMLElement && !gagResetFlash.dataset.gagFinalText)
+    gagResetFlash.dataset.gagFinalText = gagResetFlash.textContent.trim();
+
+  const FUN_GAG_SCRAMBLE_OPTS = Object.freeze({
+    startWindow: 20,
+    scrambleSpan: 36,
+    scatterProb: 0.3,
+  });
+
+  function funGagsPrefersReducedMotion() {
+    return (
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    );
+  }
+
+  function cancelFunGagScramble(node) {
+    if (!(node instanceof HTMLElement)) return;
+    const fx = node._funBubbleGagFx;
+    if (fx && typeof fx.cancel === 'function') fx.cancel();
+    node._funBubbleGagFx = null;
+  }
+
+  function restoreFunGagPlainText(node) {
+    if (!(node instanceof HTMLElement)) return;
+    const t = node.dataset.gagFinalText;
+    if (typeof t === 'string' && t !== '') node.textContent = t;
+  }
+
+  /** Assumes `--visible` is already applied when scrambling in. */
+  function runFunGagScramble(node) {
+    if (!(node instanceof HTMLElement)) return;
+    cancelFunGagScramble(node);
+    const finalText = node.dataset.gagFinalText ?? '';
+    if (!finalText) return;
+
+    if (funGagsPrefersReducedMotion() || typeof TextScramble === 'undefined') {
+      node.textContent = finalText;
+      return;
+    }
+
+    node.textContent = '';
+    const fx = new TextScramble(node, FUN_GAG_SCRAMBLE_OPTS);
+    node._funBubbleGagFx = fx;
+    void fx.setText(finalText).finally(() => {
+      if (node._funBubbleGagFx === fx) node._funBubbleGagFx = null;
+    });
+  }
 
   /** @type {'idle' | 'running' | 'done'} */
   let countdownPhase = 'idle';
@@ -1147,8 +1226,11 @@ const closeMenu = (afterClose) => {
 
   function hideAllTimerGagLines() {
     for (const node of gagTimerLines) {
-      if (node instanceof HTMLElement)
-        node.classList.remove('fun-bubble-counter__gag-line--visible');
+      if (!(node instanceof HTMLElement)) continue;
+      cancelFunGagScramble(node);
+      node._funGagWasVisible = false;
+      node.classList.remove('fun-bubble-counter__gag-line--visible');
+      restoreFunGagPlainText(node);
     }
   }
 
@@ -1180,7 +1262,17 @@ const closeMenu = (afterClose) => {
           r <= mx;
       }
 
+      const wasVisible = node._funGagWasVisible === true;
+      node._funGagWasVisible = hit;
+
+      if (wasVisible && !hit) {
+        cancelFunGagScramble(node);
+        restoreFunGagPlainText(node);
+      }
+
       node.classList.toggle('fun-bubble-counter__gag-line--visible', hit);
+
+      if (!wasVisible && hit) runFunGagScramble(node);
     }
   }
 
@@ -1189,6 +1281,8 @@ const closeMenu = (afterClose) => {
     if (!(countdownEl instanceof HTMLElement)) return;
     countdownEl.textContent = formatCountdownRemain(countdownRemainSec);
     const done = countdownRemainSec <= 0;
+    if (el instanceof HTMLElement)
+      el.classList.toggle('fun-bubble-counter__digits--time-up', done);
     countdownEl.classList.toggle('fun-bubble-counter__timer-digits--done', done);
     countdownEl.setAttribute(
       'aria-valuetext',
@@ -1204,6 +1298,11 @@ const closeMenu = (afterClose) => {
       window.clearTimeout(gagResetFlashId);
       gagResetFlashId = null;
     }
+    if (gagResetFlash instanceof HTMLElement) {
+      gagResetFlash.classList.remove('fun-bubble-counter__gag-line--visible');
+      cancelFunGagScramble(gagResetFlash);
+      restoreFunGagPlainText(gagResetFlash);
+    }
   }
 
   function triggerResetGagFlash() {
@@ -1211,9 +1310,12 @@ const closeMenu = (afterClose) => {
     clearResetGagFlash();
     hideAllTimerGagLines();
     gagResetFlash.classList.add('fun-bubble-counter__gag-line--visible');
+    runFunGagScramble(gagResetFlash);
     gagResetFlashId = window.setTimeout(() => {
       gagResetFlashId = null;
       gagResetFlash.classList.remove('fun-bubble-counter__gag-line--visible');
+      cancelFunGagScramble(gagResetFlash);
+      restoreFunGagPlainText(gagResetFlash);
       syncTimerGags();
     }, RESET_GAG_VISIBLE_MS);
   }
@@ -1226,60 +1328,85 @@ const closeMenu = (afterClose) => {
     if (countdownRow instanceof HTMLElement) countdownRow.hidden = false;
   }
 
-  function syncPopCountdownFromLog(popCount, fromResetButton) {
-    if (popCount <= 0) {
-      countdownPhase = 'idle';
-      stopCountdownInterval();
-      countdownRemainSec = FUN_POP_COUNTDOWN_SEC;
-      if (countdownEl instanceof HTMLElement) {
-        countdownEl.textContent = formatCountdownRemain(countdownRemainSec);
-        countdownEl.classList.remove('fun-bubble-counter__timer-digits--done');
-        countdownEl.removeAttribute('aria-valuetext');
-      }
-      syncTimerGags();
-      /* After Reset: show full minute primed; first load stays hidden until first pop */
-      if (fromResetButton) {
-        showCountdownRow();
-      } else {
-        hideCountdownRow();
-      }
-      return;
+  function syncIdleCountdownChrome() {
+    countdownPhase = 'idle';
+    stopCountdownInterval();
+    countdownRemainSec = FUN_POP_COUNTDOWN_SEC;
+    if (countdownEl instanceof HTMLElement) {
+      countdownEl.textContent = formatCountdownRemain(countdownRemainSec);
+      countdownEl.classList.remove('fun-bubble-counter__timer-digits--done');
+      countdownEl.removeAttribute('aria-valuetext');
     }
+    if (el instanceof HTMLElement) el.classList.remove('fun-bubble-counter__digits--time-up');
+    syncTimerGags();
+  }
 
-    if (countdownPhase === 'idle') {
-      countdownPhase = 'running';
-      countdownRemainSec = FUN_POP_COUNTDOWN_SEC;
-      stopCountdownInterval();
-      showCountdownRow();
-      paintCountdownUI();
-      countdownIntervalId = window.setInterval(() => {
-        countdownRemainSec -= 1;
-        paintCountdownUI();
-        if (countdownRemainSec <= 0) {
-          stopCountdownInterval();
-          countdownPhase = 'done';
-          syncTimerGags();
-          if (typeof window.reportAmbientBubbleFunTimeUp === 'function') {
-            window.reportAmbientBubbleFunTimeUp();
-          }
-        }
-      }, 1000);
+  function concealFunResetButton() {
+    if (!(resetBtn instanceof HTMLButtonElement)) return;
+    resetBtn.classList.add('fun-bubble-counter__reset--concealed-until-done');
+    resetBtn.classList.remove('fun-bubble-counter__reset--visible-after-done');
+    resetBtn.textContent = FUN_LOBBY_RESET_BTN_LABEL;
+    resetBtn.setAttribute('aria-label', FUN_LOBBY_RESET_BTN_ARIA);
+    resetBtn.setAttribute('aria-hidden', 'true');
+    resetBtn.setAttribute('tabindex', '-1');
+  }
+
+  function revealFunResetButton() {
+    if (!(resetBtn instanceof HTMLButtonElement)) return;
+    resetBtn.classList.remove('fun-bubble-counter__reset--concealed-until-done');
+    resetBtn.classList.add('fun-bubble-counter__reset--visible-after-done');
+    resetBtn.textContent = FUN_POST_ROUND_BTN_LABEL;
+    resetBtn.setAttribute('aria-label', FUN_POST_ROUND_BTN_ARIA);
+    resetBtn.removeAttribute('aria-hidden');
+    resetBtn.removeAttribute('tabindex');
+    try {
+      resetBtn.focus({ preventScroll: true });
+    } catch {
+      resetBtn.focus();
     }
   }
 
-  const syncDigitsFromFunPopLog = (ev) => {
-    const fromResetButton = ev?.detail?.fromReset === true;
-    const log = funPopLog();
-    const physicalPops = log.length;
-    const totalScore = log.reduce(
-      (sum, e) =>
-        sum + (typeof e.points === 'number' && e.points > 0 ? e.points : 1),
-      0,
-    );
-    const displayScore = Math.min(Math.max(totalScore, 0), FUN_SCORE_DISPLAY_MAX);
-    /* One “0” at start; then total points (clamped) without leading zeros */
-    const s = displayScore === 0 ? '0' : String(displayScore);
+  function showLobbyHideHud() {
+    lobby.hidden = false;
+    hud.hidden = true;
+  }
 
+  function showHudHideLobby() {
+    lobby.hidden = true;
+    hud.hidden = false;
+  }
+
+  /** Countdown ticks only after Start — not wired to pops. */
+  function beginPlayingCountdown() {
+    countdownPhase = 'running';
+    countdownRemainSec = FUN_POP_COUNTDOWN_SEC;
+    stopCountdownInterval();
+    showCountdownRow();
+    paintCountdownUI();
+    countdownIntervalId = window.setInterval(() => {
+      countdownRemainSec -= 1;
+      paintCountdownUI();
+      if (countdownRemainSec <= 0) {
+        stopCountdownInterval();
+        countdownPhase = 'done';
+        syncTimerGags();
+        if (typeof window.reportAmbientBubbleFunTimeUp === 'function') {
+          window.reportAmbientBubbleFunTimeUp();
+        }
+        revealFunResetButton();
+      }
+    }, 1000);
+  }
+
+  function syncAfterResetRound() {
+    syncIdleCountdownChrome();
+    concealFunResetButton();
+    showLobbyHideHud();
+    hideCountdownRow();
+  }
+
+  function paintDigitSpans(displayScore) {
+    const s = displayScore === 0 ? '0' : String(displayScore);
     el.replaceChildren();
     for (let i = 0; i < s.length; i++) {
       const span = document.createElement('span');
@@ -1292,15 +1419,81 @@ const closeMenu = (afterClose) => {
       el.appendChild(span);
     }
     el.setAttribute('aria-label', `${displayScore} points`);
+  }
 
-    syncPopCountdownFromLog(physicalPops, fromResetButton);
-    if (fromResetButton) triggerResetGagFlash();
+  const syncDigitsFromFunPopLog = (ev) => {
+    const fromResetButton = ev?.detail?.fromReset === true;
+    const log = funPopLog();
+    const totalScore = log.reduce(
+      (sum, e) =>
+        sum + (typeof e.points === 'number' && e.points > 0 ? e.points : 1),
+      0,
+    );
+    const displayScore = Math.min(Math.max(totalScore, 0), FUN_SCORE_DISPLAY_MAX);
+    paintDigitSpans(displayScore);
+    if (fromResetButton) {
+      syncAfterResetRound();
+      triggerResetGagFlash();
+      startBtn.disabled = false;
+    }
   };
 
-  syncDigitsFromFunPopLog();
+  async function handleFunStartClicked() {
+    if (countdownPhase !== 'idle' || startBtn.disabled) return;
+    startBtn.disabled = true;
+
+    try {
+      showHudHideLobby();
+      showCountdownRow();
+
+      const reduce =
+        typeof window.matchMedia === 'function' &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const Fx = typeof TextScramble !== 'undefined' ? TextScramble : null;
+
+      if (
+        reduce ||
+        !Fx ||
+        !(countdownEl instanceof HTMLElement)
+      ) {
+        paintDigitSpans(0);
+        if (countdownEl instanceof HTMLElement)
+          countdownEl.textContent = formatCountdownRemain(FUN_POP_COUNTDOWN_SEC);
+      } else {
+        const fxOpts = { ...FUN_GAG_SCRAMBLE_OPTS };
+        const fxScore = new Fx(el, fxOpts);
+        const fxClock = new Fx(countdownEl, fxOpts);
+        el.textContent = '##';
+        countdownEl.textContent = '??:??';
+        await Promise.all([
+          fxScore.setText('0'),
+          fxClock.setText(formatCountdownRemain(FUN_POP_COUNTDOWN_SEC)),
+        ]);
+        paintDigitSpans(0);
+      }
+
+      if (countdownEl instanceof HTMLElement) {
+        countdownEl.textContent = formatCountdownRemain(FUN_POP_COUNTDOWN_SEC);
+        countdownEl.classList.remove('fun-bubble-counter__timer-digits--done');
+      }
+      beginPlayingCountdown();
+      if (typeof window.enableAmbientFunRoundScoring === 'function')
+        window.enableAmbientFunRoundScoring();
+    } finally {
+      startBtn.disabled = false;
+    }
+  }
+
+  concealFunResetButton();
+  syncIdleCountdownChrome();
+  showLobbyHideHud();
+  hideCountdownRow();
+  paintDigitSpans(0);
+
   window.addEventListener('ambient-bubble-pop', syncDigitsFromFunPopLog);
 
-  const resetBtn = document.getElementById('fun-bubble-counter-reset');
+  startBtn.addEventListener('click', () => void handleFunStartClicked());
+
   if (resetBtn instanceof HTMLButtonElement && typeof window.resetAmbientBubbleFun === 'function') {
     resetBtn.addEventListener('click', () => {
       window.resetAmbientBubbleFun();

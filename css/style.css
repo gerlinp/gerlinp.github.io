@@ -391,57 +391,6 @@ html.bubble-nums-debug-active .bg-bubbles > li .bubble-debug-num {
     100% { opacity: 0; }
 }
 
-/*
- * Scripted post-pop silhouette (script.js spawnAmbientBubblePopGhost) — red afterimage so stray
- * compositor squares (Chrome/Blink as well as WebKit) read as deliberate “heat” vs paper tiles.
- */
-.ambient-bubble-pop-ghost {
-    position: fixed;
-    z-index: 6;
-    box-sizing: border-box;
-    pointer-events: none;
-    margin: 0;
-    padding: 0;
-    border: none;
-    border-radius: 6px;
-    background: color-mix(in srgb, #e53935 62%, transparent);
-    box-shadow:
-        inset 0 0 clamp(8px, 2vmin, 16px) color-mix(in srgb, #ff7961 90%, transparent),
-        0 0 clamp(10px, 2.8vmin, 22px) color-mix(in srgb, #e53935 55%, transparent);
-    animation: ambient-pop-ghost-fade 0.56s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    will-change: opacity, transform, filter;
-}
-
-.ambient-bubble-pop-ghost--reduce {
-    animation: ambient-pop-ghost-fade-reduce 0.14s ease forwards;
-}
-
-@keyframes ambient-pop-ghost-fade {
-    0% {
-        opacity: 0.72;
-        transform: scale(1);
-        filter: blur(0);
-    }
-
-    100% {
-        opacity: 0;
-        transform: scale(1.08);
-        filter: blur(6px);
-    }
-}
-
-@keyframes ambient-pop-ghost-fade-reduce {
-    0% {
-        opacity: 0.5;
-        transform: scale(1);
-    }
-
-    100% {
-        opacity: 0;
-        transform: scale(1.03);
-    }
-}
-
 /* Off-canvas rail only: drift in from the viewport-right, exit left/up (vars on `.bg-bubbles--drawer`). */
 @keyframes bubble-float-drawer {
     0% {
@@ -752,6 +701,74 @@ section {
     justify-content: center;
 }
 
+.fun-bubble-counter__lobby {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: clamp(8rem, 28vmin, 14rem);
+}
+
+.fun-bubble-counter__lobby[hidden] {
+    display: none !important;
+}
+
+.fun-bubble-counter__start {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(0.55rem, 2vmin, 0.85rem) clamp(1.6rem, 5vmin, 2.4rem);
+    border: 1px solid color-mix(in srgb, var(--base-200) 55%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--base-200) 12%, transparent);
+    font-family: Orbitron, system-ui, sans-serif;
+    font-size: clamp(0.95rem, 2.8vmin, 1.15rem);
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--base-200);
+    cursor: pointer;
+    text-shadow:
+        0 0 clamp(10px, 2vmin, 18px) color-mix(in srgb, var(--base-200) 35%, transparent),
+        0 0 1px rgba(1, 15, 41, 0.85);
+    box-shadow:
+        0 0 clamp(16px, 3.5vmin, 28px) color-mix(in srgb, var(--base-200) 22%, transparent);
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.55s ease,
+        transform 0.2s ease;
+}
+
+.fun-bubble-counter__start:hover {
+    background: color-mix(in srgb, var(--base-200) 20%, transparent);
+    border-color: color-mix(in srgb, var(--base-200) 72%, transparent);
+}
+
+.fun-bubble-counter__start:focus-visible {
+    outline: 2px solid var(--base-200);
+    outline-offset: 3px;
+}
+
+.fun-bubble-counter__start:disabled {
+    opacity: 0.55;
+    cursor: wait;
+}
+
+.fun-bubble-counter__hud {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(0.55rem, 2.2vmin, 1rem);
+    width: 100%;
+}
+
+.fun-bubble-counter__hud[hidden] {
+    display: none !important;
+}
+
 .fun-bubble-counter {
     flex: 1 1 auto;
     display: flex;
@@ -780,6 +797,14 @@ section {
     text-transform: uppercase;
     text-align: center;
     color: rgba(227, 223, 219, 0.55);
+}
+
+/* Final score hue after countdown hits 0 (script toggles on #fun-bubble-counter-digits) */
+.fun-bubble-counter__digits--time-up .fun-bubble-counter__digit {
+    color: #fcd34d;
+    text-shadow:
+        0 0 clamp(12px, 2.8vmin, 28px) color-mix(in srgb, #fbbf24 42%, transparent),
+        0 0 1px rgba(1, 15, 41, 0.85);
 }
 
 .fun-bubble-counter__digits {
@@ -858,19 +883,48 @@ section {
     color: rgba(227, 223, 219, 0.72);
     cursor: pointer;
     transition:
-        color 0.2s ease,
-        border-color 0.2s ease,
-        background-color 0.2s ease;
+        color 0.55s ease,
+        border-color 0.55s ease,
+        background-color 0.55s ease,
+        opacity 0.75s ease,
+        visibility 0s linear 0.75s,
+        box-shadow 0.55s ease;
 }
 
-.fun-bubble-counter__reset:hover {
-    color: rgba(227, 223, 219, 0.95);
-    border-color: rgba(var(--bubble-rgb), 0.45);
-    background: rgba(var(--bubble-rgb), 0.08);
+/* Hidden until buzzer; fades in red when round ends */
+.fun-bubble-counter__reset--concealed-until-done {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+        color 0.55s ease,
+        border-color 0.55s ease,
+        background-color 0.55s ease,
+        opacity 0.75s ease,
+        visibility 0s linear 0s,
+        box-shadow 0.55s ease;
 }
 
-.fun-bubble-counter__reset:focus-visible {
-    outline: 2px solid rgba(var(--bubble-rgb), 0.65);
+.fun-bubble-counter__reset--visible-after-done {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    color: #f87171;
+    border-color: color-mix(in srgb, #f87171 55%, rgba(227, 223, 219, 0.25));
+    background: color-mix(in srgb, #f87171 10%, transparent);
+    box-shadow:
+        0 0 clamp(14px, 2.8vmin, 24px) color-mix(in srgb, #f87171 35%, transparent),
+        0 1px 4px rgba(1, 15, 41, 0.45);
+}
+
+.fun-bubble-counter__reset--visible-after-done:hover {
+    color: #fca5a5;
+    border-color: color-mix(in srgb, #fca5a5 65%, transparent);
+    background: color-mix(in srgb, #f87171 16%, transparent);
+}
+
+.fun-bubble-counter__reset--visible-after-done:focus-visible {
+    outline: 2px solid #fca5a5;
     outline-offset: 3px;
 }
 
@@ -930,17 +984,12 @@ section {
     color: rgba(227, 223, 219, 0.78);
     opacity: 0;
     visibility: hidden;
-    transition:
-        opacity 0.72s cubic-bezier(0.45, 0, 0.55, 1),
-        visibility 0s linear 0.72s;
 }
 
+/* Shown instantly; reveal is TextScramble-driven (script.js) */
 .fun-bubble-counter__gag-line--visible {
     opacity: 1;
     visibility: visible;
-    transition:
-        opacity 0.72s cubic-bezier(0.45, 0, 0.55, 1),
-        visibility 0s linear 0s;
 }
 
 /* Post-buzzer line — same digital face as pop counter + clock */
@@ -962,17 +1011,6 @@ section {
 .fun-bubble-counter__gag-line--reset-note {
     font-style: italic;
     font-size: clamp(0.7rem, 2vw, 0.9rem);
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .fun-bubble-counter__gag-line {
-        transition-duration: 0.01ms;
-        transition-delay: 0ms;
-    }
-
-    .fun-bubble-counter__gag-line--visible {
-        transition-duration: 0.01ms;
-    }
 }
 
 /* Plain linked image — no frame around the screenshot */
