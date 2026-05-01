@@ -161,6 +161,8 @@ body.menu-open::after {
     pointer-events: auto;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
+    /* Prevents browser treating the tap as a scroll gesture on mobile */
+    touch-action: manipulation;
 }
 
 /* Phones: nav used to soak touches; bubbles can be tiny (10px) — widen tap targets, drop double‑tap‑zoom stall. */
@@ -306,8 +308,9 @@ body.menu-open::after {
 }
 
 @keyframes bubble-float {
-    0% { transform: translateY(0) rotate(0deg); }
-    100% { transform: translateY(var(--bubble-travel)) rotate(var(--bubble-spin-end)); }
+    /* translate3d forces GPU compositing so touch hit-testing tracks the visual position on mobile */
+    0% { transform: translate3d(0, 0, 0) rotate(0deg); }
+    100% { transform: translate3d(0, var(--bubble-travel), 0) rotate(var(--bubble-spin-end)); }
 }
 
 @keyframes bubble-fade {
@@ -316,7 +319,8 @@ body.menu-open::after {
     84% { opacity: 1; }
     /* Ease the fade instead of dropping off */
     94% { opacity: 0.45; }
-    100% { opacity: 0; }
+    /* visibility: hidden at opacity 0 disables pointer events so the ghost doesn’t block taps */
+    100% { opacity: 0; visibility: hidden; }
 }
 
 img {
