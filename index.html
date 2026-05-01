@@ -27,8 +27,10 @@
   <div class="nav">
     <div class="nav-shell">
       <div class="nav-logo">
-        <a class="nav-logo-link" href="#hero">
-          <h1 class="nav-logo-title">Gerlin</h1>
+        <a class="nav-logo-link" href="#hero" aria-label="Gerlin">
+          <h1 class="nav-logo-title">
+            <span class="nav-logo-title__label">Gerlin</span>
+          </h1>
         </a>
       </div>
 
@@ -300,20 +302,31 @@
 
   <section id="fun" class="section-shell section-shell--fun" aria-labelledby="fun-heading">
     <header class="section-shell-head sticky-section-head">
-      <h2 id="fun-heading" class="section-shell__title">Fun</h2>
+      <h2 id="fun-heading" class="section-shell__title">
+        Fun!
+        <span class="section-shell__title-note">Pop the bubbles</span>
+      </h2>
     </header>
     <div class="sticky-section-body fun-shell-body">
-      <p class="section-shell__lede">Side projects and experiments — more soon.</p>
       <div
         class="fun-bubble-counter"
         role="status"
         aria-live="polite"
         aria-labelledby="fun-bubble-counter-heading"
       >
-        <span id="fun-bubble-counter-heading" class="fun-bubble-counter__label">
-          Background bubbles popped
-        </span>
         <span class="fun-bubble-counter__digits" id="fun-bubble-counter-digits" aria-label="0"><span class="fun-bubble-counter__digit fun-bubble-counter__digit--inactive">0</span></span>
+        <div class="fun-bubble-counter__gags" id="fun-bubble-counter-gags" aria-hidden="true">
+          <p class="fun-bubble-counter__gag-line" data-pop-min="3" data-pop-max="5">No prize for popping—sorry about that.</p>
+          <p class="fun-bubble-counter__gag-line" data-pop-min="10" data-pop-max="12">
+            Still nothing if you keep popping—there really isn&rsquo;t a reward down here.
+          </p>
+          <p class="fun-bubble-counter__gag-line fun-bubble-counter__gag-line--smh" data-pop-min="15" data-pop-max="19">
+            SMH
+          </p>
+          <p class="fun-bubble-counter__gag-line" data-pop-min="20" data-pop-max="999">
+            Maybe I&rsquo;ll turn this into a game.
+          </p>
+        </div>
       </div>
     </div>
   </section>

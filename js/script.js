@@ -399,7 +399,7 @@ const closeMenu = (afterClose) => {
  */
 (function initNavSectionTitle() {
   const navLogoLink = document.querySelector('.nav-logo-link');
-  const navTitleEl = document.querySelector('.nav-logo-title');
+  const navTitleEl = document.querySelector('.nav-shell .nav-logo-title');
   const navEl = document.querySelector('.nav');
   if (!navLogoLink || !navTitleEl || !navEl) return;
 
@@ -412,6 +412,59 @@ const closeMenu = (afterClose) => {
     projects: 'Projects',
     'contact-me': 'Contact',
   };
+
+  /** Section heading subtitle — mirrored under the main nav title (Boldonse + note rhythm). */
+  const NAV_NOTE_SELECTOR = {
+    'about-me': '#about-heading .about-title-note',
+    experience: '#work-heading .work-title-note',
+    services: '#services-heading .section-shell__title-note',
+    fun: '#fun-heading .section-shell__title-note',
+  };
+
+  function navSubtitleFor(sectionId) {
+    const sel = NAV_NOTE_SELECTOR[sectionId];
+    const el = sel ? document.querySelector(sel) : null;
+    return el?.textContent?.trim() ?? '';
+  }
+
+  function navLabelSpan() {
+    let span = navTitleEl.querySelector(':scope > .nav-logo-title__label');
+    if (!(span instanceof HTMLSpanElement)) {
+      const t = `${navTitleEl.textContent ?? ''}`.trim() || SECTION_LABELS.hero;
+      navTitleEl.textContent = '';
+      span = document.createElement('span');
+      span.className = 'nav-logo-title__label';
+      span.textContent = t;
+      navTitleEl.appendChild(span);
+    }
+    return span;
+  }
+
+  function syncNavSubtitle(notePlain) {
+    const existing = navTitleEl.querySelector(':scope > .nav-logo-title__note');
+    if (!notePlain) {
+      existing?.remove();
+      navTitleEl.classList.remove('nav-logo-title--with-note');
+      return;
+    }
+    navTitleEl.classList.add('nav-logo-title--with-note');
+    let el = existing instanceof HTMLSpanElement ? existing : null;
+    if (!el) {
+      el = document.createElement('span');
+      el.className = 'nav-logo-title__note';
+      navTitleEl.appendChild(el);
+    }
+    el.textContent = notePlain;
+  }
+
+  function applyNavTitleAndNote(label, notePlain) {
+    navLabelSpan().textContent = label;
+    syncNavSubtitle(notePlain);
+    navLogoLink.setAttribute(
+      'aria-label',
+      notePlain ? `${label} \u2014 ${notePlain}` : label,
+    );
+  }
 
   const sections = [
     ...document.querySelectorAll('section[id]'),
@@ -463,18 +516,28 @@ const closeMenu = (afterClose) => {
   const reduceMotion = () =>
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  function navTitleEchoesState(label, notePlain, href) {
+    return (
+      navLogoLink.getAttribute('href') === href &&
+      navLabelSpan().textContent === label &&
+      (navTitleEl.querySelector(':scope > .nav-logo-title__note')?.textContent?.trim() ??
+        '') === notePlain
+    );
+  }
+
   function applySectionId(id) {
     const label = SECTION_LABELS[id] ?? SECTION_LABELS.hero;
     const href = `#${id}`;
+    const notePlain = navSubtitleFor(id);
 
-    if (navTitleEl.textContent === label && navLogoLink.getAttribute('href') === href) {
+    if (navTitleEchoesState(label, notePlain, href)) {
       return;
     }
 
     navLogoLink.setAttribute('href', href);
 
     if (reduceMotion()) {
-      navTitleEl.textContent = label;
+      applyNavTitleAndNote(label, notePlain);
       return;
     }
 
@@ -483,7 +546,7 @@ const closeMenu = (afterClose) => {
     navTitleEl.classList.add('nav-logo-title--exit');
 
     swapTimer = setTimeout(() => {
-      navTitleEl.textContent = label;
+      applyNavTitleAndNote(label, notePlain);
       navTitleEl.classList.remove('nav-logo-title--exit');
       navTitleEl.classList.add('nav-logo-title--enter');
       swapTimer = setTimeout(() => {
@@ -513,6 +576,7 @@ const closeMenu = (afterClose) => {
   const FLASH_CLASS = 'bg-bubble--click-flash';
   const VANISHED_CLASS = 'bg-bubble--vanished';
   const FLASH_NAMES = new Set(['bubble-click-flash', 'bubble-click-flash-reduce']);
+  const FLOAT_ANIM = 'bubble-float';
 
   /** Each pop appends here — `.length` is the Fun-section counter (`#fun-bubble-counter-digits`). */
   const ambientBubblePopLog = [];
@@ -558,50 +622,102 @@ const closeMenu = (afterClose) => {
     window.dispatchEvent(new CustomEvent('ambient-bubble-pop'));
   }
 
-  function onBubbleClick(ev) {
-    const li = ev.currentTarget;
-    if (
-      !(li instanceof HTMLLIElement) ||
-      li.classList.contains(FLASH_CLASS) ||
-      li.classList.contains(VANISHED_CLASS)
-    )
-      return;
+  function bindBubbleClick(li) {
+    function onBubbleClick(ev) {
+      const target = ev.currentTarget;
+      if (
+        !(target instanceof HTMLLIElement) ||
+        target.classList.contains(FLASH_CLASS) ||
+        target.classList.contains(VANISHED_CLASS)
+      )
+        return;
 
-    let done = false;
-    const finish = () => {
-      if (done) return;
-      done = true;
-      window.clearTimeout(failSafe);
-      li.removeEventListener('animationend', onAnimationEnd);
-      li.classList.remove(FLASH_CLASS);
-      vanishBubbleAfterFlash(li);
-    };
+      let done = false;
+      const finish = () => {
+        if (done) return;
+        done = true;
+        window.clearTimeout(failSafe);
+        target.removeEventListener('animationend', onAnimationEnd);
+        target.classList.remove(FLASH_CLASS);
+        vanishBubbleAfterFlash(target);
+      };
 
-    function onAnimationEnd(e) {
-      if (!FLASH_NAMES.has(e.animationName)) return;
-      finish();
+      function onAnimationEnd(e) {
+        if (!FLASH_NAMES.has(e.animationName)) return;
+        finish();
+      }
+
+      target.classList.add(FLASH_CLASS);
+      target.addEventListener('animationend', onAnimationEnd);
+      const failSafe = window.setTimeout(finish, 700);
     }
 
-    li.classList.add(FLASH_CLASS);
-    li.addEventListener('animationend', onAnimationEnd);
-    const failSafe = window.setTimeout(finish, 700);
+    li.addEventListener('click', onBubbleClick);
+  }
+
+  /** Bubble-float repeats from the bottom — replace the popped li so faded animation restarts cleanly. */
+  function respawnVanishedAmbientBubble(li) {
+    if (!li.classList.contains(VANISHED_CLASS)) return;
+
+    const parent = li.parentElement;
+    if (!(parent instanceof HTMLUListElement)) return;
+
+    const fresh = li.cloneNode(false);
+    fresh.removeAttribute('style');
+    fresh.classList.remove(VANISHED_CLASS, FLASH_CLASS);
+    li.replaceWith(fresh);
+    bindBubbleClick(fresh);
+    fresh.addEventListener('animationiteration', onBubbleFloatIteration);
+  }
+
+  function onBubbleFloatIteration(ev) {
+    if (ev.animationName !== FLOAT_ANIM || !(ev.target instanceof HTMLLIElement))
+      return;
+    respawnVanishedAmbientBubble(ev.target);
   }
 
   document
     .querySelectorAll('.bg-bubbles:not(.bg-bubbles--menu)')
     .forEach((ul) => {
       ul.querySelectorAll(':scope > li').forEach((li) => {
-        li.addEventListener('click', onBubbleClick);
+        bindBubbleClick(li);
+        li.addEventListener('animationiteration', onBubbleFloatIteration);
       });
     });
 })();
 
 (function initFunBubbleCounterUI() {
   const el = document.getElementById('fun-bubble-counter-digits');
+  const gagsWrap = document.getElementById('fun-bubble-counter-gags');
+  const gagLines = gagsWrap
+    ? gagsWrap.querySelectorAll('.fun-bubble-counter__gag-line')
+    : [];
+
   if (!el) return;
 
   const funPopLog = () =>
     Array.isArray(window.ambientBubblePopLog) ? window.ambientBubblePopLog : [];
+
+  function gagLineMatchesPop(line, popCount) {
+    const mn = Number.parseInt(`${line.dataset.popMin ?? ''}`, 10);
+    const mx = Number.parseInt(`${line.dataset.popMax ?? ''}`, 10);
+    if (
+      !Number.isFinite(mn) ||
+      !Number.isFinite(mx)
+    )
+      return false;
+    return popCount >= mn && popCount <= mx;
+  }
+
+  function syncGagPhases(popCount) {
+    for (const node of gagLines) {
+      if (!(node instanceof HTMLElement)) continue;
+      node.classList.toggle(
+        'fun-bubble-counter__gag-line--visible',
+        gagLineMatchesPop(node, popCount),
+      );
+    }
+  }
 
   const syncDigitsFromFunPopLog = () => {
     const n = Math.min(Math.max(funPopLog().length, 0), 999);
@@ -620,6 +736,8 @@ const closeMenu = (afterClose) => {
       el.appendChild(span);
     }
     el.setAttribute('aria-label', `${n}`);
+
+    syncGagPhases(n);
   };
 
   syncDigitsFromFunPopLog();
