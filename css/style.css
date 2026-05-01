@@ -164,6 +164,9 @@ body.menu-open::after {
     padding: 0;
     list-style: none;
     overflow: hidden;
+    /* `clip` avoids creating a scroll-container context (unlike `hidden`), fixing touch hit-testing
+       on iOS Safari for children of position:fixed elements. Falls back to `hidden` on older browsers. */
+    overflow: clip;
     pointer-events: none;
 }
 
@@ -385,8 +388,7 @@ html.bubble-nums-debug-active .bg-bubbles > li .bubble-debug-num {
     84% { opacity: 1; }
     /* Ease the fade instead of dropping off */
     94% { opacity: 0.45; }
-    /* visibility: hidden at opacity 0 disables pointer events so the ghost doesn’t block taps */
-    100% { opacity: 0; visibility: hidden; }
+    100% { opacity: 0; }
 }
 
 /*
