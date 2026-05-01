@@ -724,7 +724,7 @@ const closeMenu = (afterClose) => {
   }
 
   const syncDigitsFromFunPopLog = () => {
-    const n = Math.min(Math.max(funPopLog().length, 0), 999);
+    const n = Math.min(Math.max(funPopLog().length, 0), 99);
     /* One “0” at start; grows 1 … 9, 10, … without leading zeros */
     const s = n === 0 ? '0' : String(n);
 

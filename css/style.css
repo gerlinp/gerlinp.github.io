@@ -163,6 +163,15 @@ body.menu-open::after {
     -webkit-tap-highlight-color: transparent;
 }
 
+/* Phones: nav used to soak touches; bubbles can be tiny (10px) — widen tap targets, drop double‑tap‑zoom stall. */
+@media (pointer: coarse) {
+    .bg-bubbles:not(.bg-bubbles--menu) li:not(.bg-bubble--vanished) {
+        touch-action: manipulation;
+        min-width: 44px;
+        min-height: 44px;
+    }
+}
+
 .bg-bubbles li {
     position: absolute;
     display: block;
@@ -625,8 +634,8 @@ section {
     letter-spacing: 0.08em;
     line-height: 0.92;
     text-align: center;
-    /* Single digit scales up; 2–3 chars still fit comfortably */
-    font-size: clamp(7rem, min(62vw, 42vh), 30rem);
+    /* Fits two digits (~99 max) inside the column without overflowing narrow viewports */
+    font-size: clamp(4.5rem, min(36vw, 32vh), 12rem);
 }
 
 .fun-bubble-counter__digit {
@@ -1151,10 +1160,14 @@ img.section-shell__shot {
     pointer-events: auto;
 }
 
+/* Overrides `> *` above: flex spacer must not swallow taps meant for bubbles/hero underneath. */
+.nav-shell > .nav-logo {
+    pointer-events: none;
+}
+
 .nav-logo {
     padding: 0.5rem;
     margin: -0.5rem;
-    pointer-events: all;
     position: relative;
     /* Grow into space between shell edge and toggle — avoid artificial 14rem cap + ellipsis */
     flex: 1 1 auto;
@@ -1650,6 +1663,11 @@ body.menu-open .nav-toggle:focus-visible {
 .menu-logo-link {
     display: block;
     max-width: 100%;
+}
+
+.nav-shell .nav-logo-link {
+    pointer-events: auto;
+    touch-action: manipulation;
 }
 
 /* Bar + open menu logo: same type scale; paper on bar, green in open menu */
