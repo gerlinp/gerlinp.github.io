@@ -189,7 +189,7 @@ body.menu-open::after {
     pointer-events: auto;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
-    /* All viewports — avoids double-tap zoom hesitation on Safari; complements script `pointerup` path */
+    /* Cuts double-tap zoom delay; reduces scroll-vs-tap ambiguity on mobile (pairs with script `pointerup`). */
     touch-action: manipulation;
 }
 
@@ -374,8 +374,9 @@ html.bubble-nums-debug-active .bg-bubbles > li .bubble-debug-num {
 }
 
 @keyframes bubble-float {
-    0% { transform: translateY(0) rotate(0deg); }
-    100% { transform: translateY(var(--bubble-travel)) rotate(var(--bubble-spin-end)); }
+    /* translate3d forces GPU compositing so touch hit-testing tracks the visual position on mobile */
+    0% { transform: translate3d(0, 0, 0) rotate(0deg); }
+    100% { transform: translate3d(0, var(--bubble-travel), 0) rotate(var(--bubble-spin-end)); }
 }
 
 @keyframes bubble-fade {
@@ -384,7 +385,8 @@ html.bubble-nums-debug-active .bg-bubbles > li .bubble-debug-num {
     84% { opacity: 1; }
     /* Ease the fade instead of dropping off */
     94% { opacity: 0.45; }
-    100% { opacity: 0; }
+    /* visibility: hidden at opacity 0 disables pointer events so the ghost doesn’t block taps */
+    100% { opacity: 0; visibility: hidden; }
 }
 
 /*
