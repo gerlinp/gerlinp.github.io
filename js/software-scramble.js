@@ -162,7 +162,7 @@ class TextScramble {
     const n = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 
     const vwCoeff = n(10.5 - m * 0.42, 3.95, 6.65);
-    const addRem = n(1.48 - m * 0.055, 0.54, 1.02);
+    const addRem = n(1.48 - m * 0.055, 0.54, 1.02) + 1;
 
     const root = document.documentElement;
     root.style.setProperty('--hero-fs-vw', vwCoeff.toFixed(3));
