@@ -403,26 +403,44 @@ const closeMenu = (afterClose) => {
   const navEl = document.querySelector('.nav');
   if (!navLogoLink || !navTitleEl || !navEl) return;
 
-  const SECTION_LABELS = {
-    hero: 'Gerlin',
-    'about-me': 'About',
-    experience: 'Work',
-    services: 'Services',
-    fun: 'Fun',
-    projects: 'Projects',
-    'contact-me': 'Contact',
-  };
-
-  /** Section heading subtitle — mirrored under the main nav title (Boldonse + note rhythm). */
-  const NAV_NOTE_SELECTOR = {
-    'about-me': '#about-heading .about-title-note',
-    experience: '#work-heading .work-title-note',
-    services: '#services-heading .section-shell__title-note',
-    fun: '#fun-heading .section-shell__title-note',
+  /** Scroll targets + nav label (+ optional subtitle selector) keyed by section id. */
+  const SECTION_META = {
+    hero: {
+      label: 'Gerlin',
+      sentinel: '#hero .hero-headline',
+    },
+    'about-me': {
+      label: 'About',
+      noteSelector: '#about-heading .about-title-note',
+      sentinel: '#about-heading',
+    },
+    experience: {
+      label: 'Work',
+      noteSelector: '#work-heading .work-title-note',
+      sentinel: '#work-heading',
+    },
+    services: {
+      label: 'Services',
+      noteSelector: '#services-heading .section-shell__title-note',
+      sentinel: '#services-heading',
+    },
+    fun: {
+      label: 'Fun!',
+      noteSelector: '#fun-heading .section-shell__title-note',
+      sentinel: '#fun-heading',
+    },
+    projects: {
+      label: 'Projects',
+      sentinel: '#projects-heading',
+    },
+    'contact-me': {
+      label: 'Contact',
+      sentinel: '#contact-heading',
+    },
   };
 
   function navSubtitleFor(sectionId) {
-    const sel = NAV_NOTE_SELECTOR[sectionId];
+    const sel = SECTION_META[sectionId]?.noteSelector;
     const el = sel ? document.querySelector(sel) : null;
     return el?.textContent?.trim() ?? '';
   }
@@ -430,7 +448,7 @@ const closeMenu = (afterClose) => {
   function navLabelSpan() {
     let span = navTitleEl.querySelector(':scope > .nav-logo-title__label');
     if (!(span instanceof HTMLSpanElement)) {
-      const t = `${navTitleEl.textContent ?? ''}`.trim() || SECTION_LABELS.hero;
+      const t = `${navTitleEl.textContent ?? ''}`.trim() || SECTION_META.hero.label;
       navTitleEl.textContent = '';
       span = document.createElement('span');
       span.className = 'nav-logo-title__label';
@@ -466,28 +484,14 @@ const closeMenu = (afterClose) => {
     );
   }
 
-  const sections = [
-    ...document.querySelectorAll('section[id]'),
-  ].filter((s) => Object.prototype.hasOwnProperty.call(SECTION_LABELS, s.id));
+  const sections = [...document.querySelectorAll('section[id]')].filter((s) =>
+    Object.prototype.hasOwnProperty.call(SECTION_META, s.id),
+  );
 
   if (sections.length === 0) return;
 
-  /**
-   * Element whose top crossing the reading line drives the nav label —
-   * each section’s main title (not the section wrapper).
-   */
-  const SECTION_SENTINEL_SELECTOR = {
-    hero: '#hero .hero-headline',
-    'about-me': '#about-heading',
-    experience: '#work-heading',
-    services: '#services-heading',
-    fun: '#fun-heading',
-    projects: '#projects-heading',
-    'contact-me': '#contact-heading',
-  };
-
   function sentinelFor(sectionEl) {
-    const sel = SECTION_SENTINEL_SELECTOR[sectionEl.id];
+    const sel = SECTION_META[sectionEl.id]?.sentinel;
     const el = sel ? document.querySelector(sel) : null;
     return el ?? sectionEl;
   }
@@ -526,7 +530,7 @@ const closeMenu = (afterClose) => {
   }
 
   function applySectionId(id) {
-    const label = SECTION_LABELS[id] ?? SECTION_LABELS.hero;
+    const label = SECTION_META[id]?.label ?? SECTION_META.hero.label;
     const href = `#${id}`;
     const notePlain = navSubtitleFor(id);
 
