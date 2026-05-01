@@ -10,6 +10,12 @@
     --nav-shell-extra: 3.5rem;
     --nav-shell-max: calc(var(--page-column-max) + var(--nav-shell-extra));
     --nav-shell-pad-x: clamp(0.75rem, 4vw, 2.5rem);
+    /* Bar logo: between ~15px ref (412w) and previous section-title scale — fluid with viewport */
+    --nav-logo-bar-fs: clamp(1.0625rem, 0.88rem + 1.25vw, 1.8125rem);
+    /* Menu control — aligns with tablet .menu-close in overlay */
+    --nav-toggle-hit: clamp(3.75rem, 10.25vmin, 4.5rem);
+    --nav-toggle-outer-w: var(--nav-toggle-hit);
+    --nav-toggle-outer-h: var(--nav-toggle-hit);
 
     --base-100: #36835c;
     --base-200: #28b33f;
@@ -19,6 +25,26 @@
     /* software-scramble.js overwrites vw + rem offset from longest phrase — no clamp on size */
     --hero-fs-vw: 5.5;
     --hero-fs-add: 0.75rem;
+    /* ~Mobile ref feel: slightly shorter band than old 4.5rem min, still scales with vh/svh */
+    /* Min height clears the enlarged menu / close control */
+    --nav-h: clamp(4.5rem, 6vmin + 2.4rem, 6.9rem);
+    --sticky-title-top: calc(var(--nav-h) + 0.75rem);
+
+    /* Nav h1 + section h2s — same tokens so they scale together */
+    --section-title-primary-fs: clamp(1.75rem, 4vw, 2.5rem);
+    --section-title-primary-lh: 1.2;
+    --section-title-shell-fs: clamp(1.5rem, 3.5vw, 2rem);
+    --section-title-shell-lh: 1.35;
+}
+
+@media (min-width: 960px) {
+    :root {
+        /*
+         * On large screens we want the sticky scroll label to align with the
+         * section column (seamless “stick” effect). Reduce the extra gutter.
+         */
+        --nav-shell-extra: 0rem;
+    }
 }
 
 
@@ -76,8 +102,18 @@ body::after {
     --bubble-a: 0.08;
     --bubble-a-2: 0.11;
     --bubble-a-3: 0.15;
+    --bubble-float-duration: 25s;
+    /* Matches .bg-bubbles li:nth-child(2) */
+    --bubble-float-duration-fast: 17s;
+    /* Matches .bg-bubbles li:nth-child(8)/(9); slowest float + spin cadence */
+    --bubble-float-duration-slow: 40s;
+    --bubble-spin-end: 600deg;
     /* Travel just past the top edge so fade-out completes before clipping */
     --bubble-travel: calc(-75vh - 40px);
+    /* Matches |--bubble-travel|; used where translateY goes positive downward */
+    --bubble-rise-distance: calc(75vh + 40px);
+    /* Hero scroll chip: shorter arc than bubbles so it enters view sooner — same linear duration as nth-child(2) */
+    --hero-scroll-rise-distance: calc(32vh + 24px);
     /* Don't start fading until near the top */
     --bubble-fade-start: 78%;
 }
@@ -108,10 +144,23 @@ body.menu-open::after {
     margin: 0;
     padding: 0;
     list-style: none;
-    /* Above background gradients, behind page content */
-    z-index: 1;
     overflow: hidden;
     pointer-events: none;
+}
+
+/* Behind menu overlay (nav z-index 10); above hero/sections (#hero z-index 2) */
+.bg-bubbles:not(.bg-bubbles--menu) {
+    z-index: 3;
+}
+
+.bg-bubbles--menu li {
+    pointer-events: none;
+}
+
+.bg-bubbles:not(.bg-bubbles--menu) li {
+    pointer-events: auto;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .bg-bubbles li {
@@ -123,25 +172,130 @@ body.menu-open::after {
     border-radius: 6px;
     bottom: -160px;
     animation:
-        bubble-float 25s linear infinite,
-        bubble-fade 25s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+        bubble-float var(--bubble-float-duration) linear infinite,
+        bubble-fade var(--bubble-float-duration) cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
     will-change: transform, opacity;
 }
 
 .bg-bubbles li:nth-child(1) { left: 10%; }
-.bg-bubbles li:nth-child(2) { left: 20%; width: 56px; height: 56px; animation-delay: 2s; animation-duration: 17s; }
+.bg-bubbles li:nth-child(2) {
+    left: 20%;
+    width: 56px;
+    height: 56px;
+    animation-delay: 2s;
+    animation-duration: var(--bubble-float-duration-fast);
+}
 .bg-bubbles li:nth-child(3) { left: 25%; animation-delay: 4s; }
-.bg-bubbles li:nth-child(4) { left: 40%; width: 44px; height: 44px; animation-duration: 22s; background-color: rgba(var(--bubble-rgb), var(--bubble-a-2)); }
+.bg-bubbles li:nth-child(4) {
+    left: 40%;
+    width: 44px;
+    height: 44px;
+    animation-duration: 22s;
+    background-color: rgba(var(--bubble-rgb), var(--bubble-a-2));
+}
 .bg-bubbles li:nth-child(5) { left: 70%; }
-.bg-bubbles li:nth-child(6) { left: 80%; width: 72px; height: 72px; animation-delay: 3s; background-color: rgba(var(--bubble-rgb), var(--bubble-a-2)); }
-.bg-bubbles li:nth-child(7) { left: 32%; width: 88px; height: 88px; animation-delay: 7s; }
-.bg-bubbles li:nth-child(8) { left: 55%; width: 20px; height: 20px; animation-delay: 15s; animation-duration: 40s; }
-.bg-bubbles li:nth-child(9) { left: 25%; width: 10px; height: 10px; animation-delay: 2s; animation-duration: 40s; background-color: rgba(var(--bubble-rgb), var(--bubble-a-3)); }
-.bg-bubbles li:nth-child(10) { left: 90%; width: 84px; height: 84px; animation-delay: 11s; }
+.bg-bubbles li:nth-child(6) {
+    left: 80%;
+    width: 72px;
+    height: 72px;
+    animation-delay: 3s;
+    background-color: rgba(var(--bubble-rgb), var(--bubble-a-2));
+}
+.bg-bubbles li:nth-child(7) {
+    left: 32%;
+    width: 88px;
+    height: 88px;
+    animation-delay: 7s;
+}
+.bg-bubbles li:nth-child(8) {
+    left: 55%;
+    width: 20px;
+    height: 20px;
+    animation-delay: 15s;
+    animation-duration: var(--bubble-float-duration-slow);
+}
+.bg-bubbles li:nth-child(9) {
+    left: 25%;
+    width: 10px;
+    height: 10px;
+    animation-delay: 2s;
+    animation-duration: var(--bubble-float-duration-slow);
+    background-color: rgba(var(--bubble-rgb), var(--bubble-a-3));
+}
+.bg-bubbles li:nth-child(10) {
+    left: 90%;
+    width: 84px;
+    height: 84px;
+    animation-delay: 11s;
+}
+
+/* Click feedback on ::after only — never replaces li’s bubble-float / bubble-fade */
+.bg-bubbles:not(.bg-bubbles--menu) li::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 0;
+    border-radius: 6px;
+    z-index: 1;
+}
+
+.bg-bubbles:not(.bg-bubbles--menu) li.bg-bubble--click-flash::after {
+    animation: bubble-click-flash 0.48s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes bubble-click-flash {
+    0%,
+    38% {
+        opacity: 1;
+        background-color: color-mix(in srgb, var(--base-200) 68%, transparent);
+        box-shadow:
+            inset 0 0 clamp(10px, 2.2vmin, 18px) color-mix(in srgb, var(--base-200) 88%, transparent),
+            inset 0 0 clamp(3px, 0.9vmin, 6px)
+                color-mix(in srgb, var(--base-200) 35%, transparent);
+    }
+
+    100% {
+        opacity: 0;
+        visibility: hidden;
+        background-color: transparent;
+        box-shadow: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bg-bubbles:not(.bg-bubbles--menu) li.bg-bubble--click-flash::after {
+        animation: bubble-click-flash-reduce 0.12s ease forwards;
+    }
+}
+
+@keyframes bubble-click-flash-reduce {
+    0% {
+        opacity: 1;
+        background-color: color-mix(in srgb, var(--base-200) 55%, transparent);
+        box-shadow: inset 0 0 8px color-mix(in srgb, var(--base-200) 85%, transparent);
+    }
+
+    100% {
+        opacity: 0;
+        visibility: hidden;
+        background-color: transparent;
+        box-shadow: none;
+    }
+}
+
+/* After tap: bubble-fade stops (JS cancels); li stays invisible but keeps floating off-screen */
+.bg-bubbles:not(.bg-bubbles--menu) li.bg-bubble--vanished {
+    pointer-events: none;
+}
 
 @keyframes bubble-float {
     0% { transform: translateY(0) rotate(0deg); }
-    100% { transform: translateY(var(--bubble-travel)) rotate(600deg); }
+    100% { transform: translateY(var(--bubble-travel)) rotate(var(--bubble-spin-end)); }
 }
 
 @keyframes bubble-fade {
@@ -195,6 +349,9 @@ section {
 .hero {
     position: relative;
     z-index: 2;
+    /* Same idea as .bg-bubbles: clip animated overflow so the scroll chip rise
+       isn’t painted over the sections below during fast scroll */
+    overflow: hidden;
     font-size: 2rem;
     box-sizing: border-box;
     width: 100%;
@@ -205,12 +362,13 @@ section {
     min-height: 100dvh;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    align-items: stretch;
+    justify-content: flex-start;
     text-align: center;
-    padding-top: clamp(4rem, 13vmin, 7rem);
+    /* Clear fixed nav + vertical rhythm below bar */
+    padding-top: calc(var(--nav-h) + clamp(1.5rem, 5.5vmin, 3.75rem));
     padding-bottom: clamp(2rem, 7vmin, 5rem);
-    padding-inline: clamp(0.75rem, 4vw, 2.5rem);
+    padding-inline: 0;
     background: transparent;
     /* background: url(/bg.jpg) no-repeat 50% 50%;
     background-size: cover; */
@@ -223,7 +381,7 @@ section {
 #fun,
 #projects,
 #contact-me {
-    scroll-margin-top: clamp(4.5rem, 9vh, 6.75rem);
+    scroll-margin-top: calc(var(--nav-h) + 0.5rem);
 }
 
 .about {
@@ -243,12 +401,33 @@ section {
     border-bottom: 1px solid rgba(227, 223, 219, 0.2);
 }
 
+/*
+ * Sticky pattern matches sticky.md: position sticky on the header wrapper only,
+ * sibling .sticky-section-body below (titles stay normal flow inside the ribbon).
+ */
+.sticky-section-head {
+    position: sticky;
+    top: var(--sticky-title-top);
+    z-index: 5;
+    padding-block: 0.25rem;
+}
+
+.section-shell-head {
+    margin-bottom: 0.75rem;
+}
+
+.about-title-note,
+.work-title-note {
+    /* avoid sticky header feeling too tall */
+    white-space: nowrap;
+}
+
 .about-title {
     margin: 0;
     font-family: Boldonse, sans-serif;
     font-weight: 400;
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    line-height: 1.2;
+    font-size: var(--section-title-primary-fs);
+    line-height: var(--section-title-primary-lh);
     color: var(--base-paper);
     display: flex;
     flex-wrap: wrap;
@@ -331,12 +510,26 @@ section {
 }
 
 .section-shell__title {
-    margin: 0 0 0.75rem;
+    margin: 0;
     font-family: Boldonse, sans-serif;
     font-weight: 400;
-    font-size: clamp(1.5rem, 3.5vw, 2rem);
-    line-height: 1.35;
+    font-size: var(--section-title-shell-fs);
+    line-height: var(--section-title-shell-lh);
     color: var(--base-paper);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35em 0.75em;
+}
+
+.section-shell__title-note {
+    font-family: "Google Sans Flex", sans-serif;
+    font-size: 0.42em;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba(227, 223, 219, 0.65);
+    white-space: nowrap;
 }
 
 .section-shell__lede {
@@ -377,6 +570,83 @@ section {
 .section-shell__figure {
     margin: clamp(1rem, 2.75vmin, 1.35rem) 0;
     max-width: max-content;
+}
+
+/* Fun — oversized “odometer” for hero bubble pops */
+.section-shell--fun .fun-shell-body {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1rem, 3vmin, 1.75rem);
+    min-height: min(70vh, 36rem);
+}
+
+.fun-bubble-counter {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    min-height: clamp(14rem, 52vmin, 28rem);
+    width: 100%;
+    padding-block: clamp(0.35rem, 1.25vmin, 0.85rem);
+    box-sizing: border-box;
+}
+
+.fun-bubble-counter__label {
+    display: block;
+    margin: 0 auto clamp(0.65rem, 2vmin, 1rem);
+    padding-inline: clamp(0.75rem, 3vw, 1.25rem);
+    font-family: "Google Sans Flex", sans-serif;
+    font-size: clamp(0.65rem, 1.85vw, 0.82rem);
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    text-align: center;
+    color: rgba(227, 223, 219, 0.55);
+}
+
+.fun-bubble-counter__digits {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: baseline;
+    justify-content: center;
+    gap: clamp(0.06em, 1.2vmin, 0.14em);
+    margin-inline: auto;
+    width: 100%;
+    max-width: 100%;
+    padding-inline: clamp(0.5rem, 2vw, 1rem);
+    /* Orbitron: squared / digital — matches headline font load */
+    font-family: Orbitron, system-ui, sans-serif;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.08em;
+    line-height: 0.92;
+    text-align: center;
+    /* Single digit scales up; 2–3 chars still fit comfortably */
+    font-size: clamp(4.5rem, min(42vw, 22vh), 18rem);
+}
+
+.fun-bubble-counter__digit {
+    display: inline-block;
+    flex: 0 0 auto;
+    min-width: 0.58em;
+    text-align: center;
+}
+
+/* Idle state: single 0 — matches --bubble-rgb (hero + body.menu-open tint) */
+.fun-bubble-counter__digit--inactive {
+    color: rgba(var(--bubble-rgb), 0.92);
+    text-shadow:
+        0 0 clamp(10px, 2.2vmin, 22px) rgba(var(--bubble-rgb), 0.28),
+        0 2px clamp(8px, 1.75vw, 16px) rgba(1, 15, 41, 0.45);
+}
+
+/* Once counting: all digits accent green */
+.fun-bubble-counter__digit--active {
+    color: var(--base-200);
+    text-shadow:
+        0 0 clamp(12px, 2.8vmin, 28px) color-mix(in srgb, var(--base-200) 38%, transparent),
+        0 0 1px rgba(1, 15, 41, 0.85);
 }
 
 /* Plain linked image — no frame around the screenshot */
@@ -435,8 +705,8 @@ img.section-shell__shot {
     margin: 0 0 0.5rem;
     font-family: Boldonse, sans-serif;
     font-weight: 400;
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    line-height: 1.2;
+    font-size: var(--section-title-primary-fs);
+    line-height: var(--section-title-primary-lh);
     color: var(--base-paper);
     display: flex;
     flex-wrap: wrap;
@@ -451,6 +721,36 @@ img.section-shell__shot {
     letter-spacing: 0.04em;
     text-transform: uppercase;
     color: rgba(227, 223, 219, 0.65);
+}
+
+@media (max-width: 639px) {
+    :root {
+        --section-title-primary-fs: clamp(1.3rem, 4.5vw, 1.55rem);
+        --section-title-primary-lh: 1.15;
+        --section-title-shell-fs: clamp(1.15rem, 3.8vw, 1.35rem);
+        --section-title-shell-lh: 1.25;
+    }
+
+    .sticky-section-head {
+        padding-block: 0.15rem;
+    }
+
+    .about-header,
+    .work-header {
+        padding-bottom: clamp(0.65rem, 2vmin, 1rem);
+    }
+
+    .about-header {
+        margin-bottom: clamp(1rem, 3vmin, 1.35rem);
+    }
+
+    .work-header {
+        margin-bottom: clamp(1.25rem, 3.5vmin, 2rem);
+    }
+
+    .section-shell-head {
+        margin-bottom: 0.55rem;
+    }
 }
 
 .work-entry {
@@ -519,6 +819,131 @@ img.section-shell__shot {
     margin-bottom: 0;
 }
 
+.hero-shell {
+    position: relative;
+    width: 100%;
+    max-width: var(--nav-shell-max);
+    margin-inline: auto;
+    padding-inline: var(--nav-shell-pad-x);
+    box-sizing: border-box;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+}
+
+.hero-scroll-float {
+    pointer-events: none;
+    position: absolute;
+    left: 0;
+    bottom: clamp(2rem, 7vmin, 5rem);
+    margin-inline-start: clamp(3.1rem, 6.75vmin + 1.85rem, 7.5rem);
+    margin-block-end: clamp(0.45rem, 1.6vmin, 1rem);
+    box-sizing: border-box;
+    width: 56px;
+    height: 56px;
+}
+
+.hero-scroll-float__rise {
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    /* Same paced drift as fastest bubbles — travel is shorter (--hero-scroll-rise-distance) */
+    animation: hero-scroll-float-rise var(--bubble-float-duration-fast) linear forwards;
+    animation-delay: 0s;
+}
+
+.hero-scroll-float__spin {
+    width: 100%;
+    height: 100%;
+    transform-origin: 50% 50%;
+    rotate: none;
+    backface-visibility: hidden;
+    /* `rotate` (not nested in transform): linear infinite repeats at 360° with no seam */
+    animation: hero-scroll-spin-forever
+        calc(var(--bubble-float-duration-fast) * (360 / 600)) linear infinite;
+    animation-delay: 0s;
+    will-change: transform;
+}
+
+.hero-scroll-float__box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    margin: 0;
+    /* Size tokens for cqw/cqh–bound type that scales with the 56×56 chip */
+    container-type: size;
+    padding: clamp(2px, 5.5cqw, 5px);
+    border: none;
+    border-radius: 6px;
+    isolation: isolate;
+    overflow: hidden;
+    pointer-events: auto;
+    cursor: pointer;
+    text-decoration: none;
+    background-color: color-mix(in srgb, var(--base-200) 46%, transparent);
+    color: #fafaf8;
+    font-family: "Google Sans Flex", sans-serif;
+    /* Prefer larger type; min(cqw,cqh) keeps two lines inside the square */
+    font-size: clamp(10px, 1.9vmin, 12px); /* coarse fallback without cq units */
+    font-weight: 800;
+    font-variation-settings: "wght" 800;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.hero-scroll-float__box:focus-visible {
+    outline: 2px solid #fafaf8;
+    outline-offset: 3px;
+}
+
+@supports (font-size: 1cqw) {
+    .hero-scroll-float__box {
+        font-size: clamp(9px, min(21cqw, 29cqh), 12px);
+    }
+}
+
+@keyframes hero-scroll-float-rise {
+    0% {
+        transform: translate3d(0, var(--hero-scroll-rise-distance), 0);
+    }
+
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes hero-scroll-spin-forever {
+    from {
+        rotate: 0deg;
+    }
+
+    to {
+        rotate: 1turn;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-scroll-float__spin {
+        animation: none;
+        rotate: none;
+    }
+
+    .hero-scroll-float__rise {
+        animation: none;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
 .hero-title {
     display: flex;
     flex-direction: column;
@@ -526,6 +951,66 @@ img.section-shell__shot {
     justify-content: center;
     text-align: center;
     width: 100%;
+    padding-block-end: 7rem;
+    /*
+     * cqw/cqh for hero lines — shrink font to fit column width instead of wrapping.
+     */
+    container-type: inline-size;
+}
+
+.hero-scramble {
+    width: 100%;
+    max-width: 100%;
+    /* Lifts the headline block in the centered hero column */
+    padding-block-end: clamp(0.85rem, 2.5vmin, 1.85rem);
+}
+
+.hero-scramble-label {
+    margin: 0;
+    font-family: "Google Sans Flex", sans-serif;
+    font-weight: 600;
+    font-size: clamp(0.68rem, 1.05vw, 0.82rem);
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: rgba(227, 223, 219, 0.55);
+    line-height: 1.2;
+}
+
+.hero-scramble-label.engineer {
+    align-self: center;
+    font-family: Orbitron, "Google Sans Flex", sans-serif;
+    color: green;
+    /* Shrink vs wrap: cap by column width (~uppercase phrase + tracking) */
+    font-size: clamp(0.62rem, 2.4vw + 0.42rem, 1.5rem);
+    font-size: min(
+        clamp(0.62rem, 2.4vw + 0.42rem, 1.5rem),
+        calc((100cqw - clamp(2rem, 8vw, 4rem)) / 22)
+    );
+    padding-top: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    display: block;
+    margin-inline: auto;
+    text-align: center;
+    box-sizing: content-box;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+/* Scramble wraps glyphs in spans (matches .hero-headline) */
+.hero-scramble-label.engineer span {
+    display: inline-block;
+    line-height: inherit;
+    vertical-align: baseline;
+}
+
+.hero-title--has-scramble-labels .hero-scramble-label--bottom {
+    margin-top: clamp(0.3rem, 1vmin, 0.5rem);
+}
+
+.hero-title .hero-scramble-label--bottom {
+    padding-block-end: clamp(1rem, 2.75vmin, 2.25rem);
 }
 
 .hero-headline {
@@ -536,13 +1021,12 @@ img.section-shell__shot {
     align-items: center;
     justify-content: center;
     text-align: center;
-    gap: clamp(0.08em, 0.06em + 0.75vw, 0.35em);
+    gap: clamp(0.03em, 0.02em + 0.55vmin, 0.22em);
     width: 100%;
     min-height: 0;
     box-sizing: border-box;
     color: var(--base-paper);
-    /* Prefer whole words; avoid “UI-” style mid-token breaks */
-    overflow-wrap: break-word;
+    overflow-wrap: normal;
     word-break: normal;
     hyphens: none;
     -webkit-hyphens: none;
@@ -552,15 +1036,21 @@ img.section-shell__shot {
 .hero-headline .engineer-word {
     font-family: Boldonse, sans-serif;
     font-weight: 400;
-    /* Blends vmin + vw so type scales with both dimensions; coeffs from baseline phrase in JS */
-    font-size: calc(
+    /* JS-driven scale capped by hero column (.hero-title container) → shrink instead of wrap */
+    --hero-word-fs-unclamped: calc(
         var(--hero-fs-vw, 5.5) * (0.58vmin + 0.42vw) + var(--hero-fs-add)
     );
-    line-height: 1.35;
+    font-size: var(--hero-word-fs-unclamped);
+    font-size: min(
+        var(--hero-word-fs-unclamped),
+        calc((100cqw - clamp(2rem, 9vw, 4.5rem)) / 11.25)
+    );
+    line-height: 1.12;
     max-width: 100%;
-    overflow-wrap: break-word;
+    overflow-wrap: normal;
     word-break: normal;
     hyphens: none;
+    white-space: nowrap;
 }
 
 /* Scramble wraps each glyph in <span> — give glyphs room so lines don’t crash */
@@ -584,7 +1074,7 @@ img.section-shell__shot {
     max-width: var(--nav-shell-max);
     margin-inline: auto;
     padding-inline: var(--nav-shell-pad-x);
-    min-height: clamp(4.5rem, 9vh, 6.75rem);
+    min-height: var(--nav-h);
     box-sizing: border-box;
     pointer-events: none;
 }
@@ -605,13 +1095,29 @@ img.section-shell__shot {
     max-width: none;
 }
 
-/* Icon swap: stacked SVG imgs; GSAP tweens opacity on .nav-toggle-menu / .nav-toggle-close */
+.nav-toggle-shell {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+    border: none;
+    background: transparent;
+    box-sizing: border-box;
+}
+
+/* Burger / close stacks two SVG layers; GSAP swaps opacity */
 .nav-toggle {
     position: relative;
     flex-shrink: 0;
     z-index: 100;
-    width: clamp(3.25rem, 10vmin, 3.85rem);
-    height: clamp(3.25rem, 10vmin, 3.85rem);
+    display: grid;
+    place-items: center;
+    box-sizing: border-box;
+    width: var(--nav-toggle-hit);
+    height: var(--nav-toggle-hit);
     padding: 0;
     margin: 0;
     pointer-events: all;
@@ -619,17 +1125,32 @@ img.section-shell__shot {
     border-radius: 0.35rem;
     background: transparent;
     cursor: pointer;
-    display: grid;
-    place-items: center;
-    color: inherit;
+    color: var(--base-paper);
+    transition: color 0.35s ease;
 }
 
+.nav-toggle-shell:hover .nav-toggle,
 .nav-toggle:focus-visible {
-    outline: 2px solid var(--base-200);
-    outline-offset: 3px;
+    color: var(--base-200);
 }
 
-.nav-toggle:focus:not(:focus-visible) {
+body.menu-open .nav-toggle {
+    color: var(--base-200);
+}
+
+body.menu-open .nav-toggle-shell:hover .nav-toggle,
+body.menu-open .nav-toggle:focus-visible {
+    color: rgb(var(--bubble-rgb));
+}
+
+.nav-toggle:focus-visible,
+.menu-close:focus-visible {
+    outline: none;
+    outline-offset: 0;
+}
+
+.nav-toggle:focus:not(:focus-visible),
+.menu-close:focus:not(:focus-visible) {
     outline: none;
 }
 
@@ -642,9 +1163,10 @@ img.section-shell__shot {
     line-height: 0;
 }
 
-.nav-toggle-menu img,
-.nav-toggle-close img {
-    width: clamp(28px, 6.5vmin, 40px);
+.nav-toggle-menu svg,
+.nav-toggle-close svg,
+.menu-close__icon svg {
+    width: clamp(34px, 9vmin, 48px);
     height: auto;
     display: block;
 }
@@ -669,7 +1191,8 @@ img.section-shell__shot {
     top: 0;
     left: 0;
     right: 0;
-    height: clamp(4.5rem, 9vh, 6.75rem);
+    height: var(--nav-h);
+    /* Transparent fade (no blur) — blends into background */
     background: linear-gradient(
         to bottom,
         rgba(1, 15, 41, 0.78) 0%,
@@ -736,19 +1259,31 @@ img.section-shell__shot {
     align-items: center;
     justify-content: space-between;
     gap: clamp(0.75rem, 3vw, 1.75rem);
-    min-height: clamp(4.5rem, 9vh, 6.75rem);
+    min-height: var(--nav-h);
 }
 
-/* Mirrors .nav-toggle width so menu logo aligns with closed nav logo */
-.menu-shell__toggle-slot {
+/*
+ * In-overlay close — hidden on mobile (bar toggle stays primary).
+ * Visible tablet+ inside the drawer top row (nav bar toggle hides while open).
+ */
+.menu-close {
+    display: none;
     flex-shrink: 0;
-    width: clamp(3.25rem, 10vmin, 3.85rem);
-    height: clamp(3.25rem, 10vmin, 3.85rem);
-    pointer-events: none;
+    width: var(--nav-toggle-hit);
+    height: var(--nav-toggle-hit);
+    padding: 0;
+    margin: 0;
+    border: 0;
+    border-radius: 0.35rem;
+    background: transparent;
+    cursor: pointer;
+    color: var(--base-200);
+    transition: color 0.35s ease;
 }
 
-.menu.is-open .menu-shell__toggle-slot {
-    pointer-events: none !important;
+.menu-close:hover,
+.menu-close:focus-visible {
+    color: rgb(var(--bubble-rgb));
 }
 
 .menu-shell__cols {
@@ -830,6 +1365,115 @@ img.section-shell__shot {
     will-change: transform, opacity;
 }
 
+/*
+ * Tablet+: off-canvas side slide (cf. offcanvas.md) — fixed panel from the right (~375),
+ * dimmed backdrop on .menu; fullscreen SVG curtain is disabled here.
+ */
+@media (min-width: 768px) {
+    body.menu-open {
+        overflow: hidden;
+    }
+
+    .menu {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        min-height: 100svh;
+        min-height: 100dvh;
+    }
+
+    .menu::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        background: rgba(1, 15, 41, 0.55);
+        opacity: 0;
+        transition: opacity 0.28s ease;
+        pointer-events: none;
+    }
+
+    .menu.is-open::before {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .menu-bg-svg {
+        display: none;
+    }
+
+    .bg-bubbles--menu {
+        display: none;
+    }
+
+    .menu-shell {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: auto;
+        z-index: 1;
+        width: min(375px, 92vw);
+        max-width: none;
+        height: 100%;
+        min-height: 100svh;
+        margin-inline: 0;
+        padding-inline: var(--nav-shell-pad-x);
+        padding-bottom: 2.5rem;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        background: var(--base-paper);
+        box-shadow: -12px 0 40px rgba(1, 15, 41, 0.2);
+        box-sizing: border-box;
+        /* Closed: peel off-screen — without this the panel stays a permanent beige rail at ≥768px */
+        transform: translateX(100%);
+        transition: transform 0.38s cubic-bezier(0.22, 0.94, 0.32, 1);
+    }
+
+    .menu.is-open .menu-shell {
+        transform: translateX(0);
+        will-change: transform;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .menu-shell {
+            transition: none;
+        }
+
+        .menu.is-open .menu-shell {
+            will-change: auto;
+        }
+    }
+
+    .menu-col a {
+        font-size: clamp(1.65rem, 4.25vmin, 2.5rem);
+        line-height: 1.12;
+        letter-spacing: -0.015em;
+        width: auto;
+        max-width: 100%;
+    }
+
+    .menu-col-info h3 {
+        font-size: clamp(1rem, 3.75vmin, 1.35rem);
+        line-height: 1.25;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+    }
+
+    /* Close lives inside the drawer; hide duplicate X at viewport rail */
+    body.menu-open .nav-toggle-shell {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+
+    .menu-close {
+        display: grid;
+        place-items: center;
+    }
+}
+
 @media (max-width: 1000px) and (max-height: 700px) {
     /* Short-height phones (SE): avoid column-reverse pinning links awkwardly near the top */
     .menu-shell {
@@ -891,7 +1535,19 @@ img.section-shell__shot {
 }
 
 /* Hero only — keep separate from fullscreen menu styling */
+@media (max-width: 768px) {
+    #hero {
+        --hero-fs-vw: 6.85;
+        --hero-fs-add: 1rem;
+    }
+}
+
 @media (max-width: 520px) {
+    #hero {
+        --hero-fs-vw: 7.1;
+        --hero-fs-add: 1.05rem;
+    }
+
     .hero-headline .software-word,
     .hero-headline .engineer-word {
         line-height: 1.2;
@@ -902,6 +1558,11 @@ img.section-shell__shot {
     .hero {
         padding-top: clamp(3.25rem, 16vmin, 5rem);
         padding-bottom: clamp(1.25rem, 6vmin, 2rem);
+    }
+
+    .hero-scroll-float {
+        bottom: clamp(1.25rem, 6vmin, 2rem);
+        margin-inline-start: clamp(2.85rem, 11vmin + 1.35rem, 7.5rem);
     }
 
     .hero-headline {
@@ -917,84 +1578,64 @@ img.section-shell__shot {
 
 
 
-.nav-logo-link {
+.nav-logo-link,
+.menu-logo-link {
     display: block;
     max-width: 100%;
 }
 
-/* Bar + open overlay: cap at ~1000px-fluid (3.125rem max) so glyphs aren’t clipped in the strip */
+/* Bar + open menu logo: same type scale; paper on bar, green in open menu */
 .nav-logo h1,
 .menu-logo h1 {
-    font-family: "Gajraj One", sans-serif;
-    font-size: clamp(2.5rem, 5vw, 3.125rem);
-    line-height: 1.35;
-    max-height: calc(3.125rem * 1.35);
+    font-family: Boldonse, sans-serif;
+    font-weight: 400;
+    font-size: var(--nav-logo-bar-fs);
+    line-height: 1.22;
+    letter-spacing: normal;
+    max-height: none;
     margin: 0;
-}
-
-.menu-logo h1 {
-    color: #00316E;
+    text-shadow: none;
 }
 
 .nav-logo h1 {
     color: var(--base-paper);
-    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
 }
 
-/* Scrollspy label swap (nav h1 mirrors active section) */
+.menu-logo h1 {
+    color: var(--base-200);
+}
+
 .nav-logo-title {
     display: block;
     white-space: nowrap;
     overflow: visible;
     text-overflow: clip;
-    transition:
-        opacity 0.11s ease,
-        transform 0.14s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.nav-logo-title.nav-logo-title--exit {
-    opacity: 0;
-    transform: translateY(-0.28em);
+/* Match .about-title layout when mirroring About + note */
+.nav-logo-title.nav-logo-title--with-note {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35em 0.75em;
+    white-space: normal;
 }
 
-.nav-logo-title.nav-logo-title--enter {
-    animation: nav-logo-title-pop 0.17s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+.nav-logo-title__note {
+    font-family: "Google Sans Flex", sans-serif;
+    font-size: 0.42em;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba(227, 223, 219, 0.65);
 }
 
-@keyframes nav-logo-title-pop {
-    from {
-        opacity: 0;
-        transform: translateY(0.28em);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* Smaller scale when mirroring Services / Fun / Projects / Contact */
+.nav.nav-shell-title .nav-logo h1 {
+    font-size: var(--section-title-shell-fs);
+    line-height: var(--section-title-shell-lh);
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .nav-logo-title {
-        transition: none;
-    }
-
-    .nav-logo-title.nav-logo-title--exit,
-    .nav-logo-title.nav-logo-title--enter {
-        animation: none;
-        transform: none;
-        opacity: 1;
-    }
-}
-
-  a {
+a {
     text-decoration: none;
-    
-  }
-
-  .hero-mark {
-    margin-top: 24px;
-  }
-  .hero-mark svg {
-    width: 200px;
-    height: 200px;
-    display: block;
-  }
+}

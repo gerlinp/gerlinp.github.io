@@ -6,12 +6,12 @@
   <title>GERLIN</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Boldonse&family=Gajraj+One&family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Boldonse&family=Gajraj+One&family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Orbitron:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <ul class="bg-bubbles" aria-hidden="true">
+  <ul class="bg-bubbles" aria-label="Floating background bubbles. Click for a quick highlight.">
     <li></li>
     <li></li>
     <li></li>
@@ -28,24 +28,30 @@
     <div class="nav-shell">
       <div class="nav-logo">
         <a class="nav-logo-link" href="#hero">
-          <h1 class="nav-logo-title" aria-live="polite">Gerlin</h1>
+          <h1 class="nav-logo-title">Gerlin</h1>
         </a>
       </div>
 
-      <button
-        type="button"
-        class="nav-toggle"
-        aria-label="Open menu"
-        aria-expanded="false"
-        aria-controls="site-menu-overlay"
-      >
-        <span class="nav-toggle-menu" aria-hidden="true">
-          <img src="css/menu.svg" width="36" height="36" alt="" decoding="async" />
-        </span>
-        <span class="nav-toggle-close" aria-hidden="true">
-          <img src="css/close.svg" width="36" height="36" alt="" decoding="async" />
-        </span>
-      </button>
+      <div class="nav-toggle-shell">
+        <button
+          type="button"
+          class="nav-toggle"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="site-menu-overlay"
+        >
+          <span class="nav-toggle-menu" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="36" height="36" aria-hidden="true" focusable="false">
+              <path fill="currentColor" d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
+            </svg>
+          </span>
+          <span class="nav-toggle-close" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="36" height="36" aria-hidden="true" focusable="false">
+              <path fill="currentColor" d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+            </svg>
+          </span>
+        </button>
+      </div>
     </div>
 
     <div class="menu" id="site-menu-overlay">
@@ -78,9 +84,15 @@
       <div class="menu-shell">
         <div class="menu-shell__top">
           <div class="menu-logo">
-            <a href="#hero"><h1>Gerlin</h1></a>
+            <a class="menu-logo-link" href="#hero"><h1 class="nav-logo-title">Gerlin</h1></a>
           </div>
-          <div class="menu-shell__toggle-slot" aria-hidden="true"></div>
+          <button type="button" class="menu-close" aria-label="Close menu">
+            <span class="menu-close__icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="36" height="36" focusable="false">
+                <path fill="currentColor" d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+              </svg>
+            </span>
+          </button>
         </div>
 
         <div class="menu-shell__cols">
@@ -105,90 +117,75 @@
     </div>
   </div>
 
-  
-
   <section id="hero" class="hero">
-    <div class="hero-title">
-      <h2 class="hero-headline" aria-label="Software Engineer">
-        <span class="software-word"></span>
-        <span class="engineer-word"></span>
-      </h2>
+    <div class="hero-shell">
+      <div class="hero-title">
+        <div class="hero-scramble">
+          <h2 class="hero-headline" aria-label="Software Engineer">
+            <span class="software-word"></span>
+            <span class="engineer-word"></span>
+          </h2>
+        </div>
+        <h6 class="hero-scramble-label hero-scramble-label--bottom engineer" hidden></h6>
+      </div>
+
+      <div class="hero-scroll-float">
+        <div class="hero-scroll-float__rise">
+          <div class="hero-scroll-float__spin">
+            <a
+              href="#about-me"
+              class="hero-scroll-float__box"
+              aria-label="Scroll to About section"
+            >
+              SCROLL<br />
+              DOWN
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- <div class="hero-mark" aria-hidden="true">
-      <svg
-        width="72px"
-        height="72px"
-        viewBox="-160 -160 360 320"
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-      >
-        <path id="f" d="m123,0a123,123 0,0 1-246,0a123,123 0,0 1 246,0" />
-        <g fill="#057">
-          <circle r="160" />
-          <circle r="150" fill="#fff" />
-          <text font-size="28" font-stretch="condensed" font-family="Impact">
-            <animateTransform
-              type="rotate"
-              from="360 0 0"
-              to="0 0 0"
-              dur="10s"
-              attributeName="transform"
-              repeatCount="indefinite"
-            />
-            <textPath xlink:href="#f">Scroll Down * Scroll Down</textPath>
-          </text>
-          <circle r="115" />
-          <circle r="95" fill="#fff" />
-          <path d="m-8-119h16 l2,5h-20z" />
-          <circle cx="160" cy="0" r="40" />
-          <path d="m-95-20v-20h255a40,40 0,0 1 0,80h-55v-20z" />
-          <path d="m-85 0a85,85 0,0 0 170,0h-20a65,65 0,0 1-130,0z" />
-          <path d="m-65 20v20h140v-20z" />
-          <path d="m-115-20v10h25v30h250a20,20 0,0 0 0,-40z" fill="#fff" />
-          <path d="m-20 10c-17-14-27-14-44 0 6-25 37-25 44 0z" />
-          <path d="m60 10c-17-14-27-14-44 0 6-25 37-25 44 0z" />
-        </g>
-      </svg>
-    </div> -->
   </section>
   
   <section id="about-me" class="about" aria-labelledby="about-heading">
-    <header class="about-header">
+    <header class="about-header sticky-section-head">
       <h2 id="about-heading" class="about-title">
         About
         <span class="about-title-note">Gerlin Pierre-Louis</span>
       </h2>
     </header>
-    <div class="about-body">
-      <p>
-        Hi, I&rsquo;m Gerlin &mdash; a software engineer who builds things for the web.
-      </p>
-      <p>
-        My path here wasn&rsquo;t traditional. I started in IT, helping clients troubleshoot and navigate software &mdash; and somewhere along the way, helping people use tools turned into wanting to build better ones. I taught myself to code, made the switch, and haven&rsquo;t looked back.
-      </p>
-      <p>
-        Today I work as a software engineer at ezCater, where I focus on frontend development with React and TypeScript. I&rsquo;ve worked on design system migrations, large-scale codebase restructuring, and improving real user experiences &mdash; from checkout flows to SEO to code quality and observability.
-      </p>
-      <p>
-        I still care about what got me here: the idea that good technology should bridge gaps &mdash; between industries, between communities, and between what&rsquo;s possible and what&rsquo;s actually been built.
-      </p>
+    <div class="sticky-section-body">
+      <div class="about-body">
+        <p>
+          Hi, I&rsquo;m Gerlin &mdash; a software engineer who builds things for the web.
+        </p>
+        <p>
+          My path here wasn&rsquo;t traditional. I started in IT, helping clients troubleshoot and navigate software &mdash; and somewhere along the way, helping people use tools turned into wanting to build better ones. I taught myself to code, made the switch, and haven&rsquo;t looked back.
+        </p>
+        <p>
+          Today I work as a software engineer at ezCater, where I focus on frontend development with React and TypeScript. I&rsquo;ve worked on design system migrations, large-scale codebase restructuring, and improving real user experiences &mdash; from checkout flows to SEO to code quality and observability.
+        </p>
+        <p>
+          I still care about what got me here: the idea that good technology should bridge gaps &mdash; between industries, between communities, and between what&rsquo;s possible and what&rsquo;s actually been built.
+        </p>
+      </div>
+      <blockquote class="about-quote">
+        <p>
+          Every great developer you know got there by solving problems they were unqualified to solve until they actually did it.
+        </p>
+      </blockquote>
+      <hr class="about-rule" aria-hidden="true" />
     </div>
-    <blockquote class="about-quote">
-      <p>
-        Every great developer you know got there by solving problems they were unqualified to solve until they actually did it.
-      </p>
-    </blockquote>
-    <hr class="about-rule" aria-hidden="true" />
   </section>
 
   <section id="experience" class="work" aria-labelledby="work-heading">
-    <header class="work-header">
+    <header class="work-header sticky-section-head">
       <h2 id="work-heading" class="work-title">
         Where I&rsquo;ve worked
         <span class="work-title-note">Companies, co-ops &amp; civic tech</span>
       </h2>
     </header>
 
+    <div class="sticky-section-body">
     <article class="work-entry">
       <h3 class="work-role">Software Engineer</h3>
       <p class="work-meta">
@@ -257,10 +254,17 @@
         <li>Connected with Boston&rsquo;s technology and civic ecosystem through the fellowship community</li>
       </ul>
     </article>
+    </div>
   </section>
 
   <section id="services" class="section-shell" aria-labelledby="services-heading">
-    <h2 id="services-heading" class="section-shell__title">Services</h2>
+    <header class="section-shell-head sticky-section-head">
+      <h2 id="services-heading" class="section-shell__title">
+        Services
+        <span class="section-shell__title-note">Hire me?</span>
+      </h2>
+    </header>
+    <div class="sticky-section-body">
     <div class="section-shell__prose">
       <p>
         From time to time I take on freelance work. If you have a project in mind &mdash;
@@ -291,20 +295,43 @@
         <a class="section-shell__link" href="mailto:gerlin.pierrelouis@gmail.com">gerlin.pierrelouis@gmail.com</a>.
       </p>
     </div>
+    </div>
   </section>
 
-  <section id="fun" class="section-shell" aria-labelledby="fun-heading">
-    <h2 id="fun-heading" class="section-shell__title">Fun</h2>
-    <p class="section-shell__lede">Side projects and experiments — more soon.</p>
+  <section id="fun" class="section-shell section-shell--fun" aria-labelledby="fun-heading">
+    <header class="section-shell-head sticky-section-head">
+      <h2 id="fun-heading" class="section-shell__title">Fun</h2>
+    </header>
+    <div class="sticky-section-body fun-shell-body">
+      <p class="section-shell__lede">Side projects and experiments — more soon.</p>
+      <div
+        class="fun-bubble-counter"
+        role="status"
+        aria-live="polite"
+        aria-labelledby="fun-bubble-counter-heading"
+      >
+        <span id="fun-bubble-counter-heading" class="fun-bubble-counter__label">
+          Background bubbles popped
+        </span>
+        <span class="fun-bubble-counter__digits" id="fun-bubble-counter-digits" aria-label="0"><span class="fun-bubble-counter__digit fun-bubble-counter__digit--inactive">0</span></span>
+      </div>
+    </div>
   </section>
 
   <section id="projects" class="section-shell" aria-labelledby="projects-heading">
-    <h2 id="projects-heading" class="section-shell__title">Projects</h2>
-    <p class="section-shell__lede">Highlighted work — more soon.</p>
+    <header class="section-shell-head sticky-section-head">
+      <h2 id="projects-heading" class="section-shell__title">Projects</h2>
+    </header>
+    <div class="sticky-section-body">
+      <p class="section-shell__lede">Highlighted work — more soon.</p>
+    </div>
   </section>
 
   <section id="contact-me" class="section-shell" aria-labelledby="contact-heading">
-    <h2 id="contact-heading" class="section-shell__title">Get in touch</h2>
+    <header class="section-shell-head sticky-section-head">
+      <h2 id="contact-heading" class="section-shell__title">Get in touch</h2>
+    </header>
+    <div class="sticky-section-body">
     <div class="section-shell__prose">
       <p>
         I&rsquo;m currently open to new opportunities. If you&rsquo;d like to connect, the
@@ -313,6 +340,7 @@
       <p>
         <a class="section-shell__link" href="mailto:gerlin.pierrelouis@gmail.com">gerlin.pierrelouis@gmail.com</a>
       </p>
+    </div>
     </div>
   </section>
   
