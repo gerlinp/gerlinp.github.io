@@ -786,14 +786,81 @@ const closeMenu = (afterClose) => {
     }
   }
 
-  /** Swap in a clean `<li>` so we never leave a vanished node in the tree (ghost hits / compositor glitches). */
+  /**
+   * Kill compositor-heavy state before the node disappears. Chrome/Blink keeps promoted float layers
+   * unless transform/animation/filter are stripped; stale tiles can linger one frame past `replaceWith`.
+   */
+  function teardownAmbientBubbleForRemoval(li) {
+    cancelAmbientLiAnimations(li);
+    try {
+      /* Safe here: node is swapped out immediately afterward. */
+      li.classList.remove(FLASH_CLASS);
+      li.style.setProperty('animation', 'none', 'important');
+      li.style.setProperty('transition', 'none', 'important');
+      li.style.setProperty('transform', 'none', 'important');
+      li.style.setProperty('filter', 'none', 'important');
+      li.style.setProperty('opacity', '0', 'important');
+      li.style.setProperty('visibility', 'hidden', 'important');
+      /* Stronger than visibility alone — helps Blink drop textures before detach */
+      li.style.setProperty('display', 'none', 'important');
+      li.style.setProperty('pointer-events', 'none', 'important');
+      try {
+        li.style.setProperty('will-change', 'auto', 'important');
+      } catch {
+        /* older engines — ignore */
+      }
+    } catch {
+      /* ignore */
+    }
+  }
+
+  function ambientGhostAfterPopRespectsReduce() {
+    return (
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    );
+  }
+
+  /** Red “ghost” silhouette where the tile was — embraces leftover mobile layers as a deliberate bleed */
+  function spawnAmbientBubblePopGhost(rect) {
+    if (!(rect && rect.width >= 3 && rect.height >= 3)) return;
+    const el = document.createElement('div');
+    el.className = 'ambient-bubble-pop-ghost';
+    el.setAttribute('aria-hidden', 'true');
+    if (ambientGhostAfterPopRespectsReduce()) el.classList.add('ambient-bubble-pop-ghost--reduce');
+    el.style.left = `${Math.round(rect.left)}px`;
+    el.style.top = `${Math.round(rect.top)}px`;
+    el.style.width = `${Math.round(rect.width)}px`;
+    el.style.height = `${Math.round(rect.height)}px`;
+    document.body.appendChild(el);
+
+    const dismiss = () => {
+      try {
+        el.remove();
+      } catch {
+        /* ignore */
+      }
+    };
+    el.addEventListener('animationend', dismiss, { once: true });
+    window.setTimeout(dismiss, ambientGhostAfterPopRespectsReduce() ? 260 : 1100);
+  }
+
+  /** Insert a fresh `<li>` (never clone tapped nodes — avoids inheriting brittle animation state). */
   function replacePoppedAmbientLi(li, indexWithinList) {
+    let ghostRect = null;
+    try {
+      if (li instanceof HTMLElement) ghostRect = li.getBoundingClientRect();
+    } catch {
+      ghostRect = null;
+    }
+
+    teardownAmbientBubbleForRemoval(li);
     const parent = li.parentElement;
     if (!(parent instanceof HTMLUListElement)) return;
 
-    const fresh = li.cloneNode(false);
-    fresh.removeAttribute('style');
-    fresh.classList.remove(FLASH_CLASS);
+    const fresh = document.createElement('li');
+    const amb = li.getAttribute('data-ambient-float');
+    if (amb !== null && amb !== '') fresh.setAttribute('data-ambient-float', amb);
 
     if (
       typeof indexWithinList === 'number' &&
@@ -809,7 +876,16 @@ const closeMenu = (afterClose) => {
       fresh.style.setProperty('animation-duration', `${dur}, ${dur}`);
     }
 
-    li.replaceWith(fresh);
+    const swap = () => {
+      li.replaceWith(fresh);
+      spawnAmbientBubblePopGhost(ghostRect);
+    };
+    /* One frame defer: lets Chrome recycle the old layer before the new <li> is composited */
+    if (typeof window.requestAnimationFrame === 'function') {
+      window.requestAnimationFrame(swap);
+    } else {
+      swap();
+    }
   }
 
   /** Animations canceled + node replaced immediately so no lingering “vanished but visible” tile. */
@@ -819,8 +895,6 @@ const closeMenu = (afterClose) => {
       parent instanceof HTMLUListElement
         ? [...parent.children].indexOf(li)
         : -1;
-
-    cancelAmbientLiAnimations(li);
 
     ambientBubblePopLog.push({
       indexWithinList,
@@ -853,10 +927,6 @@ const closeMenu = (afterClose) => {
       done = true;
       window.clearTimeout(failSafeId);
       li.removeEventListener('animationend', onAnimationEnd);
-      /*
-       * Do not strip `FLASH_CLASS` before replace — removing it mid-cycle can strand the `::after`
-       * overlay in the dark inset keyframes (looks “clicked but stuck darker”).
-       */
       vanishBubbleAfterFlash(li);
     };
 
@@ -882,10 +952,8 @@ const closeMenu = (afterClose) => {
   }
 
   /**
-   * The `<ul>` has `pointer-events: none`; only `<li>` can be `click` target, so `ev.target`
-   * is the real hit tile. We still union rect-overlap siblings (stacked floats). Do not gate
-   * on `elementFromPoint` — fade/opacity and sub-pixel taps can yield a non-`<li>` top element
-   * while the event still originated on this list.
+   * The `<ul>` has `pointer-events: none`; stacked `<li>` hits are unioned vs `clientX/Y`.
+   * `directTarget` recovers edge taps when rect slop disagrees. Prefer `pointerup` on touch (see init).
    */
   function ambientHitFudgeForLi(li, baseFudge) {
     if (!(li instanceof HTMLElement)) return baseFudge;
@@ -900,18 +968,33 @@ const closeMenu = (afterClose) => {
     return baseFudge + inflate;
   }
 
-  function ambientHitLisForEvent(ul, ev, fudgePx) {
-    const sx = typeof ev.clientX === 'number' ? ev.clientX : 0;
-    const sy = typeof ev.clientY === 'number' ? ev.clientY : 0;
+  /** Matches CSS touch/coarse breakpoints; `(pointer: coarse)` alone misses many phones + DevTools. */
+  function ambientBubbleSlopPx() {
+    if (typeof window.matchMedia !== 'function') return 16;
+    if (window.matchMedia('(any-pointer: coarse)').matches) return 30;
+    if (window.matchMedia('(pointer: coarse)').matches) return 30;
+    /* Touch-first handset / tablet stacks that still report primary `fine` — widen slop anyway */
+    if (window.matchMedia('(hover: none)').matches) return 24;
+    return 14;
+  }
+
+  function ambientHitLisForClient(ul, clientX, clientY, fudgePx, directTarget) {
+    const sx = typeof clientX === 'number' ? clientX : 0;
+    const sy = typeof clientY === 'number' ? clientY : 0;
 
     const hits = [...ul.children].filter(
       (el) =>
         el instanceof HTMLLIElement &&
         !el.classList.contains(FLASH_CLASS) &&
-        ambientLiRectHit(el.getBoundingClientRect(), sx, sy, ambientHitFudgeForLi(el, fudgePx)),
+        ambientLiRectHit(
+          el.getBoundingClientRect(),
+          sx,
+          sy,
+          ambientHitFudgeForLi(el, fudgePx),
+        ),
     );
 
-    const t = ev.target;
+    const t = directTarget;
     if (
       t instanceof HTMLLIElement &&
       t.parentElement === ul &&
@@ -924,26 +1007,80 @@ const closeMenu = (afterClose) => {
     return hits;
   }
 
+  function ambientPeekHits(ul, clientX, clientY, directTarget) {
+    if (!(ul instanceof HTMLUListElement)) return [];
+    const fudge = ambientBubbleSlopPx();
+    return [...new Set(ambientHitLisForClient(ul, clientX, clientY, fudge, directTarget))];
+  }
+
+  /** @returns {boolean} true if this gesture should consume the follow-up synthetic `click` */
+  function ambientActivateHits(ul, lis, ev) {
+    if (!(ul instanceof HTMLUListElement) || lis.length === 0) return false;
+    if (ambientBubbleFunPopsFrozen) {
+      ev.preventDefault();
+      ev.stopPropagation();
+      return true;
+    }
+    ev.preventDefault();
+    ev.stopPropagation();
+    for (const li of lis) tryPopAmbientBubble(li);
+    return true;
+  }
+
   document
     .querySelectorAll('.bg-bubbles:not(.bg-bubbles--menu):not(.bg-bubbles--drawer)')
     .forEach((ul) => {
+      if (!(ul instanceof HTMLUListElement)) return;
+
+      const pointerPath = typeof window.PointerEvent !== 'undefined';
+
+      if (pointerPath) {
+        /*
+         * Primary path: `pointerup` has reliable coords for touch. Browsers still emit a follow-up
+         * `click` — suppress duplicates when we already popped (`ambientActivateHits`).
+         */
+        let suppressClickAfterAmbientPointer = 0;
+        ul.addEventListener('pointerup', (ev) => {
+          if (ev.pointerType === 'mouse' && ev.button !== 0) return;
+          const lis = ambientPeekHits(ul, ev.clientX, ev.clientY, ev.target);
+          if (ambientActivateHits(ul, lis, ev)) {
+            suppressClickAfterAmbientPointer =
+              (typeof performance?.now === 'function' ? performance.now() : Date.now()) + 480;
+          }
+        });
+        ul.addEventListener('click', (ev) => {
+          const now =
+            typeof performance?.now === 'function' ? performance.now() : Date.now();
+          if (now < suppressClickAfterAmbientPointer) return;
+          const lis = ambientPeekHits(ul, ev.clientX, ev.clientY, ev.target);
+          ambientActivateHits(ul, lis, ev);
+        });
+        return;
+      }
+
+      /*
+       * Legacy: synthetic `click` often carries bad `clientX/Y` vs rect hit-test;
+       * `touchend.changedTouches` does not. Suppress the follow-up click only when we popped.
+       */
+      let suppressAmbientClickUntil = 0;
+      ul.addEventListener(
+        'touchend',
+        (ev) => {
+          const t = ev.changedTouches?.[0];
+          if (!t) return;
+          const lis = ambientPeekHits(ul, t.clientX, t.clientY, ev.target);
+          if (ambientActivateHits(ul, lis, ev)) {
+            suppressAmbientClickUntil =
+              (typeof performance?.now === 'function' ? performance.now() : Date.now()) + 450;
+          }
+        },
+        { passive: true },
+      );
       ul.addEventListener('click', (ev) => {
-        if (!(ul instanceof HTMLUListElement)) return;
-        const coarse =
-          typeof window.matchMedia === 'function' &&
-          window.matchMedia('(pointer: coarse)').matches;
-        /* Touch / finger: extra slop; small tiles add more (see ambientHitFudgeForLi). */
-        const fudge = coarse ? 22 : 14;
-        const lis = [...new Set(ambientHitLisForEvent(ul, ev, fudge))];
-        if (lis.length === 0) return;
-        if (ambientBubbleFunPopsFrozen) {
-          ev.preventDefault();
-          ev.stopPropagation();
-          return;
-        }
-        ev.preventDefault();
-        ev.stopPropagation();
-        for (const li of lis) tryPopAmbientBubble(li);
+        const now = typeof performance?.now === 'function' ? performance.now() : Date.now();
+        if (now < suppressAmbientClickUntil) return;
+        const lis = ambientPeekHits(ul, ev.clientX, ev.clientY, ev.target);
+        ambientActivateHits(ul, lis, ev);
       });
     });
 

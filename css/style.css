@@ -174,6 +174,10 @@ body.menu-open::after {
  */
 .bg-bubbles:not(.bg-bubbles--menu):not(.bg-bubbles--drawer) {
     z-index: 6;
+    /* Contain promoted layers when tiles respawn — fewer ghost squares after taps (Chrome + WebKit) */
+    isolation: isolate;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 .bg-bubbles--menu li,
@@ -185,6 +189,8 @@ body.menu-open::after {
     pointer-events: auto;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
+    /* All viewports — avoids double-tap zoom hesitation on Safari; complements script `pointerup` path */
+    touch-action: manipulation;
 }
 
 /*
@@ -228,12 +234,16 @@ html.bubble-nums-debug-active .bg-bubbles > li .bubble-debug-num {
         0 1px 2px rgba(0, 0, 0, 0.25);
 }
 
-/* Phones: nav used to soak touches; bubbles can be tiny (10px) — widen tap targets, drop double‑tap‑zoom stall. */
-@media (pointer: coarse) {
+/*
+ * `@media (pointer: coarse)` misses many handhelds (`fine` stylus primary, DevTools emulation).
+ * `any-pointer: coarse` OR `hover: none` ⇒ treat as touch UI: 44×44 min hit (matches WCAG AA target).
+ */
+@media (any-pointer: coarse), (pointer: coarse), (hover: none) {
     .bg-bubbles:not(.bg-bubbles--menu):not(.bg-bubbles--drawer) li {
-        touch-action: manipulation;
         min-width: 44px;
         min-height: 44px;
+        /* Permanent will-change promotes long-lived textures — handheld Chrome/WebKit ghosts on swap */
+        will-change: auto;
     }
 }
 
@@ -375,6 +385,57 @@ html.bubble-nums-debug-active .bg-bubbles > li .bubble-debug-num {
     /* Ease the fade instead of dropping off */
     94% { opacity: 0.45; }
     100% { opacity: 0; }
+}
+
+/*
+ * Scripted post-pop silhouette (script.js spawnAmbientBubblePopGhost) — red afterimage so stray
+ * compositor squares (Chrome/Blink as well as WebKit) read as deliberate “heat” vs paper tiles.
+ */
+.ambient-bubble-pop-ghost {
+    position: fixed;
+    z-index: 6;
+    box-sizing: border-box;
+    pointer-events: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: color-mix(in srgb, #e53935 62%, transparent);
+    box-shadow:
+        inset 0 0 clamp(8px, 2vmin, 16px) color-mix(in srgb, #ff7961 90%, transparent),
+        0 0 clamp(10px, 2.8vmin, 22px) color-mix(in srgb, #e53935 55%, transparent);
+    animation: ambient-pop-ghost-fade 0.56s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    will-change: opacity, transform, filter;
+}
+
+.ambient-bubble-pop-ghost--reduce {
+    animation: ambient-pop-ghost-fade-reduce 0.14s ease forwards;
+}
+
+@keyframes ambient-pop-ghost-fade {
+    0% {
+        opacity: 0.72;
+        transform: scale(1);
+        filter: blur(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.08);
+        filter: blur(6px);
+    }
+}
+
+@keyframes ambient-pop-ghost-fade-reduce {
+    0% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.03);
+    }
 }
 
 /* Off-canvas rail only: drift in from the viewport-right, exit left/up (vars on `.bg-bubbles--drawer`). */
