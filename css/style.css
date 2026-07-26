@@ -684,6 +684,73 @@ section {
     max-width: max-content;
 }
 
+.section-shell__shots {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: clamp(1rem, 2.75vmin, 1.5rem);
+}
+
+.section-shell__shots .section-shell__figure {
+    margin: 0;
+    max-width: 20rem;
+    flex: 1 1 16rem;
+    box-sizing: border-box;
+    padding: 1.1rem;
+    background: rgba(227, 223, 219, 0.05);
+    border: 1px solid rgba(227, 223, 219, 0.12);
+    border-radius: 0.6rem;
+}
+
+.section-shell__shots img.section-shell__shot {
+    width: 100%;
+    max-width: none;
+    max-height: none;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 0.3rem;
+}
+
+.section-shell__shots img.section-shell__shot--top {
+    object-position: top;
+}
+
+.section-shell__shots img.section-shell__shot--top-mid {
+    object-position: center 20%;
+}
+
+.section-shell__shots .section-shell__figcaption {
+    margin-top: 0.9rem;
+}
+
+.section-shell__shots .section-shell__figcaption-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    font-size: 1rem;
+    font-weight: 650;
+    color: var(--base-paper);
+}
+
+.section-shell__shots .section-shell__figcaption-title::before {
+    content: "";
+    display: inline-block;
+    flex-shrink: 0;
+    width: 0.9em;
+    height: 1px;
+    background: var(--base-200);
+}
+
+.section-shell__shots .section-shell__figcaption-desc {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: rgba(227, 223, 219, 0.68);
+}
+
 /* Fun — one full viewport tall; body column grows under sticky title */
 .section-shell.section-shell--fun {
     min-height: 100vh;
