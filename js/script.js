@@ -1500,3 +1500,105 @@ const closeMenu = (afterClose) => {
     });
   }
 })();
+
+/** Fun teaser → the #fun section itself goes fullscreen, with a Matrix-rain transition on open/close. */
+(function initFunGame() {
+  const section = document.getElementById('fun');
+  const playBtn = document.getElementById('fun-play-btn');
+  const backBtn = document.getElementById('fun-back-btn');
+  const statusEl = document.getElementById('fun-status');
+  const canvas = document.getElementById('fun-rain');
+
+  if (
+    !(section instanceof HTMLElement) ||
+    !(playBtn instanceof HTMLButtonElement) ||
+    !(backBtn instanceof HTMLButtonElement) ||
+    !(canvas instanceof HTMLCanvasElement)
+  )
+    return;
+
+  const RAIN_CHARS = 'アカサタナハマヤラワ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$#@!*+=';
+  const TRANSITION_MS = 700;
+  const reduceMotion = () =>
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let rainRAF = null;
+  let rainResize = null;
+  let rainDrops = null;
+  let transitionTimer = null;
+
+  function startRain() {
+    if (rainRAF || reduceMotion()) return;
+    const ctx = canvas.getContext('2d');
+    const resize = () => {
+      canvas.width = canvas.clientWidth;
+      canvas.height = canvas.clientHeight;
+    };
+    resize();
+    window.addEventListener('resize', resize);
+    rainResize = resize;
+
+    const fontSize = 18;
+    const columns = Math.ceil(canvas.width / fontSize) || 40;
+    rainDrops = new Array(columns).fill(0).map(() => Math.random() * -50);
+
+    ctx.fillStyle = '#010f29';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    const step = () => {
+      ctx.fillStyle = 'rgba(1,15,41,0.18)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.font = fontSize + 'px monospace';
+      for (let i = 0; i < rainDrops.length; i++) {
+        const char = RAIN_CHARS[Math.floor(Math.random() * RAIN_CHARS.length)];
+        const x = i * fontSize;
+        const y = rainDrops[i] * fontSize;
+        ctx.fillStyle = Math.random() > 0.94 ? '#c8ffda' : '#28b33f';
+        ctx.fillText(char, x, y);
+        if (y > canvas.height && Math.random() > 0.975) rainDrops[i] = 0;
+        rainDrops[i]++;
+      }
+      rainRAF = requestAnimationFrame(step);
+    };
+    rainRAF = requestAnimationFrame(step);
+  }
+
+  function stopRain() {
+    if (rainRAF) cancelAnimationFrame(rainRAF);
+    rainRAF = null;
+    if (rainResize) window.removeEventListener('resize', rainResize);
+    rainResize = null;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  function setPhase(phase) {
+    section.classList.toggle('is-fullscreen', phase !== 'closed');
+    section.classList.toggle('is-transitioning', phase === 'opening' || phase === 'closing');
+    section.classList.toggle('is-open', phase === 'open');
+    document.body.style.overflow = phase === 'closed' ? '' : 'hidden';
+
+    if (statusEl instanceof HTMLElement) {
+      statusEl.textContent =
+        phase === 'opening' ? 'Loading…' : phase === 'closing' ? 'Exiting…' : '';
+    }
+
+    if (phase !== 'closed') startRain();
+    if (phase === 'closed') stopRain();
+  }
+
+  playBtn.addEventListener('click', () => {
+    clearTimeout(transitionTimer);
+    setPhase('opening');
+    transitionTimer = setTimeout(() => setPhase('open'), TRANSITION_MS);
+    backBtn.focus();
+  });
+
+  backBtn.addEventListener('click', () => {
+    clearTimeout(transitionTimer);
+    setPhase('closing');
+    transitionTimer = setTimeout(() => setPhase('closed'), TRANSITION_MS);
+    playBtn.focus();
+  });
+})();

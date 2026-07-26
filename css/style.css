@@ -679,6 +679,60 @@ section {
     margin-bottom: 0;
 }
 
+.section-shell__kicker {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    margin: 0 0 0.9rem;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    color: var(--base-200);
+}
+
+.section-shell__kicker::before {
+    content: "";
+    display: inline-block;
+    width: 1.5rem;
+    height: 1px;
+    background: var(--base-200);
+}
+
+.section-shell__highlight {
+    color: var(--base-200);
+    font-weight: 600;
+}
+
+.section-shell__cta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    padding: 0.7rem 1.6rem;
+    border: 1px solid color-mix(in srgb, var(--base-200) 55%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--base-200) 12%, transparent);
+    font-family: "Google Sans Flex", sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--base-200);
+    text-decoration: none;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.section-shell__cta-pill:hover {
+    background: color-mix(in srgb, var(--base-200) 20%, transparent);
+    border-color: color-mix(in srgb, var(--base-200) 72%, transparent);
+}
+
+.section-shell__cta-pill:focus-visible {
+    outline: 2px solid var(--base-200);
+    outline-offset: 3px;
+}
+
 .section-shell__figure {
     margin: clamp(1rem, 2.75vmin, 1.35rem) 0;
     max-width: max-content;
@@ -2186,4 +2240,198 @@ body.menu-open .nav-toggle:focus-visible {
 
 a {
     text-decoration: none;
+}
+
+/* Fun teaser's Play button — smaller than the in-game Start pill, same accent-green language. */
+.fun-teaser__play {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.7rem 1.6rem;
+    border: 1px solid color-mix(in srgb, var(--base-200) 55%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--base-200) 12%, transparent);
+    font-family: Orbitron, system-ui, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--base-200);
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.fun-teaser__play:hover {
+    background: color-mix(in srgb, var(--base-200) 20%, transparent);
+    border-color: color-mix(in srgb, var(--base-200) 72%, transparent);
+}
+
+.fun-teaser__play:focus-visible {
+    outline: 2px solid var(--base-200);
+    outline-offset: 3px;
+}
+
+/*
+ * Fun teaser → fullscreen game, folded into the #fun section itself (no separate overlay
+ * element — see js/script.js initFunGame). Matrix-rain canvas + glitch caption play only during
+ * the open/close transition; the ambient bubbles inside .fun-game are the actual clickable
+ * "boxes" the fun-bubble-counter score tracks.
+ */
+.section-shell--fun.is-fullscreen {
+    position: fixed;
+    inset: 0;
+    z-index: 45;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #010f29 0%, #00316e 140%);
+    overflow: hidden;
+}
+
+.section-shell--fun.is-fullscreen .sticky-section-head,
+.section-shell--fun.is-fullscreen #fun-teaser {
+    display: none;
+}
+
+.section-shell--fun.is-fullscreen .fun-shell-body {
+    height: 100%;
+    padding: 0;
+    max-width: none;
+}
+
+.fun-game {
+    display: none;
+}
+
+.section-shell--fun.is-fullscreen .fun-game {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.fun-game .bg-bubbles.bg-bubbles--fun {
+    z-index: 2;
+}
+
+.fun-game__rain {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+.section-shell--fun.is-transitioning .fun-game__rain {
+    opacity: 1;
+}
+
+.fun-game__status {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    font-family: "Courier New", monospace;
+    font-weight: 700;
+    font-size: clamp(1rem, 3vw, 1.6rem);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #c8ffda;
+    text-shadow:
+        0 0 8px rgba(40, 179, 63, 0.9),
+        2px 0 #ff2b6f,
+        -2px 0 #00e5ff;
+}
+
+.section-shell--fun.is-transitioning .fun-game__status {
+    animation: fun-overlay-glitch 0.6s steps(6, end) forwards;
+}
+
+.fun-game__back,
+.fun-game .fun-bubble-counter {
+    opacity: 0;
+    transition: opacity 0.35s ease 0.25s;
+}
+
+.section-shell--fun.is-open .fun-game__back,
+.section-shell--fun.is-open .fun-game .fun-bubble-counter {
+    opacity: 1;
+}
+
+/*
+ * `.fun-game` and `.fun-bubble-counter` stay click-through (inherited from the existing
+ * `.section-shell { pointer-events: none }` + `:is(a, button) { pointer-events: auto }`
+ * convention) so bubbles underneath stay poppable everywhere except the buttons themselves.
+ */
+.fun-game__back {
+    position: absolute;
+    top: 1.5rem;
+    left: clamp(1rem, 4vw, 2.5rem);
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    border: 0;
+    background: transparent;
+    color: var(--base-paper);
+    font-family: "Google Sans Flex", sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+}
+
+.fun-game__back:focus-visible {
+    outline: 2px solid var(--base-200);
+    outline-offset: 3px;
+}
+
+.fun-game .fun-bubble-counter {
+    position: relative;
+    z-index: 4;
+}
+
+@keyframes fun-overlay-glitch {
+    0%,
+    100% {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+    10% {
+        opacity: 0.2;
+        transform: translate(-3px, 2px);
+    }
+    20% {
+        opacity: 1;
+        transform: translate(3px, -2px);
+    }
+    35% {
+        opacity: 0.3;
+        transform: translate(-2px, 0);
+    }
+    50% {
+        opacity: 1;
+        transform: translate(0, 2px);
+    }
+    70% {
+        opacity: 0.4;
+        transform: translate(2px, -1px);
+    }
+    85% {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
 }

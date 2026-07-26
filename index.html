@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Boldonse&family=Gajraj+One&family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Orbitron:wght@600;700&display=swap" rel="stylesheet">
   <!-- Bump asset-v after CSS/JS changes so browsers/GitHub CDN fetch fresh files -->
-  <link rel="stylesheet" href="css/style.css?asset-v=20260578">
+  <link rel="stylesheet" href="css/style.css?asset-v=20260579">
 </head>
 <body>
 
@@ -355,9 +355,12 @@ Thanks for visiting the source.
     </header>
     <div class="sticky-section-body">
     <div class="section-shell__prose">
+      <p class="section-shell__kicker">Open for freelance</p>
       <p>
         From time to time I take on freelance work. If you have a project in mind &mdash;
-        whether it&rsquo;s an online store, a personal blog, or a portfolio site &mdash;
+        whether it&rsquo;s an <strong class="section-shell__highlight">online store</strong>, a
+        <strong class="section-shell__highlight">personal blog</strong>, or a
+        <strong class="section-shell__highlight">portfolio site</strong> &mdash;
         I&rsquo;d be happy to help bring it to life.
       </p>
       <div class="section-shell__shots">
@@ -454,10 +457,8 @@ Thanks for visiting the source.
           </figcaption>
         </figure>
       </div>
-      <p>
-        Feel free to reach out at
-        <a class="section-shell__link" href="mailto:gerlin.pierrelouis@gmail.com">gerlin.pierrelouis@gmail.com</a>.
-      </p>
+      <p>Feel free to reach out — I usually respond within a day or two.</p>
+      <a class="section-shell__cta-pill" href="mailto:gerlin.pierrelouis@gmail.com">gerlin.pierrelouis@gmail.com</a>
     </div>
     </div>
   </section>
@@ -467,6 +468,7 @@ Thanks for visiting the source.
       <h2 id="projects-heading" class="section-shell__title">Projects</h2>
     </header>
     <div class="sticky-section-body">
+      <p class="section-shell__kicker">Selected work</p>
       <p class="section-shell__lede">Highlighted work — more soon.</p>
       <div class="section-shell__shots">
         <figure class="section-shell__figure">
@@ -527,71 +529,103 @@ Thanks for visiting the source.
       </h2>
     </header>
     <div class="sticky-section-body fun-shell-body">
-      <div
-        class="fun-bubble-counter"
-        role="status"
-        aria-live="polite"
-        aria-labelledby="fun-heading"
-      >
-        <div class="fun-bubble-counter__lobby" id="fun-bubble-counter-lobby">
-          <button
-            type="button"
-            class="fun-bubble-counter__start"
-            id="fun-bubble-counter-start"
-            aria-label="Start one-minute round"
-          >
-            Start
-          </button>
-        </div>
-        <div class="fun-bubble-counter__hud" id="fun-bubble-counter-hud" hidden>
-          <span class="fun-bubble-counter__digits" id="fun-bubble-counter-digits" aria-label="0 points"><span class="fun-bubble-counter__digit fun-bubble-counter__digit--inactive">0</span></span>
-          <div class="fun-bubble-counter__timer-row" id="fun-bubble-countdown-row">
-            <span class="fun-bubble-counter__timer-caption">On the clock</span>
-            <span
-              class="fun-bubble-counter__timer-digits"
-              id="fun-bubble-countdown"
-              role="timer"
-              aria-live="off"
-            >1:00</span>
-          </div>
-        </div>
+      <div class="fun-teaser" id="fun-teaser">
+        <p class="section-shell__lede">A quick 60-second box-popping game. Score as many points as you can before time runs out.</p>
         <button
           type="button"
-          class="fun-bubble-counter__reset fun-bubble-counter__reset--concealed-until-done"
-          id="fun-bubble-counter-reset"
-          aria-hidden="true"
-          tabindex="-1"
-          aria-label="New round—reset score, timer, bubble speed"
+          class="fun-teaser__play"
+          id="fun-play-btn"
+          aria-label="Play the Fun game"
+          aria-controls="fun-game"
         >
-          Reset
+          Play
         </button>
-        <div class="fun-bubble-counter__gags" id="fun-bubble-counter-gags" aria-hidden="true">
-          <!-- Running: seconds left windows; done: buzzer (see script syncTimerGags) -->
-          <p
-            class="fun-bubble-counter__gag-line"
-            data-gag-running-only
-            data-gag-remain-min="31"
-            data-gag-remain-max="60"
+      </div>
+
+      <div class="fun-game" id="fun-game">
+        <ul class="bg-bubbles bg-bubbles--fun" aria-hidden="true">
+          <li data-ambient-float="1"></li>
+          <li data-ambient-float="2"></li>
+          <li data-ambient-float="3"></li>
+          <li data-ambient-float="4"></li>
+          <li data-ambient-float="5"></li>
+          <li data-ambient-float="6"></li>
+          <li data-ambient-float="7"></li>
+          <li data-ambient-float="8"></li>
+          <li data-ambient-float="9"></li>
+          <li data-ambient-float="10"></li>
+        </ul>
+        <canvas id="fun-rain" class="fun-game__rain" aria-hidden="true"></canvas>
+        <div class="fun-game__status" id="fun-status" aria-hidden="true"></div>
+        <button type="button" class="fun-game__back" id="fun-back-btn" aria-label="Back to Fun teaser">
+          &larr; Back
+        </button>
+        <div
+          class="fun-bubble-counter"
+          role="status"
+          aria-live="polite"
+          aria-labelledby="fun-heading"
+        >
+          <div class="fun-bubble-counter__lobby" id="fun-bubble-counter-lobby">
+            <button
+              type="button"
+              class="fun-bubble-counter__start"
+              id="fun-bubble-counter-start"
+              aria-label="Start one-minute round"
+            >
+              Start
+            </button>
+          </div>
+          <div class="fun-bubble-counter__hud" id="fun-bubble-counter-hud" hidden>
+            <span class="fun-bubble-counter__digits" id="fun-bubble-counter-digits" aria-label="0 points"><span class="fun-bubble-counter__digit fun-bubble-counter__digit--inactive">0</span></span>
+            <div class="fun-bubble-counter__timer-row" id="fun-bubble-countdown-row">
+              <span class="fun-bubble-counter__timer-caption">On the clock</span>
+              <span
+                class="fun-bubble-counter__timer-digits"
+                id="fun-bubble-countdown"
+                role="timer"
+                aria-live="off"
+              >1:00</span>
+            </div>
+          </div>
+          <button
+            type="button"
+            class="fun-bubble-counter__reset fun-bubble-counter__reset--concealed-until-done"
+            id="fun-bubble-counter-reset"
+            aria-hidden="true"
+            tabindex="-1"
+            aria-label="New round—reset score, timer, bubble speed"
           >
-            The boxes get faster every click.
-          </p>
-          <p
-            class="fun-bubble-counter__gag-line"
-            data-gag-running-only
-            data-gag-remain-min="1"
-            data-gag-remain-max="30"
-          >
-            It&rsquo;s getting hard, ain&rsquo;t it?
-          </p>
-          <p
-            class="fun-bubble-counter__gag-line fun-bubble-counter__gag-line--orbitron-done"
-            data-gag-done-only
-          >
-            You got the highscore!
-          </p>
-          <p id="fun-bubble-counter-gag-reset-flash" class="fun-bubble-counter__gag-line fun-bubble-counter__gag-line--reset-note">
-            Score will not be saved
-          </p>
+            Reset
+          </button>
+          <div class="fun-bubble-counter__gags" id="fun-bubble-counter-gags" aria-hidden="true">
+            <!-- Running: seconds left windows; done: buzzer (see script syncTimerGags) -->
+            <p
+              class="fun-bubble-counter__gag-line"
+              data-gag-running-only
+              data-gag-remain-min="31"
+              data-gag-remain-max="60"
+            >
+              The boxes get faster every click.
+            </p>
+            <p
+              class="fun-bubble-counter__gag-line"
+              data-gag-running-only
+              data-gag-remain-min="1"
+              data-gag-remain-max="30"
+            >
+              It&rsquo;s getting hard, ain&rsquo;t it?
+            </p>
+            <p
+              class="fun-bubble-counter__gag-line fun-bubble-counter__gag-line--orbitron-done"
+              data-gag-done-only
+            >
+              You got the highscore!
+            </p>
+            <p id="fun-bubble-counter-gag-reset-flash" class="fun-bubble-counter__gag-line fun-bubble-counter__gag-line--reset-note">
+              Score will not be saved
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -616,7 +650,7 @@ Thanks for visiting the source.
   
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/SplitText.min.js"></script>
-  <script src="js/script.js?asset-v=20260584"></script>
+  <script src="js/script.js?asset-v=20260585"></script>
   <script src="js/software-scramble.js?asset-v=20260534"></script>
 
 </body>
