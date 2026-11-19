@@ -2290,6 +2290,9 @@ a {
     padding: 0;
     background: linear-gradient(135deg, #010f29 0%, #00316e 140%);
     overflow: hidden;
+    /* Override `.section-shell { pointer-events: none }` so the fullscreen game swallows clicks
+       instead of letting them fall through to links on the page underneath. */
+    pointer-events: auto;
 }
 
 .section-shell--fun.is-fullscreen .sticky-section-head,
@@ -2372,9 +2375,8 @@ a {
 }
 
 /*
- * `.fun-game` and `.fun-bubble-counter` stay click-through (inherited from the existing
- * `.section-shell { pointer-events: none }` + `:is(a, button) { pointer-events: auto }`
- * convention) so bubbles underneath stay poppable everywhere except the buttons themselves.
+ * The fullscreen section catches clicks (see `.is-fullscreen` above) so nothing behind it is
+ * clickable; the bubbles inside `.fun-game` are their own `pointer-events: auto` targets.
  */
 .fun-game__back {
     position: absolute;
@@ -2402,6 +2404,9 @@ a {
 .fun-game .fun-bubble-counter {
     position: relative;
     z-index: 4;
+    /* Click-through so bubbles under the counter stay poppable; its buttons opt back in
+       via `.section-shell :is(a, button)`. */
+    pointer-events: none;
 }
 
 @keyframes fun-overlay-glitch {
